@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Золотая Русь — Отдых на курортах России</title>
+  <meta name="description" content="Подберём санаторий или курорт в России под ваши цели, рассчитаем стоимость и оформим путёвку. Бесплатная консультация.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-dark:   #1e5c3a;
+      --green-main:   #2d7a50;
+      --green-light:  #52b788;
+      --green-pale:   #d8f3dc;
+      --gold:         #c8961a;
+      --gold-light:   #f0c040;
+      --white:        #ffffff;
+      --bg:           #f5f9f6;
+      --text:         #1c2b22;
+      --text-soft:    #4a6555;
+      --shadow:       0 4px 24px rgba(30,92,58,.13);
+      --radius:       16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; line-height: 1.25; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ═══════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+    .section    { padding: 72px 0; }
+    .section-sm { padding: 48px 0; }
+
+    .badge {
+      display: inline-block;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 50px;
+      padding: 6px 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-soft);
+      max-width: 560px;
+      margin: 0 auto 48px;
+    }
+    .text-center { text-align: center; }
+
+    /* ═══════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 50px;
+      padding: 15px 36px;
+      cursor: pointer;
+      border: none;
+      transition: transform .18s, box-shadow .18s, background .18s;
+      text-align: center;
+    }
+    .btn:hover  { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+      color: #fff;
+      box-shadow: 0 6px 28px rgba(45,122,80,.38);
+    }
+    .btn-primary:hover { box-shadow: 0 10px 36px rgba(45,122,80,.48); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #1c2b22;
+      box-shadow: 0 6px 28px rgba(200,150,26,.38);
+    }
+    .btn-gold:hover { box-shadow: 0 10px 36px rgba(200,150,26,.5); }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--green-main);
+      color: var(--green-dark);
+    }
+    .btn-outline:hover { background: var(--green-pale); }
+
+    /* ═══════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(45,122,80,.12);
+      padding: 14px 0;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--green-dark);
+      line-height: 1.1;
+    }
+    .logo-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-soft);
+      letter-spacing: .04em;
+    }
+
+    .header-cta { display: flex; align-items: center; gap: 12px; }
+    .header-cta .btn { padding: 10px 24px; font-size: 14px; }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(160deg, rgba(30,92,58,.84) 0%, rgba(10,40,20,.70) 100%),
+        url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=80') center/cover no-repeat;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      padding: 60px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { font-size: 16px; }
+
+    .hero h1 {
+      font-size: clamp(32px, 5.5vw, 60px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 20px rgba(0,0,0,.25);
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+
+    .hero-text {
+      font-size: clamp(16px, 2vw, 19px);
+      color: rgba(255,255,255,.88);
+      margin-bottom: 36px;
+      max-width: 560px;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 44px;
+    }
+
+    .hero-proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .hero-proof-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.85);
+      font-size: 14px;
+    }
+    .hero-proof-icon {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Floating leaf decoration */
+    .hero-leaves {
+      position: absolute;
+      right: -40px; top: 50%;
+      transform: translateY(-50%);
+      width: 600px;
+      opacity: .12;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════
+       THREE OPTIONS
+    ═══════════════════════════════════════ */
+    .options { background: #fff; }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .option-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .option-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .option-card:nth-child(1)::before { background: linear-gradient(90deg, var(--green-light), var(--green-main)); }
+    .option-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold-light), var(--gold)); }
+    .option-card:nth-child(3)::before { background: linear-gradient(90deg, #6aa3e8, #3474c7); }
+
+    .option-card:hover {
+      border-color: var(--green-light);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .option-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--green-pale);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .option-icon {
+      font-size: 38px;
+      margin-bottom: 16px;
+    }
+    .option-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+    .option-card p {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .option-link {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--green-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .option-link::after { content: '→'; transition: transform .18s; }
+    .option-card:hover .option-link::after { transform: translateX(4px); }
+
+    /* ═══════════════════════════════════════
+       WHY US / TRUST
+    ═══════════════════════════════════════ */
+    .trust { background: var(--green-dark); color: #fff; }
+    .trust .section-title { color: #fff; }
+    .trust .section-sub { color: rgba(255,255,255,.72); }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+    }
+
+    .trust-item { text-align: center; }
+    .trust-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 52px;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .trust-label {
+      font-size: 16px;
+      color: rgba(255,255,255,.85);
+      font-weight: 500;
+    }
+    .trust-icon { font-size: 32px; margin-bottom: 12px; }
+
+    /* ═══════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════ */
+    .how { background: #fff; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 40px; left: 10%; right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green-light), var(--green-dark), var(--green-light));
+      opacity: .25;
+    }
+
+    .step {
+      text-align: center;
+      padding: 16px 24px;
+      position: relative;
+    }
+    .step-num {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, var(--green-light), var(--green-dark));
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(45,122,80,.35);
+      position: relative;
+      z-index: 1;
+    }
+    .step h4 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--text-soft);
+    }
+
+    /* ═══════════════════════════════════════
+       RESORTS MAP / DESTINATIONS
+    ═══════════════════════════════════════ */
+    .destinations { background: var(--bg); }
+
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .dest-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 12px rgba(30,92,58,.08);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .dest-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(30,92,58,.15);
+    }
+    .dest-flag { font-size: 28px; flex-shrink: 0; }
+    .dest-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--green-dark);
+    }
+    .dest-type {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════
+       FORM SECTION
+    ═══════════════════════════════════════ */
+    .form-section {
+      background:
+        linear-gradient(160deg, rgba(30,92,58,.92) 0%, rgba(10,40,20,.88) 100%),
+        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80') center/cover no-repeat;
+      color: #fff;
+    }
+    .form-section .section-title { color: #fff; }
+    .form-section .section-sub { color: rgba(255,255,255,.78); }
+
+    .form-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .form-left h2 {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .form-left p {
+      font-size: 16px;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .form-promise {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .promise-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: rgba(255,255,255,.88);
+    }
+    .promise-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .form-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.22);
+    }
+    .form-box h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 24px;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin-bottom: 7px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e0ece5;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      appearance: none;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--green-main);
+      box-shadow: 0 0 0 4px rgba(45,122,80,.12);
+      background: #fff;
+    }
+    .field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a6555' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px; }
+
+    .check-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .check-item input[type="checkbox"] {
+      width: 20px; height: 20px;
+      accent-color: var(--green-main);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-item span {
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .form-submit { margin-top: 8px; }
+    .form-submit .btn { width: 100%; justify-content: center; font-size: 17px; padding: 17px; }
+
+    .form-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 12px;
+    }
+
+    /* ═══════════════════════════════════════
+       SUCCESS STATE
+    ═══════════════════════════════════════ */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .form-success .success-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    .form-success h3 {
+      font-size: 22px;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+    .form-success p {
+      font-size: 15px;
+      color: var(--text-soft);
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    .footer {
+      background: #0f2419;
+      color: rgba(255,255,255,.65);
+      padding: 36px 0;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .footer-logo .logo-text { color: #fff; font-size: 18px; }
+    .footer-logo .logo-sub  { color: rgba(255,255,255,.5); }
+
+    .footer-copy { font-size: 13px; }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+    }
+    .footer-links a { color: rgba(255,255,255,.55); transition: color .18s; }
+    .footer-links a:hover { color: var(--green-light); }
+
+    /* ═══════════════════════════════════════
+       FLOATING BUTTON
+    ═══════════════════════════════════════ */
+    .float-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 200;
+      box-shadow: 0 8px 32px rgba(45,122,80,.5);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+    }
+    .float-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════ */
+    .animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .section  { padding: 52px 0; }
+      .form-wrap { grid-template-columns: 1fr; gap: 36px; }
+      .hero-leaves { display: none; }
+      .steps::before { display: none; }
+      .header-cta .btn-outline { display: none; }
+      .form-box { padding: 28px 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; }
+      .hero-btns .btn { width: 100%; justify-content: center; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     HEADER
+══════════════════════════ -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <div class="logo-text">Золотая Русь</div>
+          <div class="logo-sub">Курорты и санатории России</div>
+        </div>
+      </a>
+      <div class="header-cta">
+        <a href="#form" class="btn btn-outline">Консультация</a>
+        <a href="#form" class="btn btn-primary">Подобрать отдых</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════
+     HERO
+══════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-content">
+
+      <div class="hero-badge">
+        <span>✨</span> Умный подбор курортов России
+      </div>
+
+      <h1>
+        Отдых на курортах России —<br>
+        <em>без стресса и переплат</em>
+      </h1>
+
+      <p class="hero-text">
+        Подберём санаторий под ваши цели и здоровье, рассчитаем стоимость
+        и оформим путёвку. Работаем по всей России — от Сочи до Алтая.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#form" class="btn btn-gold" style="font-size:17px;padding:17px 40px;">
+          🎯 Подобрать мой вариант
+        </a>
+        <a href="#options" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5);">
+          Узнать подробнее
+        </a>
+      </div>
+
+      <div class="hero-proof">
+        <div class="hero-proof-item">
+          <div class="hero-proof-icon">🏆</div>
+          <span>Более 500 довольных клиентов</span>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-icon">💬</div>
+          <span>Бесплатная консультация</span>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-icon">⚡</div>
+          <span>Ответ за 15 минут</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     3 ВАРИАНТА
+══════════════════════════ -->
+<section class="section options" id="options">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge">Что вам нужно?</span>
+      <h2 class="section-title">Выберите свой вариант</h2>
+      <p class="section-sub">
+        Мы поможем на любом этапе — от идеи до готовой путёвки в руках
+      </p>
+    </div>
+
+    <div class="options-grid">
+
+      <div class="option-card animate" onclick="selectOption('Подобрать варианты отдыха')">
+        <div class="option-icon">🗺️</div>
+        <h3>Подобрать варианты отдыха</h3>
+        <p>
+          Расскажите о своих предпочтениях — мы подберём 3–5 лучших
+          санаториев или курортов России именно под ваши цели:
+          лечение, оздоровление, семейный отдых или активный туризм.
+        </p>
+        <span class="option-link">Хочу выбрать</span>
+      </div>
+
+      <div class="option-card animate" style="transition-delay:.1s" onclick="selectOption('Рассчитать стоимость и получить консультацию')">
+        <div class="option-icon">💰</div>
+        <h3>Рассчитать стоимость и получить консультацию</h3>
+        <p>
+          Бесплатно проконсультируем по всем вопросам, подберём программу
+          под ваш бюджет и сроки. Вы получите точный расчёт ещё до оплаты —
+          без скрытых доплат.
+        </p>
+        <span class="option-link">Хочу расчёт</span>
+      </div>
+
+      <div class="option-card animate" style="transition-delay:.2s" onclick="selectOption('Заказать путёвку')">
+        <div class="option-icon">🎫</div>
+        <h3>Заказать путёвку</h3>
+        <p>
+          Уже знаете куда хотите? Мы оформим все документы, забронируем
+          номер и организуем трансфер. Путёвка будет готова за 1 рабочий день.
+        </p>
+        <span class="option-link">Хочу путёвку</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     ДОВЕРИЕ / ЦИФРЫ
+══════════════════════════ -->
+<section class="section trust">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:52px;">
+      <span class="badge" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">Почему выбирают нас</span>
+      <h2 class="section-title">Мы знаем курорты изнутри</h2>
+      <p class="section-sub">
+        Эксперт по курортам КМВ и всей России с личным опытом посещения
+        более 80 санаториев и пансионатов
+      </p>
+    </div>
+
+    <div class="trust-grid">
+      <div class="trust-item animate">
+        <div class="trust-icon">🏨</div>
+        <div class="trust-num">200+</div>
+        <div class="trust-label">Санаториев и<br>курортов в базе</div>
+      </div>
+      <div class="trust-item animate" style="transition-delay:.1s">
+        <div class="trust-icon">👥</div>
+        <div class="trust-num">500+</div>
+        <div class="trust-label">Клиентов отдохнули<br>по нашим путёвкам</div>
+      </div>
+      <div class="trust-item animate" style="transition-delay:.2s">
+        <div class="trust-icon">⭐</div>
+        <div class="trust-num">4.9</div>
+        <div class="trust-label">Средняя оценка<br>от клиентов</div>
+      </div>
+      <div class="trust-item animate" style="transition-delay:.3s">
+        <div class="trust-icon">🎓</div>
+        <div class="trust-num">10+</div>
+        <div class="trust-label">Лет опыта в<br>курортном туризме</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     КАК ЭТО РАБОТАЕТ
+══════════════════════════ -->
+<section class="section how">
+  <div class="container">
+    <div class="text-center">
+      <span class="badge">Просто и быстро</span>
+      <h2 class="section-title">Как мы работаем</h2>
+      <p class="section-sub">
+        От заявки до путёвки — за 1 рабочий день
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step animate">
+        <div class="step-num">1</div>
+        <h4>Оставляете заявку</h4>
+        <p>Заполните короткую форму — имя, телефон и что вас интересует. Это займёт 1 минуту.</p>
+      </div>
+      <div class="step animate" style="transition-delay:.12s">
+        <div class="step-num">2</div>
+        <h4>Получаете консультацию</h4>
+        <p>Мы перезваниваем за 15 минут. Выясняем ваши предпочтения и подбираем лучшие варианты.</p>
+      </div>
+      <div class="step animate" style="transition-delay:.24s">
+        <div class="step-num">3</div>
+        <h4>Выбираете и бронируете</h4>
+        <p>Вы выбираете подходящий вариант. Мы оформляем путёвку и все необходимые документы.</p>
+      </div>
+      <div class="step animate" style="transition-delay:.36s">
+        <div class="step-num">4</div>
+        <h4>Едете отдыхать!</h4>
+        <p>Путёвка у вас в руках. Мы остаёмся на связи и помогаем до конца поездки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     НАПРАВЛЕНИЯ
+══════════════════════════ -->
+<section class="section-sm destinations">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:36px;">
+      <span class="badge">Куда поехать?</span>
+      <h2 class="section-title">Популярные направления</h2>
+    </div>
+
+    <div class="dest-grid animate">
+      <div class="dest-card">
+        <div class="dest-flag">🌊</div>
+        <div><div class="dest-name">Сочи</div><div class="dest-type">Море и горы</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">💧</div>
+        <div><div class="dest-name">КМВ</div><div class="dest-type">Минеральные воды</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">🌲</div>
+        <div><div class="dest-name">Алтай</div><div class="dest-type">Экотуризм</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">🏔️</div>
+        <div><div class="dest-name">Кисловодск</div><div class="dest-type">Нарзан</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">🏖️</div>
+        <div><div class="dest-name">Анапа</div><div class="dest-type">Детский отдых</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">🌿</div>
+        <div><div class="dest-name">Подмосковье</div><div class="dest-type">Выходные дни</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">❄️</div>
+        <div><div class="dest-name">Белокуриха</div><div class="dest-type">Горный курорт</div></div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-flag">🌅</div>
+        <div><div class="dest-name">Ессентуки</div><div class="dest-type">Лечение ЖКТ</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     ФОРМА ЗАЯВКИ
+══════════════════════════ -->
+<section class="section form-section" id="form">
+  <div class="container">
+
+    <div class="form-wrap">
+
+      <!-- Левая колонка — убедительная часть -->
+      <div class="form-left animate">
+        <span class="badge" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">Бесплатно</span>
+        <h2>Получите консультацию<br>прямо сейчас</h2>
+        <p>
+          Оставьте заявку — и мы перезвоним в течение 15 минут.
+          Подберём лучший вариант отдыха под ваши цели и бюджет.
+          Без навязывания и скрытых платежей.
+        </p>
+
+        <div class="form-promise">
+          <div class="promise-item">
+            <div class="promise-icon">⚡</div>
+            <span>Ответ за 15 минут в рабочее время</span>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🎁</div>
+            <span>Консультация и подбор — бесплатно</span>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🔒</div>
+            <span>Ваши данные в безопасности</span>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🤝</div>
+            <span>Без давления и навязывания</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая колонка — форма -->
+      <div class="animate" style="transition-delay:.15s">
+        <div class="form-box">
+          <h3>Оставить заявку</h3>
+
+          <!-- Форма — заявки идут на smorodina@goldrus.ru через FormSubmit -->
+          <form id="lead-form"
+                action="https://formsubmit.co/smorodina@goldrus.ru"
+                method="POST">
+
+            <!-- Скрытые поля FormSubmit -->
+            <input type="hidden" name="_subject"   value="Новая заявка с лендинга Золотая Русь">
+            <input type="hidden" name="_captcha"   value="false">
+            <input type="hidden" name="_template"  value="box">
+            <input type="hidden" name="_next"      value="">
+            <input type="hidden" name="Интерес"    id="hidden-interest" value="Не указано">
+
+            <div class="field">
+              <label>Ваше имя *</label>
+              <input type="text" name="Имя" placeholder="Например: Анна" required>
+            </div>
+
+            <div class="field">
+              <label>Телефон *</label>
+              <input type="tel" name="Телефон" placeholder="+7 (___) ___-__-__" required>
+            </div>
+
+            <div class="field">
+              <label>Что вас интересует?</label>
+              <select name="Интерес" onchange="document.getElementById('hidden-interest').value=this.value">
+                <option value="Подобрать варианты отдыха">🗺️ Подобрать варианты отдыха</option>
+                <option value="Рассчитать стоимость и получить консультацию">💰 Рассчитать стоимость / консультация</option>
+                <option value="Заказать путёвку">🎫 Заказать путёвку</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Предпочтительное направление</label>
+              <select name="Направление">
+                <option value="">Не важно / не знаю</option>
+                <option value="Сочи">Сочи</option>
+                <option value="КМВ (Пятигорск, Кисловодск, Ессентуки)">КМВ (Пятигорск, Кисловодск, Ессентуки)</option>
+                <option value="Анапа">Анапа</option>
+                <option value="Алтай">Алтай</option>
+                <option value="Белокуриха">Белокуриха</option>
+                <option value="Подмосковье">Подмосковье</option>
+                <option value="Другое">Другое</option>
+              </select>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn btn-gold">
+                ✅ Получить бесплатную консультацию
+              </button>
+            </div>
+            <p class="form-note">
+              Нажимая кнопку, вы соглашаетесь на обработку персональных данных.<br>
+              Мы не передаём ваши данные третьим лицам.
+            </p>
+          </form>
+
+          <!-- Сообщение об успехе -->
+          <div class="form-success" id="form-success">
+            <div class="success-icon">🎉</div>
+            <h3>Заявка принята!</h3>
+            <p>Мы свяжемся с вами в течение 15 минут.<br>Спасибо, что выбрали Золотую Русь!</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     FOOTER
+══════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <div class="logo-text">Золотая Русь</div>
+          <div class="logo-sub">Курорты и санатории России</div>
+        </div>
+      </div>
+      <div class="footer-copy">
+        © 2024–2026 Туркомпания «Золотая Русь». Все права защищены.
+      </div>
+      <div class="footer-links">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#form">Написать нам</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════
+     FLOATING BUTTON
+══════════════════════════ -->
+<a href="#form" class="btn btn-gold float-btn" id="float-btn">
+  🎯 Получить консультацию
+</a>
+
+
+<!-- ══════════════════════════
+     JAVASCRIPT
+══════════════════════════ -->
+<script>
+  /* ── Scroll animations ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+
+  /* ── Floating button ── */
+  const floatBtn = document.getElementById('float-btn');
+  window.addEventListener('scroll', () => {
+    floatBtn.classList.toggle('visible', window.scrollY > 500);
+  });
+
+  /* ── Select option from cards ── */
+  function selectOption(value) {
+    const sel = document.querySelector('select[name="Интерес"]');
+    if (sel) {
+      sel.value = value;
+      document.getElementById('hidden-interest').value = value;
+    }
+    document.getElementById('form').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── Phone mask ── */
+  const phoneInput = document.querySelector('input[type="tel"]');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.length === 0) { this.value = ''; return; }
+      if (v[0] !== '7') v = '7' + v;
+      v = v.substring(0, 11);
+      let res = '+7';
+      if (v.length > 1) res += ' (' + v.substring(1, 4);
+      if (v.length >= 4) res += ') ' + v.substring(4, 7);
+      if (v.length >= 7) res += '-' + v.substring(7, 9);
+      if (v.length >= 9) res += '-' + v.substring(9, 11);
+      this.value = res;
+    });
+  }
+
+  /* ── Form submit — show success ── */
+  const form = document.getElementById('lead-form');
+  if (form) {
+    /* Для реальной отправки через FormSubmit страница перезагружается,
+       но если хочешь AJAX — используй fetch ниже (раскомментируй) */
+
+    /* AJAX-вариант (необязательно):
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      await fetch(form.action, { method:'POST', body: data, headers:{'Accept':'application/json'} });
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    });
+    */
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Генератор открыток — День рождения</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0533 0%, #2d0b5a 40%, #0d1f4a 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #fff;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, #ff6eb4, #ffd700, #ff6eb4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200%;
+      animation: shimmer 2.5s infinite linear;
+    }
+    @keyframes shimmer { to { background-position: 200%; } }
+
+    .subtitle {
+      text-align: center;
+      color: #b39ddb;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+
+    /* ---- PANEL ---- */
+    .panel {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel h2 {
+      font-size: 1rem;
+      color: #ce93d8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: -8px;
+    }
+
+    label { font-size: 0.88rem; color: #ccc; margin-bottom: 4px; display: block; }
+
+    .upload-zone {
+      border: 2px dashed rgba(255,255,255,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .upload-zone:hover { border-color: #ff6eb4; background: rgba(255,110,180,0.08); }
+    .upload-zone .icon { font-size: 2.4rem; margin-bottom: 8px; }
+    .upload-zone p { font-size: 0.85rem; color: #aaa; }
+    #fileInput { display: none; }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      color: #fff;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color .2s;
+      resize: none;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: #ff6eb4;
+    }
+    select option { background: #2d0b5a; }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .style-btn {
+      padding: 10px 6px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: #ddd;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all .2s;
+    }
+    .style-btn:hover { border-color: #ffd700; color: #ffd700; }
+    .style-btn.active { border-color: #ffd700; background: rgba(255,215,0,0.15); color: #ffd700; }
+
+    .btn-generate {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg, #ff6eb4, #ffd700);
+      color: #1a0533;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s, opacity .15s;
+    }
+    .btn-generate:hover { transform: translateY(-2px); opacity: 0.92; }
+    .btn-generate:active { transform: translateY(0); }
+
+    /* ---- PREVIEW ---- */
+    .preview-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .canvas-wrap {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+    }
+
+    #cardCanvas {
+      max-width: 100%;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .placeholder-msg {
+      color: #666;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .placeholder-msg .big { font-size: 3rem; margin-bottom: 10px; }
+
+    .btn-download {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: 2px solid #ffd700;
+      background: transparent;
+      color: #ffd700;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .btn-download:hover { background: #ffd700; color: #1a0533; }
+    .btn-download:disabled { opacity: 0.3; cursor: default; }
+
+    @media (max-width: 700px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎉 Генератор открыток</h1>
+<p class="subtitle">Загрузи фото — получи праздничную открытку на День рождения</p>
+
+<div class="container">
+
+  <!-- ПАНЕЛЬ НАСТРОЕК -->
+  <div class="panel">
+    <h2>Настройки</h2>
+
+    <!-- Загрузка фото -->
+    <div>
+      <label>Фото</label>
+      <div class="upload-zone" id="uploadZone">
+        <div class="icon">📷</div>
+        <p>Нажми или перетащи фото сюда</p>
+        <input type="file" id="fileInput" accept="image/*" />
+      </div>
+    </div>
+
+    <!-- Имя -->
+    <div>
+      <label>Имя именинника</label>
+      <input type="text" id="nameInput" placeholder="Например: Александр" />
+    </div>
+
+    <!-- Текст -->
+    <div>
+      <label>Текст поздравления</label>
+      <textarea id="msgInput" rows="3" placeholder="Желаю счастья, здоровья и улыбок!"></textarea>
+    </div>
+
+    <!-- Стиль -->
+    <div>
+      <label>Стиль открытки</label>
+      <div class="style-grid">
+        <div class="style-btn active" data-style="party">🎊 Вечеринка</div>
+        <div class="style-btn" data-style="elegant">✨ Элегантный</div>
+        <div class="style-btn" data-style="fun">🎈 Весёлый</div>
+        <div class="style-btn" data-style="gold">🥂 Золотой</div>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btnGenerate">Создать открытку</button>
+  </div>
+
+  <!-- ПРЕДПРОСМОТР -->
+  <div class="preview-area">
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="placeholder-msg" id="placeholder">
+        <div class="big">🎂</div>
+        <p>Загрузи фото и нажми<br>«Создать открытку»</p>
+      </div>
+      <canvas id="cardCanvas" style="display:none;"></canvas>
+    </div>
+    <button class="btn-download" id="btnDownload" disabled>⬇ Скачать открытку</button>
+  </div>
+
+</div>
+
+<script>
+// ---- Состояние ----
+let uploadedImage = null;
+let currentStyle = 'party';
+
+const STYLES = {
+  party: {
+    bg: ['#1a0533', '#6a0572', '#0d1f4a'],
+    frame: ['#ff6eb4', '#ffd700', '#ff4444'],
+    title: '#ffd700',
+    text: '#ffe0f0',
+    emojis: ['🎊','🎉','🎈','✨','🥳','🎁','🎂','⭐','💫','🌟'],
+    confetti: ['#ff6eb4','#ffd700','#ff4444','#44ff88','#4488ff','#ff88ff'],
+    borderStyle: 'double',
+  },
+  elegant: {
+    bg: ['#0a0a1a', '#1a1a3a', '#0d0d2a'],
+    frame: ['#c9a84c', '#e8d48b', '#a07830'],
+    title: '#e8d48b',
+    text: '#d4c5a9',
+    emojis: ['✨','⭐','🌟','💎','👑','🥂','🌹','🕊️','💫','🌙'],
+    confetti: ['#c9a84c','#e8d48b','#ffffff','#a07830','#ffe8a0'],
+    borderStyle: 'ornate',
+  },
+  fun: {
+    bg: ['#0d3b1f', '#1a5c34', '#0a2a14'],
+    frame: ['#44ff88', '#ffdd00', '#ff6622'],
+    title: '#ffdd00',
+    text: '#ccffdd',
+    emojis: ['🎈','🎠','🎡','🎢','🃏','🎪','🦄','🌈','🍭','🎮'],
+    confetti: ['#44ff88','#ffdd00','#ff6622','#ff44aa','#44aaff','#ffffff'],
+    borderStyle: 'zigzag',
+  },
+  gold: {
+    bg: ['#1a1000', '#2d1f00', '#1a0a00'],
+    frame: ['#ffd700', '#ffaa00', '#cc8800'],
+    title: '#ffd700',
+    text: '#ffe8a0',
+    emojis: ['🥂','🍾','👑','💰','🌟','✨','🎖️','🏆','💛','🔔'],
+    confetti: ['#ffd700','#ffaa00','#cc8800','#ffffff','#ffe8a0'],
+    borderStyle: 'luxury',
+  },
+};
+
+// ---- Upload ----
+const uploadZone = document.getElementById('uploadZone');
+const fileInput  = document.getElementById('fileInput');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = '#ff6eb4'; });
+uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.style.borderColor = '';
+  if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadImage(fileInput.files[0]); });
+
+function loadImage(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      uploadedImage = img;
+      uploadZone.innerHTML = `<div class="icon">✅</div><p>${file.name}</p>`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ---- Style selector ----
+document.querySelectorAll('.style-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStyle = btn.dataset.style;
+  });
+});
+
+// ---- Generate ----
+document.getElementById('btnGenerate').addEventListener('click', generateCard);
+
+function generateCard() {
+  if (!uploadedImage) { alert('Сначала загрузи фото!'); return; }
+
+  const name   = document.getElementById('nameInput').value.trim() || 'Именинник';
+  const msg    = document.getElementById('msgInput').value.trim()  || 'С Днём рождения!';
+  const style  = STYLES[currentStyle];
+
+  const W = 800, H = 560;
+  const canvas = document.getElementById('cardCanvas');
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // --- Background gradient ---
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0,   style.bg[0]);
+  bg.addColorStop(0.5, style.bg[1]);
+  bg.addColorStop(1,   style.bg[2]);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // --- Конфетти / частицы ---
+  drawConfetti(ctx, W, H, style.confetti);
+
+  // --- Фото ---
+  const photoSize = 260;
+  const photoX    = 60;
+  const photoY    = H / 2 - photoSize / 2;
+  drawRoundPhoto(ctx, uploadedImage, photoX, photoY, photoSize, photoSize, style.frame);
+
+  // --- Рамка вокруг всей открытки ---
+  drawCardBorder(ctx, W, H, style.frame, style.borderStyle);
+
+  // --- Текст ---
+  const textX = photoX + photoSize + 40;
+  const textW  = W - textX - 50;
+
+  // Emoji украшения сверху справа
+  const emojis = style.emojis;
+  ctx.font = '28px serif';
+  ctx.textAlign = 'center';
+  const emojiY = photoY + 20;
+  for (let i = 0; i < 5; i++) {
+    ctx.fillText(emojis[i % emojis.length], textX + 20 + i * (textW / 5), emojiY);
+  }
+
+  // "С Днём рождения!"
+  ctx.textAlign = 'left';
+  ctx.font = 'bold 28px Georgia, serif';
+  ctx.fillStyle = style.title;
+  setShadow(ctx, style.title, 8);
+  wrapText(ctx, '🎂 С Днём рождения!', textX, emojiY + 44, textW, 34);
+  clearShadow(ctx);
+
+  // Имя
+  ctx.font = 'bold 42px Georgia, serif';
+  ctx.fillStyle = '#ffffff';
+  setShadow(ctx, style.frame[0], 12);
+  wrapText(ctx, name + '!', textX, emojiY + 100, textW, 50);
+  clearShadow(ctx);
+
+  // Разделитель
+  const sepY = emojiY + 160;
+  const grad = ctx.createLinearGradient(textX, 0, textX + textW, 0);
+  grad.addColorStop(0, 'transparent');
+  grad.addColorStop(0.3, style.frame[0]);
+  grad.addColorStop(0.7, style.frame[1]);
+  grad.addColorStop(1, 'transparent');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(textX, sepY);
+  ctx.lineTo(textX + textW, sepY);
+  ctx.stroke();
+
+  // Текст поздравления
+  ctx.font = '18px Georgia, serif';
+  ctx.fillStyle = style.text;
+  ctx.lineWidth = 1;
+  wrapText(ctx, msg, textX, sepY + 28, textW, 26);
+
+  // Emoji внизу
+  ctx.font = '22px serif';
+  ctx.textAlign = 'center';
+  for (let i = 0; i < 5; i++) {
+    ctx.fillText(emojis[(i + 5) % emojis.length], textX + 20 + i * (textW / 5), H - 38);
+  }
+
+  // Показать canvas
+  document.getElementById('placeholder').style.display = 'none';
+  canvas.style.display = 'block';
+  document.getElementById('btnDownload').disabled = false;
+}
+
+// ---- Helpers ----
+
+function drawRoundPhoto(ctx, img, x, y, w, h, frameColors) {
+  const r = 18;
+
+  // Тень
+  ctx.shadowColor = 'rgba(0,0,0,0.6)';
+  ctx.shadowBlur  = 24;
+  ctx.shadowOffsetX = 6; ctx.shadowOffsetY = 6;
+
+  // Clip round rect
+  ctx.save();
+  roundRect(ctx, x, y, w, h, r);
+  ctx.clip();
+
+  // Вписать фото (cover)
+  const scale = Math.max(w / img.width, h / img.height);
+  const sw = img.width * scale, sh = img.height * scale;
+  const sx = x + (w - sw) / 2, sy = y + (h - sh) / 2;
+  ctx.drawImage(img, sx, sy, sw, sh);
+
+  ctx.restore();
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+
+  // Рамка вокруг фото
+  const frameGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+  frameGrad.addColorStop(0, frameColors[0]);
+  frameGrad.addColorStop(0.5, frameColors[1]);
+  frameGrad.addColorStop(1, frameColors[2] || frameColors[0]);
+  ctx.strokeStyle = frameGrad;
+  ctx.lineWidth = 5;
+  roundRect(ctx, x, y, w, h, r);
+  ctx.stroke();
+
+  // Внешняя тонкая рамка
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, x - 5, y - 5, w + 10, h + 10, r + 4);
+  ctx.stroke();
+}
+
+function drawCardBorder(ctx, W, H, frameColors, borderStyle) {
+  const pad = 12;
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0,   frameColors[0]);
+  grad.addColorStop(0.5, frameColors[1]);
+  grad.addColorStop(1,   frameColors[2] || frameColors[0]);
+
+  ctx.strokeStyle = grad;
+  ctx.lineWidth   = 4;
+  roundRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 20);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth   = 1.5;
+  roundRect(ctx, pad + 7, pad + 7, W - (pad + 7) * 2, H - (pad + 7) * 2, 16);
+  ctx.stroke();
+
+  // Угловые украшения
+  const corners = [[pad+20,pad+20],[W-pad-20,pad+20],[pad+20,H-pad-20],[W-pad-20,H-pad-20]];
+  ctx.fillStyle = frameColors[1];
+  ctx.font = '22px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const cornerEmoji = {party:'✨', elegant:'💎', fun:'🌈', gold:'👑'}[currentStyle] || '✨';
+  corners.forEach(([cx,cy]) => ctx.fillText(cornerEmoji, cx, cy));
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawConfetti(ctx, W, H, colors) {
+  const rng = seededRandom(42);
+  for (let i = 0; i < 90; i++) {
+    const x = rng() * W;
+    const y = rng() * H;
+    const size = 4 + rng() * 8;
+    const angle = rng() * Math.PI * 2;
+    const alpha = 0.15 + rng() * 0.35;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = colors[Math.floor(rng() * colors.length)];
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    if (rng() > 0.5) {
+      ctx.fillRect(-size / 2, -size / 4, size, size / 2);
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function seededRandom(seed) {
+  let s = seed;
+  return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  let cy = y;
+  for (const word of words) {
+    const test = line ? line + ' ' + word : word;
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line, x, cy);
+      cy += lineH;
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  if (line) ctx.fillText(line, x, cy);
+}
+
+function setShadow(ctx, color, blur) {
+  ctx.shadowColor = color;
+  ctx.shadowBlur  = blur;
+}
+function clearShadow(ctx) {
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur  = 0;
+}
+
+// ---- Download ----
+document.getElementById('btnDownload').addEventListener('click', () => {
+  const canvas = document.getElementById('cardCanvas');
+  const a = document.createElement('a');
+  a.download = 'birthday_card.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+});
+</script>
+</body>
+</html>

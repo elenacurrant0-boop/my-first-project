@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqva SPA — Концепции логотипа</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;600;700&family=Raleway:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --c1:#00AACC; --c2:#007FA3; --c3:#005F80;
+  --gold:#C4A76B; --sun:#F7B731; --coral:#FF6B6B;
+  --leaf:#3DB88B; --sand:#FFF6ED; --sky:#E5F8FD;
+  --text:#1A3A4A;
+}
+body{font-family:'Inter',sans-serif;background:#F4F4F4;color:var(--text);}
+
+/* PAGE HEADER */
+.page-header{
+  background:linear-gradient(135deg,var(--c3),var(--c2),var(--c1));
+  padding:60px 40px 48px; text-align:center; color:#fff;
+}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:2px;margin-bottom:12px;}
+.page-header h1 em{font-style:italic;color:#ADE8F4;}
+.page-header p{font-size:16px;color:rgba(255,255,255,0.75);max-width:560px;margin:0 auto;}
+
+/* SECTION */
+.section{padding:64px 40px;max-width:1200px;margin:0 auto;}
+.section-head{margin-bottom:40px;}
+.sec-num{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--text);margin-bottom:10px;}
+.sec-desc{font-size:15px;color:#5A7A8A;line-height:1.7;max-width:600px;}
+
+/* LOGO GRID */
+.logo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;}
+
+.logo-card{
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,80,120,0.1);
+  border:1.5px solid rgba(0,170,204,0.12);
+  background:#fff;
+}
+.logo-card-header{
+  background:linear-gradient(135deg,var(--c2),var(--c3));
+  padding:10px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo-card-header .num{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+}
+.logo-card-header .direction{
+  font-size:12px;font-weight:600;color:#ADE8F4;
+}
+
+/* LOGO PREVIEW — светлый фон */
+.logo-preview-light{
+  padding:40px 32px;
+  background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  min-height:180px;
+}
+/* LOGO PREVIEW — тёмный фон */
+.logo-preview-dark{
+  padding:32px;
+  background:var(--c3);
+  display:flex;align-items:center;justify-content:center;
+  min-height:140px;
+}
+
+.logo-info{padding:24px 24px 28px;}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text);margin-bottom:8px;}
+.logo-desc{font-size:13px;color:#5A7A8A;line-height:1.6;margin-bottom:14px;}
+.logo-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{
+  background:var(--sky);color:var(--c2);
+  font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;
+}
+.tag.hot{background:rgba(247,183,49,0.15);color:#B8860B;}
+
+/* ════════════════════════════════════
+   ЛОГОТИПЫ — SVG INLINE
+════════════════════════════════════ */
+
+/* ВАРИАНТ 1 — ВОЛНА + SERIF */
+.logo-v1-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+
+/* ВАРИАНТ 2 — МОНОГРАММА AQ */
+
+/* ВАРИАНТ 3 — КАПЛЯ + ЛИНИИ */
+
+/* ВАРИАНТ 4 — МИНИМАЛИЗМ */
+
+/* ВАРИАНТ 5 — СЕМЬЯ + ВОДА */
+
+/* DIVIDER */
+.divider{border:none;border-top:1.5px solid rgba(0,170,204,0.12);margin:48px 0;}
+
+/* PALETTE BLOCK */
+.palette-section{padding:48px 40px;background:#fff;border-top:1.5px solid rgba(0,170,204,0.1);}
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;}
+.pal-card{border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,80,120,0.08);}
+.pal-swatches{display:flex;height:80px;}
+.swatch{flex:1;}
+.pal-info{padding:20px;background:#fff;}
+.pal-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);margin-bottom:6px;}
+.pal-desc{font-size:12px;color:#5A7A8A;line-height:1.5;}
+.pal-codes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.color-code{font-size:10px;font-weight:600;font-family:monospace;padding:3px 8px;border-radius:4px;background:#F4F4F4;}
+
+/* TYPOGRAPHY */
+.typo-section{padding:48px 40px;background:var(--sky);}
+.typo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;}
+.typo-card{background:#fff;border-radius:12px;padding:28px;border:1.5px solid rgba(0,170,204,0.1);}
+.typo-sample{margin-bottom:16px;}
+.typo-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;}
+.typo-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.typo-desc{font-size:12px;color:#5A7A8A;}
+
+/* WHY NOT HUMANS */
+.warning-block{
+  background:#FFF8F0;border-left:4px solid var(--coral);
+  border-radius:0 12px 12px 0;padding:24px 28px;
+  margin:32px 0;max-width:700px;
+}
+.warning-block h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.warning-block p{font-size:14px;color:#5A7A8A;line-height:1.7;}
+
+/* FINAL NOTE */
+.final-note{
+  background:linear-gradient(135deg,var(--c2),var(--c3));
+  padding:48px 40px;text-align:center;color:#fff;
+}
+.final-note h2{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;margin-bottom:12px;}
+.final-note p{color:rgba(255,255,255,0.75);font-size:15px;max-width:520px;margin:0 auto;}
+
+@media(max-width:700px){
+  .logo-grid{grid-template-columns:1fr;}
+  .section{padding:40px 20px;}
+  .page-header{padding:40px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Aqva SPA — <em>Концепции логотипа</em></h1>
+  <p>5 направлений. Ни одного прыгающего человечка. Только вода, элегантность и 4★.</p>
+</div>
+
+<!-- ══ ПОЧЕМУ НУЖЕН РЕБРЕНДИНГ ══ -->
+<div class="section" style="padding-bottom:0;">
+  <div class="warning-block">
+    <h3>❌ Почему текущий логотип убивает продажи премиум-сегменту</h3>
+    <p>
+      Мультяшные прыгающие человечки — это визуальный язык детских лагерей, аниматоров и бюджетных турбаз.
+      Гость, готовый заплатить 50 000–150 000 ₽ за семейный отдых в 4★ курорте,
+      видит этот логотип и мгновенно думает: <em>"Я не туда попал"</em>.
+      Логотип — это первые 0.05 секунды доверия. Или недоверия.
+    </p>
+  </div>
+</div>
+
+<!-- ══ 5 КОНЦЕПЦИЙ ЛОГОТИПА ══ -->
+<div class="section">
+  <div class="section-head">
+    <div class="sec-num">Логотипы · 5 концепций</div>
+    <h2 class="sec-title">Выберите направление</h2>
+    <p class="sec-desc">Каждый вариант — отдельная философия бренда. Покажите собственнику — пусть скажет «вот это похоже».</p>
+  </div>
+
+  <div class="logo-grid">
+
+    <!-- ══ ВАРИАНТ 1 — ВОЛНА SERIF ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 01</span>
+        <span class="direction">Классика · Волна + Serif</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="100" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Волна -->
+          <path d="M20,55 C35,35 55,75 75,50 C95,25 115,65 135,45 C155,25 175,60 195,42"
+            stroke="#00AACC" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Текст -->
+          <text x="20" y="80" font-family="Cormorant Garamond,serif" font-size="32" font-weight="400"
+            fill="#007FA3" letter-spacing="4">AQVA</text>
+          <text x="132" y="80" font-family="Cormorant Garamond,serif" font-size="32" font-weight="300"
+            fill="#005F80" letter-spacing="3">SPA</text>
+          <!-- Подпись -->
+          <text x="20" y="95" font-family="Inter,sans-serif" font-size="8" font-weight="500"
+            fill="#5A7A8A" letter-spacing="4">FAMILY RESORT · SOCHI</text>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="80" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,55 C35,35 55,75 75,50 C95,25 115,65 135,45 C155,25 175,60 195,42"
+            stroke="#ADE8F4" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <text x="20" y="80" font-family="Cormorant Garamond,serif" font-size="32" font-weight="400"
+            fill="#E5F8FD" letter-spacing="4">AQVA</text>
+          <text x="132" y="80" font-family="Cormorant Garamond,serif" font-size="32" font-weight="300"
+            fill="#ADE8F4" letter-spacing="3">SPA</text>
+          <text x="20" y="95" font-family="Inter,sans-serif" font-size="8" font-weight="500"
+            fill="rgba(255,255,255,0.45)" letter-spacing="4">FAMILY RESORT · SOCHI</text>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Морская элегантность»</div>
+        <div class="logo-desc">Живая волна подчёркивает движение воды. Классический serif говорит о зрелости и качестве. Работает в любом размере — от вывески до favicon.</div>
+        <div class="logo-tags">
+          <span class="tag">Классика</span>
+          <span class="tag">Универсален</span>
+          <span class="tag hot">★ Рекомендован</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ВАРИАНТ 2 — МОНОГРАММА ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 02</span>
+        <span class="direction">Монограмма · AQ + Вода</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="100" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Круг с водой -->
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#00AACC" stroke-width="2"/>
+          <!-- Волна внутри круга -->
+          <clipPath id="circ1">
+            <circle cx="50" cy="50" r="36"/>
+          </clipPath>
+          <path d="M14,58 C22,44 30,62 38,50 C46,38 54,56 62,44 C70,32 78,50 86,42"
+            stroke="#5DD4EC" stroke-width="2" fill="none" stroke-linecap="round" clip-path="url(#circ1)"/>
+          <path d="M14,66 C24,52 34,70 44,58 C54,46 62,64 70,54 C76,46 82,56 86,50"
+            stroke="rgba(0,170,204,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" clip-path="url(#circ1)"/>
+          <!-- Монограмма -->
+          <text x="33" y="57" font-family="Cormorant Garamond,serif" font-size="26" font-weight="600"
+            fill="#007FA3">AQ</text>
+          <!-- Название рядом -->
+          <text x="100" y="44" font-family="Cormorant Garamond,serif" font-size="28" font-weight="400"
+            fill="#007FA3" letter-spacing="3">AQVA SPA</text>
+          <text x="100" y="60" font-family="Inter,sans-serif" font-size="9" font-weight="300"
+            fill="#5A7A8A" letter-spacing="4">FAMILY RESORT</text>
+          <text x="100" y="73" font-family="Inter,sans-serif" font-size="9" font-weight="300"
+            fill="#5A7A8A" letter-spacing="4">SOCHI · 4★</text>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="80" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(173,232,244,0.6)" stroke-width="2"/>
+          <clipPath id="circ2"><circle cx="50" cy="50" r="36"/></clipPath>
+          <path d="M14,58 C22,44 30,62 38,50 C46,38 54,56 62,44 C70,32 78,50 86,42"
+            stroke="rgba(173,232,244,0.7)" stroke-width="2" fill="none" clip-path="url(#circ2)"/>
+          <text x="33" y="57" font-family="Cormorant Garamond,serif" font-size="26" font-weight="600"
+            fill="#ADE8F4">AQ</text>
+          <text x="100" y="44" font-family="Cormorant Garamond,serif" font-size="28" font-weight="400"
+            fill="#E5F8FD" letter-spacing="3">AQVA SPA</text>
+          <text x="100" y="60" font-family="Inter,sans-serif" font-size="9" font-weight="300"
+            fill="rgba(255,255,255,0.5)" letter-spacing="4">FAMILY RESORT</text>
+          <text x="100" y="73" font-family="Inter,sans-serif" font-size="9" font-weight="300"
+            fill="rgba(255,255,255,0.5)" letter-spacing="4">SOCHI · 4★</text>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Клубный знак»</div>
+        <div class="logo-desc">Монограмма в круге — язык премиальных клубов и отелей. Символ можно использовать отдельно: вышивка на халатах, карты ключей, посуда.</div>
+        <div class="logo-tags">
+          <span class="tag">Премиум</span>
+          <span class="tag">Масштабируем</span>
+          <span class="tag">Клубный стиль</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ВАРИАНТ 3 — КАПЛЯ-КОРОНА ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 03</span>
+        <span class="direction">Икона · Капля + Корона</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="110" viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- Капля воды — форма иконки -->
+          <path d="M44,18 C44,18 18,46 18,62 C18,76 30,88 44,88 C58,88 70,76 70,62 C70,46 44,18 44,18 Z"
+            fill="url(#dropGrad1)"/>
+          <!-- Блик на капле -->
+          <ellipse cx="36" cy="48" rx="5" ry="8" fill="rgba(255,255,255,0.35)" transform="rotate(-20,36,48)"/>
+          <!-- Горизонтальная линия-вода -->
+          <line x1="18" y1="68" x2="70" y2="68" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+          <!-- Звёзды над каплей -->
+          <text x="35" y="14" font-size="10" fill="#F7B731" text-anchor="middle">★★★★</text>
+          <!-- Название -->
+          <text x="86" y="48" font-family="Cormorant Garamond,serif" font-size="30" font-weight="400"
+            fill="#007FA3" letter-spacing="4">AQVA SPA</text>
+          <text x="86" y="66" font-family="Raleway,sans-serif" font-size="9" font-weight="300"
+            fill="#5A7A8A" letter-spacing="5">FAMILY RESORT · SOCHI</text>
+          <defs>
+            <linearGradient id="dropGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#5DD4EC"/>
+              <stop offset="100%" style="stop-color:#007FA3"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="90" viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg">
+          <path d="M44,18 C44,18 18,46 18,62 C18,76 30,88 44,88 C58,88 70,76 70,62 C70,46 44,18 44,18 Z"
+            fill="url(#dropGrad2)"/>
+          <ellipse cx="36" cy="48" rx="5" ry="8" fill="rgba(255,255,255,0.25)" transform="rotate(-20,36,48)"/>
+          <text x="35" y="14" font-size="10" fill="#FFD96B" text-anchor="middle">★★★★</text>
+          <text x="86" y="48" font-family="Cormorant Garamond,serif" font-size="30" font-weight="400"
+            fill="#E5F8FD" letter-spacing="4">AQVA SPA</text>
+          <text x="86" y="66" font-family="Raleway,sans-serif" font-size="9" font-weight="300"
+            fill="rgba(255,255,255,0.5)" letter-spacing="5">FAMILY RESORT · SOCHI</text>
+          <defs>
+            <linearGradient id="dropGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ADE8F4"/>
+              <stop offset="100%" style="stop-color:#5DD4EC"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Живая капля»</div>
+        <div class="logo-desc">Капля — универсальный символ воды и SPA. 4 звезды над ней — статус. Лаконично и мощно. Хорошо читается на мелких носителях.</div>
+        <div class="logo-tags">
+          <span class="tag">Иконка</span>
+          <span class="tag">SPA-ориентир</span>
+          <span class="tag hot">★ Рекомендован</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ВАРИАНТ 4 — УЛЬТРАМИНИМАЛИЗМ ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 04</span>
+        <span class="direction">Ультраминимализм · Линии воды</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="80" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+          <!-- 3 горизонтальные волнистые линии = вода -->
+          <path d="M16,28 C24,22 32,34 40,28 C48,22 56,34 64,28" stroke="#00AACC" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M16,38 C24,32 32,44 40,38 C48,32 56,44 64,38" stroke="#5DD4EC" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M16,48 C24,42 32,54 40,48 C48,42 56,54 64,48" stroke="#ADE8F4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Вертикальный разделитель -->
+          <line x1="80" y1="20" x2="80" y2="60" stroke="rgba(0,127,163,0.25)" stroke-width="1"/>
+          <!-- Название -->
+          <text x="92" y="38" font-family="Montserrat,sans-serif" font-size="22" font-weight="600"
+            fill="#007FA3" letter-spacing="6">AQVA</text>
+          <text x="92" y="56" font-family="Montserrat,sans-serif" font-size="14" font-weight="200"
+            fill="#5A7A8A" letter-spacing="8">SPA RESORT</text>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="70" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16,28 C24,22 32,34 40,28 C48,22 56,34 64,28" stroke="#ADE8F4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M16,38 C24,32 32,44 40,38 C48,32 56,44 64,38" stroke="rgba(173,232,244,0.6)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M16,48 C24,42 32,54 40,48 C48,42 56,54 64,48" stroke="rgba(173,232,244,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <line x1="80" y1="20" x2="80" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="92" y="38" font-family="Montserrat,sans-serif" font-size="22" font-weight="600"
+            fill="#E5F8FD" letter-spacing="6">AQVA</text>
+          <text x="92" y="56" font-family="Montserrat,sans-serif" font-size="14" font-weight="200"
+            fill="rgba(255,255,255,0.55)" letter-spacing="8">SPA RESORT</text>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Движение воды»</div>
+        <div class="logo-desc">Три волнистые линии = вода в движении. Тонкая и современная графика. Подходит для минималистичного дизайна «пространства и тишины».</div>
+        <div class="logo-tags">
+          <span class="tag">Минимализм</span>
+          <span class="tag">Современно</span>
+          <span class="tag">Wellness-стиль</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ВАРИАНТ 5 — ГОРИЗОНТ МОРЯ ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 05</span>
+        <span class="direction">Пейзаж · Горизонт + Солнце</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="100" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Горизонт — линия моря -->
+          <line x1="16" y1="52" x2="74" y2="52" stroke="#007FA3" stroke-width="1.5"/>
+          <!-- Солнце -->
+          <circle cx="45" cy="38" r="11" fill="url(#sunGrad)"/>
+          <!-- Отражение на воде -->
+          <line x1="45" y1="54" x2="45" y2="64" stroke="#F7B731" stroke-width="2" stroke-opacity="0.4"/>
+          <line x1="37" y1="56" x2="40" y2="62" stroke="#F7B731" stroke-width="1.5" stroke-opacity="0.25"/>
+          <line x1="53" y1="56" x2="50" y2="62" stroke="#F7B731" stroke-width="1.5" stroke-opacity="0.25"/>
+          <!-- Волны воды -->
+          <path d="M16,60 C24,56 32,64 40,60 C48,56 56,64 64,60 C68,58 72,61 74,60"
+            stroke="#5DD4EC" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M16,67 C26,63 36,71 46,67 C56,63 66,71 74,68"
+            stroke="#ADE8F4" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <!-- Звёзды -->
+          <text x="30" y="76" font-size="8" fill="#F7B731" text-anchor="middle" letter-spacing="3">★★★★</text>
+          <!-- Название -->
+          <text x="88" y="40" font-family="Cormorant Garamond,serif" font-size="26" font-weight="400"
+            fill="#007FA3" letter-spacing="3">AQVA SPA</text>
+          <text x="88" y="58" font-family="Raleway,sans-serif" font-size="8.5" font-weight="300"
+            fill="#5A7A8A" letter-spacing="4">СЕМЕЙНЫЙ КУРОРТ · СОЧИ</text>
+          <text x="88" y="72" font-family="Raleway,sans-serif" font-size="8.5" font-weight="300"
+            fill="#5A7A8A" letter-spacing="4">FAMILY RESORT · SOCHI</text>
+          <defs>
+            <radialGradient id="sunGrad">
+              <stop offset="0%" style="stop-color:#FFD96B"/>
+              <stop offset="100%" style="stop-color:#F7B731"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="85" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <line x1="16" y1="52" x2="74" y2="52" stroke="rgba(173,232,244,0.5)" stroke-width="1.5"/>
+          <circle cx="45" cy="38" r="11" fill="#FFD96B" fill-opacity="0.9"/>
+          <line x1="45" y1="54" x2="45" y2="64" stroke="#FFD96B" stroke-width="2" stroke-opacity="0.4"/>
+          <path d="M16,60 C24,56 32,64 40,60 C48,56 56,64 64,60 C68,58 72,61 74,60"
+            stroke="rgba(173,232,244,0.6)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <text x="30" y="76" font-size="8" fill="#FFD96B" text-anchor="middle" letter-spacing="3">★★★★</text>
+          <text x="88" y="40" font-family="Cormorant Garamond,serif" font-size="26" font-weight="400"
+            fill="#E5F8FD" letter-spacing="3">AQVA SPA</text>
+          <text x="88" y="58" font-family="Raleway,sans-serif" font-size="8.5" font-weight="300"
+            fill="rgba(255,255,255,0.5)" letter-spacing="4">FAMILY RESORT · SOCHI</text>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Сочинский горизонт»</div>
+        <div class="logo-desc">Солнце над морем — это Сочи, тепло и мечта об отдыхе. Эмоциональный логотип, который вызывает желание поехать прямо сейчас.</div>
+        <div class="logo-tags">
+          <span class="tag">Эмоциональный</span>
+          <span class="tag">Летний</span>
+          <span class="tag">Узнаваем</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ВАРИАНТ 6 — ТОЛЬКО ТЕКСТ ══ -->
+    <div class="logo-card">
+      <div class="logo-card-header">
+        <span class="num">Вариант 06</span>
+        <span class="direction">Wordmark · Только текст</span>
+      </div>
+      <div class="logo-preview-light">
+        <svg width="280" height="80" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+          <!-- Нижнее подчёркивание-волна -->
+          <path d="M20,60 C50,54 80,66 110,60 C140,54 170,66 200,60"
+            stroke="url(#lineGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- AQVA крупно -->
+          <text x="20" y="52" font-family="Cormorant Garamond,serif" font-size="38" font-weight="600"
+            fill="#007FA3" letter-spacing="8">AQVA</text>
+          <!-- SPA маленько -->
+          <text x="160" y="52" font-family="Cormorant Garamond,serif" font-size="22" font-weight="300"
+            fill="#5A7A8A" letter-spacing="6">SPA</text>
+          <!-- Подстрочник -->
+          <text x="20" y="74" font-family="Raleway,sans-serif" font-size="8" font-weight="300"
+            fill="#5A7A8A" letter-spacing="5">FAMILY RESORT · SOCHI · ★★★★</text>
+          <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00AACC"/>
+              <stop offset="100%" style="stop-color:rgba(0,170,204,0)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-preview-dark">
+        <svg width="240" height="70" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,60 C50,54 80,66 110,60 C140,54 170,66 200,60"
+            stroke="rgba(93,212,236,0.6)" stroke-width="2" fill="none"/>
+          <text x="20" y="52" font-family="Cormorant Garamond,serif" font-size="38" font-weight="600"
+            fill="#E5F8FD" letter-spacing="8">AQVA</text>
+          <text x="160" y="52" font-family="Cormorant Garamond,serif" font-size="22" font-weight="300"
+            fill="rgba(173,232,244,0.7)" letter-spacing="6">SPA</text>
+          <text x="20" y="74" font-family="Raleway,sans-serif" font-size="8" font-weight="300"
+            fill="rgba(255,255,255,0.4)" letter-spacing="5">FAMILY RESORT · SOCHI · ★★★★</text>
+        </svg>
+      </div>
+      <div class="logo-info">
+        <div class="logo-name">«Имя как бренд»</div>
+        <div class="logo-desc">Когда слово само по себе — бренд. Aman, Chanel, Bvlgari — логотип без иконки. Требует уверенности в названии. Максимально премиально.</div>
+        <div class="logo-tags">
+          <span class="tag">Люкс-уровень</span>
+          <span class="tag">Без иконки</span>
+          <span class="tag">Aman-стиль</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- logo-grid -->
+</div><!-- section -->
+
+
+<!-- ══ ЦВЕТОВЫЕ ПАЛИТРЫ ══ -->
+<div class="palette-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="sec-num">Цвета бренда</div>
+    <h2 class="sec-title">Три варианта палитры</h2>
+    <p class="sec-desc">Каждая палитра — своё настроение. Для 4★ семейного курорта рекомендуется Палитра 1 или 2.</p>
+
+    <div class="palette-grid">
+
+      <div class="pal-card">
+        <div class="pal-swatches">
+          <div class="swatch" style="background:#007FA3;"></div>
+          <div class="swatch" style="background:#00AACC;"></div>
+          <div class="swatch" style="background:#5DD4EC;"></div>
+          <div class="swatch" style="background:#F7B731;"></div>
+          <div class="swatch" style="background:#FFF6ED;"></div>
+        </div>
+        <div class="pal-info">
+          <div class="pal-name">Палитра 1 — «Сочи»</div>
+          <div class="pal-desc">Яркая, морская, солнечная. Зовёт в отпуск. Идеально для сайта и соцсетей. Именно эта использована в лендинге.</div>
+          <div class="pal-codes">
+            <span class="color-code" style="color:#007FA3;">#007FA3</span>
+            <span class="color-code" style="color:#00AACC;">#00AACC</span>
+            <span class="color-code" style="color:#5DD4EC;">#5DD4EC</span>
+            <span class="color-code" style="color:#B8920A;">#F7B731</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pal-card">
+        <div class="pal-swatches">
+          <div class="swatch" style="background:#1A4A5C;"></div>
+          <div class="swatch" style="background:#2E7FA0;"></div>
+          <div class="swatch" style="background:#C4A76B;"></div>
+          <div class="swatch" style="background:#E8DDD0;"></div>
+          <div class="swatch" style="background:#F8F5F0;"></div>
+        </div>
+        <div class="pal-info">
+          <div class="pal-name">Палитра 2 — «Премиум»</div>
+          <div class="pal-desc">Глубже, сдержаннее, роскошнее. Золото добавляет статус. Для VIP-аудитории и делового сегмента.</div>
+          <div class="pal-codes">
+            <span class="color-code" style="color:#1A4A5C;">#1A4A5C</span>
+            <span class="color-code" style="color:#2E7FA0;">#2E7FA0</span>
+            <span class="color-code" style="color:#8A6A30;">#C4A76B</span>
+            <span class="color-code" style="color:#888;">#E8DDD0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pal-card">
+        <div class="pal-swatches">
+          <div class="swatch" style="background:#00AACC;"></div>
+          <div class="swatch" style="background:#3DB88B;"></div>
+          <div class="swatch" style="background:#FF6B6B;"></div>
+          <div class="swatch" style="background:#F7B731;"></div>
+          <div class="swatch" style="background:#FFF6ED;"></div>
+        </div>
+        <div class="pal-info">
+          <div class="pal-name">Палитра 3 — «Семейная»</div>
+          <div class="pal-desc">Яркая, позитивная, тропическая. Коралловый — CTA-кнопки. Зелень — природа. Для активных семейных кампаний.</div>
+          <div class="pal-codes">
+            <span class="color-code" style="color:#007FA3;">#00AACC</span>
+            <span class="color-code" style="color:#2E8B68;">#3DB88B</span>
+            <span class="color-code" style="color:#CC3333;">#FF6B6B</span>
+            <span class="color-code" style="color:#B8920A;">#F7B731</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ ТИПОГРАФИКА ══ -->
+<div class="typo-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="sec-num">Шрифты</div>
+    <h2 class="sec-title">Рекомендуемые шрифтовые пары</h2>
+
+    <div class="typo-grid">
+
+      <div class="typo-card">
+        <div class="typo-sample">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--c2);line-height:1.1;">
+            Заголовок<br><em style="font-style:italic;">курорта</em>
+          </div>
+          <div style="font-family:'Inter',sans-serif;font-size:14px;color:#5A7A8A;margin-top:8px;line-height:1.6;">
+            Основной текст — понятный, чистый, читабельный на любом экране.
+          </div>
+        </div>
+        <div class="typo-label">Пара 1 · Рекомендована</div>
+        <div class="typo-name">Cormorant Garamond + Inter</div>
+        <div class="typo-desc">Serif для заголовков = классика и роскошь. Sans для текста = чёткость. Бесплатно, Google Fonts.</div>
+      </div>
+
+      <div class="typo-card">
+        <div class="typo-sample">
+          <div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--c2);line-height:1.1;">
+            Отдыхайте<br><em style="font-style:italic;font-weight:400;">с удовольствием</em>
+          </div>
+          <div style="font-family:'Raleway',sans-serif;font-size:14px;font-weight:300;color:#5A7A8A;margin-top:8px;line-height:1.6;letter-spacing:1px;">
+            Элегантный текст с воздухом и пространством.
+          </div>
+        </div>
+        <div class="typo-label">Пара 2</div>
+        <div class="typo-name">Playfair Display + Raleway</div>
+        <div class="typo-desc">Более декоративный serif. Подходит для журнальной подачи и богатой типографики.</div>
+      </div>
+
+      <div class="typo-card">
+        <div class="typo-sample">
+          <div style="font-family:'Montserrat',sans-serif;font-size:30px;font-weight:700;color:var(--c2);letter-spacing:4px;line-height:1.2;">
+            AQVA SPA
+          </div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:200;color:#5A7A8A;margin-top:8px;line-height:1.6;letter-spacing:2px;">
+            Современный и чистый — от логотипа до меню.
+          </div>
+        </div>
+        <div class="typo-label">Пара 3 · Для логотипа</div>
+        <div class="typo-name">Montserrat Bold + Light</div>
+        <div class="typo-desc">Один шрифт, два веса. Минималистично. Хорошо работает в логотипе варианта 04 и 06.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ ИТОГ ══ -->
+<div class="final-note">
+  <h2>Следующий шаг</h2>
+  <p>Выберите 1–2 понравившихся логотипа и покажите собственнику. После выбора — передайте в работу дизайнеру с пометкой: «доработать и сделать в векторе (AI/SVG)». Бюджет на логотип — от 15 000 ₽ у хорошего дизайнера, от 3 000 ₽ — на Tilda Freelance.</p>
+</div>
+
+</body>
+</html>

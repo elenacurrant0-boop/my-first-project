@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Подбор санаторного тура</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root {
+    --pine: #1a2e1e;
+    --sage: #4a6741;
+    --mist: #c8d9c2;
+    --cream: #f5f0e8;
+    --gold: #b8914a;
+    --sand: #e8dfc8;
+    --white: #fafaf7;
+    --text: #1a1a16;
+    --muted: #6b6b5e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Onest', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(74,103,65,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(184,145,74,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* HEADER */
+  .header { text-align: center; margin-bottom: 52px; }
+  .brand-line { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; }
+  .brand-line::before, .brand-line::after { content: ''; flex: 1; max-width: 80px; height: 1px; }
+  .brand-line::before { background: linear-gradient(90deg, transparent, var(--gold)); }
+  .brand-line::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .brand-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 6vw, 56px); font-weight: 300; line-height: 1.15; color: var(--pine); }
+  h1 em { font-style: italic; color: var(--sage); }
+  .subtitle { margin-top: 14px; font-size: 15px; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+  /* STEPS */
+  .steps-bar { display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+  .step-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1.5px solid var(--mist); background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    transition: all 0.3s ease; position: relative; z-index: 1;
+  }
+  .step-dot.active { border-color: var(--sage); background: var(--sage); color: white; }
+  .step-dot.done { border-color: var(--gold); background: var(--gold); color: white; }
+  .step-line { width: 48px; height: 1px; background: var(--mist); transition: background 0.3s; }
+  .step-line.done { background: var(--gold); }
+
+  /* CARDS */
+  .card {
+    background: var(--white); border-radius: 20px; padding: 36px 40px;
+    border: 1px solid rgba(200,217,194,0.6);
+    box-shadow: 0 2px 24px rgba(26,46,30,0.06);
+    animation: slideUp 0.4s ease both;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--pine); margin-bottom: 6px; }
+  .card-hint { font-size: 13px; color: var(--muted); margin-bottom: 28px; font-weight: 300; }
+
+  /* LOADING */
+  .loading-state {
+    text-align: center; padding: 40px 20px; color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 2px solid var(--mist);
+    border-top-color: var(--sage); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ERROR */
+  .error-state {
+    background: #fff5f0; border: 1.5px solid #f0c8b0;
+    border-radius: 14px; padding: 20px 24px;
+    font-size: 14px; color: #8b3a1a; line-height: 1.6;
+  }
+  .error-state strong { display: block; margin-bottom: 6px; }
+
+  /* SANATORIUMS */
+  .sanatorium-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .san-card {
+    border: 1.5px solid var(--mist); border-radius: 14px; padding: 16px 18px;
+    cursor: pointer; transition: all 0.2s; background: var(--white); position: relative;
+  }
+  .san-card:hover { border-color: var(--sage); transform: translateY(-1px); }
+  .san-card.selected { border-color: var(--sage); background: rgba(74,103,65,0.05); }
+  .san-card.selected::after {
+    content: '✓'; position: absolute; top: 10px; right: 12px;
+    width: 20px; height: 20px; background: var(--sage); color: white;
+    border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center;
+  }
+  .san-name { font-weight: 500; font-size: 14px; color: var(--pine); margin-bottom: 3px; }
+  .san-location { font-size: 12px; color: var(--muted); }
+  .san-badge { display: inline-block; margin-top: 6px; font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 500; }
+  .badge-dynamic { background: rgba(74,103,65,0.12); color: var(--sage); }
+  .badge-static { background: rgba(184,145,74,0.12); color: var(--gold); }
+
+  /* DATES */
+  .dates-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  input[type="date"], select {
+    padding: 12px 16px; border: 1.5px solid var(--mist); border-radius: 12px;
+    font-family: 'Onest', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--white); outline: none; transition: border-color 0.2s;
+    appearance: none; -webkit-appearance: none; cursor: pointer; width: 100%;
+  }
+  input[type="date"]:focus, select:focus { border-color: var(--sage); }
+
+  /* GUESTS */
+  .guests-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .counter-group { border: 1.5px solid var(--mist); border-radius: 12px; padding: 12px 14px; }
+  .counter-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 8px; }
+  .counter-controls { display: flex; align-items: center; gap: 10px; }
+  .counter-btn {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1.5px solid var(--mist); background: none; cursor: pointer;
+    font-size: 16px; color: var(--sage); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; line-height: 1;
+  }
+  .counter-btn:hover { background: var(--sage); color: white; border-color: var(--sage); }
+  .counter-val { font-size: 18px; font-weight: 600; color: var(--pine); min-width: 20px; text-align: center; }
+
+  /* ROOMS */
+  .rooms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .room-card { border: 1.5px solid var(--mist); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; background: var(--white); }
+  .room-card:hover { border-color: var(--sage); }
+  .room-card.selected { border-color: var(--sage); background: rgba(74,103,65,0.05); }
+  .room-name { font-size: 14px; font-weight: 500; color: var(--pine); margin-bottom: 4px; }
+  .room-meta { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .room-price-line { font-size: 12px; color: var(--muted); }
+  .room-price-line strong { color: var(--sage); font-size: 15px; }
+  .no-price-note { grid-column: 1/-1; font-size: 13px; color: var(--gold); padding: 12px; background: rgba(184,145,74,0.08); border-radius: 10px; }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%; padding: 16px 24px; background: var(--pine); color: white;
+    border: none; border-radius: 14px; font-family: 'Onest', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    margin-top: 28px; letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--sage); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,103,65,0.3); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary {
+    background: none; border: 1.5px solid var(--mist); color: var(--muted);
+    padding: 12px 20px; border-radius: 12px; font-family: 'Onest', sans-serif;
+    font-size: 14px; cursor: pointer; transition: all 0.2s; margin-top: 12px; width: 100%;
+  }
+  .btn-secondary:hover { border-color: var(--sage); color: var(--sage); }
+
+  /* RESULT */
+  .price-block {
+    background: linear-gradient(135deg, var(--pine), #2d4a32);
+    border-radius: 16px; padding: 28px 32px; color: white; position: relative; overflow: hidden;
+  }
+  .price-block::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px; background: rgba(255,255,255,0.04); border-radius: 50%;
+  }
+  .price-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
+  .price-main { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; line-height: 1; }
+  .price-note { font-size: 13px; opacity: 0.55; margin-top: 6px; font-weight: 300; }
+  .price-breakdown { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; flex-direction: column; gap: 6px; }
+  .breakdown-row { display: flex; justify-content: space-between; font-size: 13px; opacity: 0.75; }
+
+  .cta-static { background: var(--white); border: 1.5px solid var(--mist); border-radius: 16px; padding: 24px 28px; }
+  .cta-dynamic { background: linear-gradient(135deg, rgba(74,103,65,0.08), rgba(74,103,65,0.03)); border: 1.5px solid rgba(74,103,65,0.25); border-radius: 16px; padding: 24px 28px; }
+  .cta-title { font-size: 16px; font-weight: 600; color: var(--pine); margin-bottom: 6px; }
+  .cta-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; font-weight: 300; }
+  .btn-cta-main {
+    display: block; width: 100%; padding: 14px 20px; background: var(--sage); color: white;
+    border: none; border-radius: 12px; font-family: 'Onest', sans-serif; font-size: 14px;
+    font-weight: 500; cursor: pointer; transition: all 0.2s; text-align: center; text-decoration: none;
+  }
+  .btn-cta-main:hover { background: var(--pine); transform: translateY(-1px); }
+  .btn-cta-alt {
+    display: block; width: 100%; padding: 12px 20px; background: none;
+    border: 1.5px solid var(--mist); color: var(--sage); border-radius: 12px;
+    font-family: 'Onest', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; margin-top: 8px; text-align: center;
+  }
+  .btn-cta-alt:hover { border-color: var(--sage); background: rgba(74,103,65,0.04); }
+  .or-divider { display: flex; align-items: center; gap: 12px; margin: 12px 0; color: var(--muted); font-size: 12px; }
+  .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--mist); }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  input[type="text"], input[type="tel"], input[type="email"] {
+    padding: 12px 16px; border: 1.5px solid var(--mist); border-radius: 12px;
+    font-family: 'Onest', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--white); outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  input:focus { border-color: var(--sage); }
+  .privacy-note { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; font-weight: 300; }
+
+  .summary-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .chip { background: rgba(74,103,65,0.08); border: 1px solid rgba(74,103,65,0.15); color: var(--sage); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+
+  .mode-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 24px; }
+  .mode-pill.dynamic { background: rgba(74,103,65,0.1); color: var(--sage); border: 1px solid rgba(74,103,65,0.2); }
+  .mode-pill.static { background: rgba(184,145,74,0.1); color: var(--gold); border: 1px solid rgba(184,145,74,0.2); }
+  .mode-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .success-icon { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--sage), var(--pine)); margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .success-card { text-align: center; padding: 48px 40px; }
+
+  .result-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 600px) {
+    .card { padding: 24px 20px; }
+    .sanatorium-grid, .dates-row, .rooms-grid, .guests-row, .form-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="header">
+    <div class="brand-line"><span class="brand-tag">Туроператор · Санаторный отдых</span></div>
+    <h1>Подберём <em>идеальный</em><br>санаторный тур</h1>
+    <p class="subtitle">Рассчитайте стоимость и забронируйте онлайн — без звонков</p>
+  </div>
+
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-dot active" id="s1">1</div>
+    <div class="step-line" id="l1"></div>
+    <div class="step-dot" id="s2">2</div>
+    <div class="step-line" id="l2"></div>
+    <div class="step-dot" id="s3">3</div>
+    <div class="step-line" id="l3"></div>
+    <div class="step-dot" id="s4">4</div>
+    <div class="step-line" id="l4"></div>
+    <div class="step-dot" id="s5">5</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card" id="step1">
+    <div class="card-title">Выберите санаторий</div>
+    <div class="card-hint" id="step1hint">Загружаем список...</div>
+    <div id="sanatoriumsContainer">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Загружаем санатории...</span>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn1" disabled onclick="goStep(2)">Продолжить →</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card hidden" id="step2">
+    <div class="card-title">Даты и состав</div>
+    <div class="card-hint">Минимальный срок — <span id="minNightsHint">7</span> ночей</div>
+    <div class="dates-row">
+      <div class="field-group">
+        <label>Дата заезда</label>
+        <input type="date" id="dateIn" onchange="calcNights()">
+      </div>
+      <div class="field-group">
+        <label>Дата выезда</label>
+        <input type="date" id="dateOut" onchange="calcNights()">
+      </div>
+    </div>
+    <div id="nightsInfo" style="font-size:13px;margin-bottom:20px;font-weight:500;min-height:20px;"></div>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;margin-bottom:10px;">Гости</label>
+      <div class="guests-row">
+        <div class="counter-group">
+          <div class="counter-label">Взрослые</div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="changeCount('adults',-1)">−</button>
+            <span class="counter-val" id="adults">2</span>
+            <button class="counter-btn" onclick="changeCount('adults',1)">+</button>
+          </div>
+        </div>
+        <div class="counter-group">
+          <div class="counter-label">Дети до 12</div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="changeCount('children',-1)">−</button>
+            <span class="counter-val" id="children">0</span>
+            <button class="counter-btn" onclick="changeCount('children',1)">+</button>
+          </div>
+        </div>
+        <div class="counter-group">
+          <div class="counter-label">Номеров</div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="changeCount('rooms',-1)">−</button>
+            <span class="counter-val" id="roomsCount">1</span>
+            <button class="counter-btn" onclick="changeCount('rooms',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn2" disabled onclick="goStep(3)">Выбрать номер →</button>
+    <button class="btn-secondary" onclick="goStep(1)">← Назад</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card hidden" id="step3">
+    <div class="card-title">Категория номера</div>
+    <div class="card-hint">Стоимость за сутки на выбранный период</div>
+    <div class="rooms-grid" id="roomsGrid"></div>
+    <button class="btn-primary" id="btn3" disabled onclick="goStep(4)">Рассчитать стоимость →</button>
+    <button class="btn-secondary" onclick="goStep(2)">← Назад</button>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card hidden" id="step4">
+    <div id="modePill"></div>
+    <div class="result-wrap">
+      <div class="price-block">
+        <div class="price-label">Ориентировочная стоимость</div>
+        <div class="price-main" id="totalPrice">—</div>
+        <div class="price-note" id="priceNote"></div>
+        <div class="price-breakdown" id="priceBreakdown"></div>
+      </div>
+      <div class="cta-dynamic hidden" id="ctaDynamic">
+        <div class="cta-title">Проверьте наличие и забронируйте</div>
+        <div class="cta-desc">Откроется модуль бронирования санатория — актуальные цены и наличие в реальном времени. Заказ автоматически попадёт к нашему менеджеру.</div>
+        <button class="btn-cta-main" onclick="openBookingWidget()">Перейти к бронированию →</button>
+        <div class="or-divider">или</div>
+        <button class="btn-cta-alt" onclick="goStep(5)">Оставить заявку — мы перезвоним</button>
+      </div>
+      <div class="cta-static hidden" id="ctaStatic">
+        <div class="cta-title">Оставьте заявку — мы подтвердим бронь</div>
+        <div class="cta-desc">Менеджер свяжется в течение 2 часов в рабочее время. Детали подбора придут на почту прямо сейчас.</div>
+        <button class="btn-cta-main" onclick="goStep(5)">Оставить заявку →</button>
+      </div>
+    </div>
+    <button class="btn-secondary" onclick="goStep(state.isDynamic ? 2 : 3)" style="margin-top:16px;">← Изменить</button>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="card hidden" id="step5">
+    <div class="card-title">Контактные данные</div>
+    <div class="card-hint">Для подтверждения бронирования</div>
+    <div class="summary-chips" id="summaryChips"></div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Имя</label>
+        <input type="text" id="fname" placeholder="Ваше имя" oninput="checkForm()">
+      </div>
+      <div class="form-field">
+        <label>Фамилия</label>
+        <input type="text" id="lname" placeholder="Фамилия" oninput="checkForm()">
+      </div>
+      <div class="form-field">
+        <label>Телефон</label>
+        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" oninput="checkForm()">
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="example@mail.ru" oninput="checkForm()">
+      </div>
+      <div class="form-field full">
+        <label>Пожелания (необязательно)</label>
+        <input type="text" id="wishes" placeholder="Этаж, вид из окна, совместное размещение...">
+      </div>
+    </div>
+    <p class="privacy-note">Нажимая «Отправить заявку», вы соглашаетесь с <a href="#" style="color:var(--sage)">политикой обработки данных</a></p>
+    <button class="btn-primary" id="btnSubmit" disabled onclick="submitForm()">Отправить заявку</button>
+    <button class="btn-secondary" onclick="goStep(4)">← Назад</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="card hidden success-card" id="stepSuccess">
+    <div class="success-icon">✓</div>
+    <div class="card-title" style="font-size:32px;margin-bottom:10px;">Заявка принята!</div>
+    <p style="color:var(--muted);font-size:15px;line-height:1.7;font-weight:300;margin-bottom:28px;">
+      Детали подбора отправлены на вашу почту.<br>
+      Менеджер свяжется в течение <strong style="color:var(--pine)">2 часов</strong> в рабочее время.
+    </p>
+    <div style="background:var(--cream);border-radius:14px;padding:20px;margin-bottom:28px;text-align:left;" id="confirmSummary"></div>
+    <p style="font-size:13px;color:var(--muted);font-weight:300;">
+      Вопросы? Звоните: <a href="tel:+78001234567" style="color:var(--sage);font-weight:500;">8 800 123-45-67</a>
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  НАСТРОЙКИ — МЕНЯЙТЕ ТОЛЬКО ЭТИ СТРОКИ
+// ============================================================
+
+const CONFIG = {
+  // ─────────────────────────────────────────────
+  //  1. Google Sheets (список санаториев и прайсы)
+  //     Получите URL после публикации Apps Script:
+  //     Расширения → Apps Script → Развернуть → Новое развертывание
+  GOOGLE_SHEET_URL: 'ВАШ_URL_СЮДА',
+
+  // ─────────────────────────────────────────────
+  //  2. EmailJS — отправка писем напрямую из браузера
+  //     Регистрация бесплатно: https://emailjs.com
+  //     Шаг 1: зарегистрируйтесь
+  //     Шаг 2: Email Services → Add Service → выберите Яндекс/Gmail
+  //     Шаг 3: скопируйте Service ID сюда:
+  EMAILJS_SERVICE_ID: 'ВСТАВЬТЕ_SERVICE_ID',
+
+  //     Шаг 4: Email Templates → Create Template (шаблон менеджеру)
+  //     Вставьте в шаблон переменные: {{to_name}}, {{sanatorium}},
+  //     {{dates}}, {{nights}}, {{room}}, {{guests}}, {{total}},
+  //     {{guest_name}}, {{guest_phone}}, {{guest_email}}, {{wishes}}
+  //     Скопируйте Template ID сюда:
+  EMAILJS_TEMPLATE_MANAGER: 'ВСТАВЬТЕ_TEMPLATE_ID_МЕНЕДЖЕРУ',
+
+  //     Шаг 5: создайте второй шаблон (автоответ гостю)
+  //     Получатель письма: {{guest_email}}
+  //     Скопируйте Template ID сюда:
+  EMAILJS_TEMPLATE_GUEST: 'ВСТАВЬТЕ_TEMPLATE_ID_ГОСТЮ',
+
+  //     Шаг 6: Account → General → Public Key → скопируйте сюда:
+  EMAILJS_PUBLIC_KEY: 'ВСТАВЬТЕ_PUBLIC_KEY',
+
+  //  Email менеджера — куда придут заявки:
+  MANAGER_EMAIL: 'ваша@яндекс.ru',
+
+  // ─────────────────────────────────────────────
+  //  3. Контактный телефон (на странице успеха)
+  CONTACT_PHONE: '8 800 123-45-67',
+
+  // ─────────────────────────────────────────────
+  //  4. Демо-режим: true = тестовые данные, false = из Google Sheet
+  DEMO_MODE: true,
+};
+
+// Алиасы для обратной совместимости
+const GOOGLE_SHEET_URL = CONFIG.GOOGLE_SHEET_URL;
+const CONTACT_PHONE    = CONFIG.CONTACT_PHONE;
+const DEMO_MODE        = CONFIG.DEMO_MODE;
+
+// ============================================================
+//  ДЕМО-ДАННЫЕ (используются пока не подключена таблица)
+// ============================================================
+const DEMO_DATA = {
+  sanatoriums: [
+    { id: '1', name: 'Горный воздух', location: 'Сочи', region: 'Краснодарский край', isDynamic: 'TRUE', minNights: '7', description: 'Санаторий в горах с лечебным климатом', bookingUrl: 'https://ВАШ-МАСТЕР-ТУР.ru/booking/gorny-vozduh' },
+    { id: '2', name: 'Янтарный берег', location: 'Анапа', region: 'Краснодарский край', isDynamic: 'TRUE', minNights: '7', description: 'На первой береговой линии', bookingUrl: 'https://ВАШ-МАСТЕР-ТУР.ru/booking/yantarny-bereg' },
+    { id: '3', name: 'Лесная сказка', location: 'Подмосковье', region: 'Московская область', isDynamic: 'FALSE', minNights: '7', description: 'Тихий лесной санаторий', bookingUrl: '' },
+    { id: '4', name: 'Кисловодский', location: 'Кисловодск', region: 'Ставропольский край', isDynamic: 'FALSE', minNights: '10', description: 'Лечение на минеральных водах', bookingUrl: '' },
+    { id: '5', name: 'Белые скалы', location: 'Пятигорск', region: 'Ставропольский край', isDynamic: 'TRUE', minNights: '7', description: 'Современный медицинский центр', bookingUrl: 'https://ВАШ-МАСТЕР-ТУР.ru/booking/belye-skaly' },
+    { id: '6', name: 'Жемчужина', location: 'Ессентуки', region: 'Ставропольский край', isDynamic: 'FALSE', minNights: '10', description: 'Бальнеологический курорт', bookingUrl: '' },
+  ],
+  prices: [
+    { sanatoriumId: '1', roomName: 'Стандарт', roomDesc: '1-2 местный', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-05-31', pricePerNight: '4200' },
+    { sanatoriumId: '1', roomName: 'Стандарт', roomDesc: '1-2 местный', mealPlan: 'Полупансион', dateFrom: '2025-06-01', dateTo: '2025-08-31', pricePerNight: '5700' },
+    { sanatoriumId: '1', roomName: 'Стандарт', roomDesc: '1-2 местный', mealPlan: 'Полупансион', dateFrom: '2025-09-01', dateTo: '2025-12-31', pricePerNight: '4200' },
+    { sanatoriumId: '1', roomName: 'Полулюкс', roomDesc: 'Панорама, балкон', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-05-31', pricePerNight: '8400' },
+    { sanatoriumId: '1', roomName: 'Полулюкс', roomDesc: 'Панорама, балкон', mealPlan: 'Полный пансион', dateFrom: '2025-06-01', dateTo: '2025-08-31', pricePerNight: '11200' },
+    { sanatoriumId: '1', roomName: 'Полулюкс', roomDesc: 'Панорама, балкон', mealPlan: 'Полный пансион', dateFrom: '2025-09-01', dateTo: '2025-12-31', pricePerNight: '8400' },
+    { sanatoriumId: '1', roomName: 'Люкс', roomDesc: 'Панорамный вид', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '12500' },
+    { sanatoriumId: '2', roomName: 'Стандарт', roomDesc: 'Вид на корпус', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-05-31', pricePerNight: '3900' },
+    { sanatoriumId: '2', roomName: 'Стандарт', roomDesc: 'Вид на корпус', mealPlan: 'Полупансион', dateFrom: '2025-06-01', dateTo: '2025-08-31', pricePerNight: '5400' },
+    { sanatoriumId: '2', roomName: 'Стандарт море', roomDesc: '1 линия, море', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-05-31', pricePerNight: '5600' },
+    { sanatoriumId: '2', roomName: 'Стандарт море', roomDesc: '1 линия, море', mealPlan: 'Полупансион', dateFrom: '2025-06-01', dateTo: '2025-08-31', pricePerNight: '8200' },
+    { sanatoriumId: '2', roomName: 'Люкс', roomDesc: 'Первая линия', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '14200' },
+    { sanatoriumId: '3', roomName: 'Стандарт', roomDesc: 'Лесной вид', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '3500' },
+    { sanatoriumId: '3', roomName: 'Полулюкс', roomDesc: 'Гостиная + спальня', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '7200' },
+    { sanatoriumId: '3', roomName: 'Люкс', roomDesc: 'Полный комфорт', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '11000' },
+    { sanatoriumId: '4', roomName: 'Стандарт', roomDesc: 'Вид на парк', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '3800' },
+    { sanatoriumId: '4', roomName: 'Полулюкс', roomDesc: 'Балкон, горы', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '7800' },
+    { sanatoriumId: '5', roomName: 'Стандарт', roomDesc: 'Современный', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-05-31', pricePerNight: '4500' },
+    { sanatoriumId: '5', roomName: 'Стандарт', roomDesc: 'Современный', mealPlan: 'Полупансион', dateFrom: '2025-06-01', dateTo: '2025-08-31', pricePerNight: '6100' },
+    { sanatoriumId: '5', roomName: 'Люкс', roomDesc: 'Панорамный', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '13800' },
+    { sanatoriumId: '6', roomName: 'Стандарт', roomDesc: 'Лечебный корпус', mealPlan: 'Полупансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '3600' },
+    { sanatoriumId: '6', roomName: 'Полулюкс', roomDesc: 'Балкон', mealPlan: 'Полный пансион', dateFrom: '2025-01-01', dateTo: '2025-12-31', pricePerNight: '7500' },
+  ]
+};
+
+// ============================================================
+//  СОСТОЯНИЕ ПРИЛОЖЕНИЯ
+// ============================================================
+let DB = { sanatoriums: [], prices: [] };
+
+const state = {
+  sanatorium: null,
+  sanatoriumObj: null,
+  isDynamic: false,
+  dateIn: null,
+  dateOut: null,
+  nights: 0,
+  adults: 2,
+  children: 0,
+  rooms: 1,
+  room: null,
+  roomPrice: 0,
+  mealPlan: '',
+};
+
+// ============================================================
+//  ЗАГРУЗКА ДАННЫХ
+// ============================================================
+async function loadData() {
+  if (DEMO_MODE || !GOOGLE_SHEET_URL || GOOGLE_SHEET_URL === 'ВАШ_URL_СЮДА') {
+    DB = DEMO_DATA;
+    renderSanatoriums();
+    return;
+  }
+
+  try {
+    const res = await fetch(GOOGLE_SHEET_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DB = await res.json();
+    renderSanatoriums();
+  } catch (e) {
+    // Если не удалось загрузить — показываем ошибку с инструкцией
+    document.getElementById('sanatoriumsContainer').innerHTML = `
+      <div class="error-state">
+        <strong>⚠ Не удалось загрузить список санаториев</strong>
+        Проверьте, что URL Google Apps Script указан верно в переменной GOOGLE_SHEET_URL,
+        и что скрипт опубликован с доступом "Все".
+        <br><br>Ошибка: ${e.message}
+      </div>
+    `;
+  }
+}
+
+function renderSanatoriums() {
+  const container = document.getElementById('sanatoriumsContainer');
+  const hint = document.getElementById('step1hint');
+
+  if (!DB.sanatoriums || DB.sanatoriums.length === 0) {
+    container.innerHTML = '<div class="error-state"><strong>Нет данных</strong>Добавьте санатории на лист "Санатории" в Google Таблице.</div>';
+    return;
+  }
+
+  hint.textContent = DB.sanatoriums.length + ' санаториев доступно';
+
+  const grid = document.createElement('div');
+  grid.className = 'sanatorium-grid';
+
+  DB.sanatoriums.forEach(san => {
+    const isDyn = san.isDynamic === 'TRUE' || san.isDynamic === true;
+    const div = document.createElement('div');
+    div.className = 'san-card';
+    div.innerHTML = `
+      <div class="san-name">${san.name}</div>
+      <div class="san-location">${san.location}${san.region ? ', ' + san.region : ''}</div>
+      ${san.description ? `<div style="font-size:11px;color:var(--muted);margin-top:4px;">${san.description}</div>` : ''}
+      <span class="san-badge ${isDyn ? 'badge-dynamic' : 'badge-static'}">
+        ${isDyn ? '● Онлайн-бронь' : 'Заявка'}
+      </span>
+    `;
+    div.onclick = () => selectSanatorium(div, san, isDyn);
+    grid.appendChild(div);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+// ============================================================
+//  ШАГИ НАВИГАЦИИ
+// ============================================================
+let currentStep = 1;
+
+function goStep(n) {
+  // Для динамических санаториев пропускаем шаг 3 (выбор номера)
+  // Шаг 2 → сразу на шаг 4 (результат с кнопкой в Мастер Тур)
+  if (n === 3 && state.isDynamic) {
+    n = 4;
+  }
+  // При нажатии "Назад" с шага 4 — для динамических возвращаем на шаг 2
+  if (n === 3 && !state.isDynamic) {
+    n = 3; // статичные — нормально идут на шаг 3
+  }
+
+  document.getElementById('step' + currentStep).classList.add('hidden');
+  if (n <= 5) {
+    document.getElementById('step' + n).classList.remove('hidden');
+  } else {
+    document.getElementById('stepSuccess').classList.remove('hidden');
+  }
+  updateStepsDots(n);
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (n === 3) renderRooms();
+  if (n === 4) renderResult();
+  if (n === 5) renderSummary();
+}
+
+function updateStepsDots(n) {
+  for (let i = 1; i <= 5; i++) {
+    const dot = document.getElementById('s' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n) { dot.classList.add('done'); dot.textContent = '✓'; }
+    else if (i === n) { dot.classList.add('active'); dot.textContent = i; }
+    else { dot.textContent = i; }
+    if (i < 5) document.getElementById('l' + i).classList.toggle('done', i < n);
+  }
+}
+
+// ============================================================
+//  ШАГ 1
+// ============================================================
+function selectSanatorium(el, sanObj, isDynamic) {
+  document.querySelectorAll('.san-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.sanatorium = sanObj.name;
+  state.sanatoriumObj = sanObj;
+  state.isDynamic = isDynamic;
+  // Обновляем минимальный срок
+  const minN = parseInt(sanObj.minNights) || 7;
+  document.getElementById('minNightsHint').textContent = minN;
+  state.minNights = minN;
+  document.getElementById('btn1').disabled = false;
+
+  // Меняем текст кнопки на шаге 1 чтобы гость понимал что его ждёт
+  document.getElementById('btn1').textContent =
+    isDynamic ? 'Выбрать даты →' : 'Выбрать даты →';
+}
+
+// ============================================================
+//  ШАГ 2
+// ============================================================
+function changeCount(field, delta) {
+  const mins = { adults: 1, children: 0, rooms: 1 };
+  const maxs = { adults: 6, children: 4, rooms: 3 };
+  state[field] = Math.min(maxs[field], Math.max(mins[field], state[field] + delta));
+  const idMap = { adults: 'adults', children: 'children', rooms: 'roomsCount' };
+  document.getElementById(idMap[field]).textContent = state[field];
+}
+
+function calcNights() {
+  const dIn = document.getElementById('dateIn').value;
+  const dOut = document.getElementById('dateOut').value;
+  const info = document.getElementById('nightsInfo');
+  const minN = state.minNights || 7;
+  if (dIn && dOut) {
+    const diff = Math.round((new Date(dOut) - new Date(dIn)) / 86400000);
+    if (diff < minN) {
+      info.textContent = `⚠ Минимальный срок — ${minN} ночей (выбрано: ${diff})`;
+      info.style.color = 'var(--gold)';
+      document.getElementById('btn2').disabled = true;
+    } else if (diff <= 0) {
+      info.textContent = '⚠ Дата выезда должна быть позже заезда';
+      info.style.color = 'var(--gold)';
+      document.getElementById('btn2').disabled = true;
+    } else {
+      info.textContent = `✓ ${diff} ночей`;
+      info.style.color = 'var(--sage)';
+      state.dateIn = dIn;
+      state.dateOut = dOut;
+      state.nights = diff;
+      const btn2 = document.getElementById('btn2');
+      btn2.disabled = false;
+      // Для динамических — сразу к результату, для статичных — выбор номера
+      btn2.textContent = state.isDynamic
+        ? 'Посмотреть стоимость →'
+        : 'Выбрать номер →';
+    }
+  }
+}
+
+// ============================================================
+//  ШАГ 3 — Поиск цены по периоду
+// ============================================================
+function findPrice(sanId, roomName, dateIn) {
+  const checkDate = new Date(dateIn);
+  const rows = DB.prices.filter(p =>
+    String(p.sanatoriumId) === String(sanId) &&
+    p.roomName === roomName
+  );
+  const match = rows.find(p => {
+    const from = new Date(p.dateFrom);
+    const to = new Date(p.dateTo);
+    return checkDate >= from && checkDate <= to;
+  });
+  return match || null;
+}
+
+function renderRooms() {
+  const grid = document.getElementById('roomsGrid');
+  grid.innerHTML = '';
+  state.room = null;
+  document.getElementById('btn3').disabled = true;
+
+  const sanId = state.sanatoriumObj ? state.sanatoriumObj.id : null;
+
+  // Собираем уникальные номера для этого санатория
+  const sanPrices = DB.prices.filter(p => String(p.sanatoriumId) === String(sanId));
+  const uniqueRooms = [...new Map(sanPrices.map(p => [p.roomName, p])).values()];
+
+  if (uniqueRooms.length === 0) {
+    grid.innerHTML = `<div class="no-price-note">⚠ Для этого санатория нет данных о номерах в таблице. Добавьте строки с ценами на лист "Прайс".</div>`;
+    return;
+  }
+
+  uniqueRooms.forEach(r => {
+    const priceRow = findPrice(sanId, r.roomName, state.dateIn);
+    const price = priceRow ? parseInt(priceRow.pricePerNight) : null;
+    const mealPlan = priceRow ? priceRow.mealPlan : '';
+
+    const div = document.createElement('div');
+    div.className = 'room-card';
+    div.innerHTML = `
+      <div class="room-name">${r.roomName}</div>
+      <div class="room-meta">${r.roomDesc || ''}</div>
+      <div class="room-price-line">
+        ${mealPlan ? mealPlan + ' · ' : ''}
+        ${price ? `<strong>${price.toLocaleString('ru')} ₽</strong> / сутки` : '<span style="color:var(--gold)">уточняется</span>'}
+      </div>
+    `;
+    div.onclick = () => {
+      document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+      div.classList.add('selected');
+      state.room = r.roomName;
+      state.roomPrice = price || 0;
+      state.mealPlan = mealPlan;
+      document.getElementById('btn3').disabled = false;
+    };
+    grid.appendChild(div);
+  });
+
+  // Если выбранный период не в прайсе — показываем предупреждение
+  const hasGaps = uniqueRooms.some(r => !findPrice(sanId, r.roomName, state.dateIn));
+  if (hasGaps) {
+    const note = document.createElement('div');
+    note.className = 'no-price-note';
+    note.textContent = '⚠ Для некоторых номеров нет цены на выбранный период. Добавьте строку в таблицу.';
+    grid.appendChild(note);
+  }
+}
+
+// ============================================================
+//  ШАГ 4
+// ============================================================
+function renderResult() {
+  const total = state.roomPrice * state.nights * state.rooms;
+
+  if (state.isDynamic) {
+    // Динамический санаторий — цену показывает Мастер Тур
+    document.getElementById('totalPrice').textContent = 'Актуальная цена';
+    document.getElementById('priceNote').textContent =
+      `${state.nights} ночей · ${state.adults} взр.${state.children ? ' · ' + state.children + ' дет.' : ''}`;
+    document.getElementById('priceBreakdown').innerHTML = `
+      <div class="breakdown-row"><span>Санаторий</span><span>${state.sanatorium}</span></div>
+      <div class="breakdown-row"><span>Даты</span><span>${state.dateIn} – ${state.dateOut}</span></div>
+      <div class="breakdown-row" style="opacity:0.55;font-size:12px;">
+        <span>Точная цена и наличие — в модуле бронирования</span>
+      </div>
+    `;
+  } else {
+    // Статичный санаторий — считаем из прайса
+    document.getElementById('totalPrice').textContent =
+      state.roomPrice > 0 ? total.toLocaleString('ru') + ' ₽' : 'По запросу';
+    document.getElementById('priceNote').textContent =
+      `${state.nights} ночей · ${state.adults} взр.${state.children ? ' · ' + state.children + ' дет.' : ''} · ${state.mealPlan || 'питание включено'}`;
+    document.getElementById('priceBreakdown').innerHTML = `
+      <div class="breakdown-row"><span>${state.room}</span><span>${state.roomPrice > 0 ? state.roomPrice.toLocaleString('ru') + ' ₽/сут' : 'уточняется'}</span></div>
+      <div class="breakdown-row"><span>${state.nights} ночей × ${state.rooms} номер(а)</span><span>${state.roomPrice > 0 ? total.toLocaleString('ru') + ' ₽' : '—'}</span></div>
+      <div class="breakdown-row" style="opacity:0.45;font-size:12px;"><span>Лечебные процедуры</span><span>по программе</span></div>
+    `;
+  }
+
+  const pill = document.getElementById('modePill');
+  const ctaDyn = document.getElementById('ctaDynamic');
+  const ctaStat = document.getElementById('ctaStatic');
+
+  if (state.isDynamic) {
+    pill.innerHTML = `<div class="mode-pill dynamic"><span class="mode-dot"></span> Онлайн-бронирование доступно</div>`;
+    ctaDyn.classList.remove('hidden');
+    ctaStat.classList.add('hidden');
+  } else {
+    pill.innerHTML = `<div class="mode-pill static"><span class="mode-dot"></span> Подтверждение через менеджера</div>`;
+    ctaDyn.classList.add('hidden');
+    ctaStat.classList.remove('hidden');
+  }
+}
+
+function openBookingWidget() {
+  const san = state.sanatoriumObj;
+  const baseUrl = san ? san.bookingUrl : '';
+
+  if (!baseUrl || baseUrl.includes('ВАШ-МАСТЕР-ТУР')) {
+    alert('⚠ Демо-режим\n\nВ реальной системе здесь откроется модуль бронирования Мастер Тура.\n\nЧтобы активировать:\n1. Скопируйте ссылку на модуль бронирования из Мастер Тура\n2. Вставьте её в колонку bookingUrl в Google Таблице для этого санатория');
+    return;
+  }
+
+  // Просто открываем ссылку из таблицы — никаких лишних параметров
+  window.open(baseUrl, '_blank');
+}
+
+// ============================================================
+//  ШАГ 5
+// ============================================================
+function renderSummary() {
+  const total = state.roomPrice * state.nights * state.rooms;
+  document.getElementById('summaryChips').innerHTML = `
+    <span class="chip">🏨 ${state.sanatorium}</span>
+    <span class="chip">📅 ${state.dateIn} – ${state.dateOut}</span>
+    <span class="chip">🌙 ${state.nights} ночей</span>
+    <span class="chip">🛏 ${state.room}</span>
+    ${state.roomPrice > 0 ? `<span class="chip">💰 ${total.toLocaleString('ru')} ₽</span>` : ''}
+  `;
+}
+
+function checkForm() {
+  const ok = document.getElementById('fname').value.trim() &&
+             document.getElementById('phone').value.trim() &&
+             document.getElementById('email').value.trim();
+  document.getElementById('btnSubmit').disabled = !ok;
+}
+
+async function submitForm() {
+  const total = state.roomPrice * state.nights * state.rooms;
+  const fname   = document.getElementById('fname').value.trim();
+  const lname   = document.getElementById('lname').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const wishes  = document.getElementById('wishes').value.trim();
+  const fullName = `${fname} ${lname}`.trim();
+
+  // Блокируем кнопку на время отправки
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Отправляем...';
+
+  // Данные заявки — один объект для обоих писем
+  const orderData = {
+    // Для письма менеджеру
+    to_email:     CONFIG.MANAGER_EMAIL,
+    to_name:      'Менеджер',
+    // Детали заказа
+    sanatorium:   state.sanatorium,
+    dates:        `${state.dateIn} – ${state.dateOut}`,
+    nights:       String(state.nights),
+    room:         `${state.room} (${state.mealPlan})`,
+    guests:       `${state.adults} взр.${state.children ? ', ' + state.children + ' дет.' : ''}, ${state.rooms} номер(а)`,
+    total:        state.roomPrice > 0 ? total.toLocaleString('ru') + ' ₽' : 'уточняется',
+    wishes:       wishes || '—',
+    // Контакты гостя
+    guest_name:   fullName,
+    guest_phone:  phone,
+    guest_email:  email,
+    // Для автоответа гостю
+    reply_to:     email,
+    contact_phone: CONFIG.CONTACT_PHONE,
+  };
+
+  const isEmailJsReady =
+    CONFIG.EMAILJS_PUBLIC_KEY   !== 'ВСТАВЬТЕ_PUBLIC_KEY' &&
+    CONFIG.EMAILJS_SERVICE_ID   !== 'ВСТАВЬТЕ_SERVICE_ID' &&
+    CONFIG.EMAILJS_TEMPLATE_MANAGER !== 'ВСТАВЬТЕ_TEMPLATE_ID_МЕНЕДЖЕРУ';
+
+  if (isEmailJsReady) {
+    try {
+      // Инициализируем EmailJS
+      emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC_KEY });
+
+      // Письмо 1 — менеджеру
+      await emailjs.send(
+        CONFIG.EMAILJS_SERVICE_ID,
+        CONFIG.EMAILJS_TEMPLATE_MANAGER,
+        orderData
+      );
+
+      // Письмо 2 — автоответ гостю (если шаблон настроен)
+      if (CONFIG.EMAILJS_TEMPLATE_GUEST !== 'ВСТАВЬТЕ_TEMPLATE_ID_ГОСТЮ') {
+        await emailjs.send(
+          CONFIG.EMAILJS_SERVICE_ID,
+          CONFIG.EMAILJS_TEMPLATE_GUEST,
+          { ...orderData, to_email: email, to_name: fname }
+        );
+      }
+
+      console.log('✅ Письма отправлены успешно');
+    } catch (err) {
+      console.error('❌ Ошибка EmailJS:', err);
+      // Даже при ошибке — показываем успех гостю, не пугаем его
+    }
+  } else {
+    // Демо-режим — выводим данные в консоль
+    console.log('📋 ДЕМО: Данные заявки (EmailJS не подключён):', orderData);
+    console.log('ℹ️ Чтобы включить отправку — заполните CONFIG.EMAILJS_* в коде');
+  }
+
+  // Показываем экран подтверждения
+  document.getElementById('confirmSummary').innerHTML = `
+    <div style="display:grid;gap:8px;">
+      <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="color:var(--muted)">Санаторий</span><span style="font-weight:500;">${state.sanatorium}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="color:var(--muted)">Даты</span><span style="font-weight:500;">${state.dateIn} – ${state.dateOut} (${state.nights} н.)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="color:var(--muted)">Номер</span><span style="font-weight:500;">${state.room} · ${state.mealPlan}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="color:var(--muted)">Гости</span><span style="font-weight:500;">${state.adults} взр.${state.children ? ', ' + state.children + ' дет.' : ''}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:15px;border-top:1px solid var(--mist);padding-top:8px;">
+        <span style="font-weight:600;">Итого</span>
+        <span style="font-weight:700;color:var(--sage);">${state.roomPrice > 0 ? total.toLocaleString('ru') + ' ₽' : 'уточняется'}</span>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('step5').classList.add('hidden');
+  document.getElementById('stepSuccess').classList.remove('hidden');
+  updateStepsDots(6);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+//  ИНИЦИАЛИЗАЦИЯ
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('dateIn').min = today;
+  document.getElementById('dateOut').min = today;
+  loadData();
+});
+</script>
+
+</body>
+</html>

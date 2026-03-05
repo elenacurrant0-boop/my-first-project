@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Финмодель — Отель Сочи 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:13px;background:#f0f4f8;padding:16px}
+h2{color:#1a3a5c;font-size:18px;margin-bottom:4px}
+h3{color:#1a3a5c;font-size:14px;margin:12px 0 8px}
+h4{color:#1a3a5c;font-size:13px;margin:10px 0 6px}
+.card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:12px}
+.kpi-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.kpi{background:#f8fafc;border-radius:8px;padding:10px 16px;border:1px solid #e0e8f0;min-width:140px}
+.kpi label{font-size:10px;color:#888;display:block}
+.kpi .val{font-size:20px;font-weight:bold;margin-top:2px}
+.progress{background:#eef;border-radius:6px;height:14px;margin-bottom:10px;overflow:hidden}
+.progress-bar{height:100%;background:#2980b9;transition:width .3s;border-radius:6px}
+.alert{border-radius:6px;padding:8px 12px;font-size:12px;margin-bottom:8px}
+.alert-warn{background:#fff3cd;border:1px solid #f0ad4e}
+.alert-ok{background:#d4edda;border:1px solid #28a745}
+.tabs{display:flex;gap:3px;flex-wrap:wrap}
+.tab{padding:7px 14px;border:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:12px;background:#dde6f0;color:#666}
+.tab.active{background:#fff;color:#1a3a5c;font-weight:bold}
+.tab-content{background:#fff;border-radius:0 8px 8px 8px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.panel{display:none}.panel.active{display:block}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{background:#1a3a5c;color:#fff;padding:7px 10px;text-align:left;white-space:nowrap;font-size:11px}
+td{padding:5px 8px;border-bottom:1px solid #eef;font-size:12px}
+tr:nth-child(even) td{background:#f8fafc}
+tr.total td{background:#1a3a5c!important;color:#fff;font-weight:bold}
+input[type=number]{padding:3px 6px;border:1px solid #c8d8e8;border-radius:4px;font-size:12px}
+input[type=range]{width:100%;accent-color:#2980b9}
+.btn{padding:5px 14px;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold}
+.btn-outline{padding:5px 14px;background:#fff;border:2px solid #1a3a5c;border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;color:#1a3a5c}
+.flex{display:flex;gap:16px;flex-wrap:wrap}
+.box{background:#eef4fb;border-radius:8px;padding:14px;border:1px solid #c8d8f0}
+.box-green{background:#f0fbf0;border:1px solid #b8e0c0}
+.box-yellow{background:#fffbf0;border:1px solid #f0e0a0}
+.box-red{background:#fff0f0;border:1px solid #f0b0b0}
+.small{font-size:11px;color:#888}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold}
+.badge-green{background:#d4edda;color:#155724}
+.badge-yellow{background:#fff3cd;color:#856404}
+.badge-red{background:#f8d7da;color:#721c24}
+.rec-card{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid #2980b9}
+.rec-card.green{border-left-color:#27ae60}
+.rec-card.orange{border-left-color:#e67e22}
+.rec-card.purple{border-left-color:#8e44ad}
+.rec-card.red{border-left-color:#e74c3c}
+.rec-card.gold{border-left-color:#f39c12}
+
+/* ПРАЙС */
+.price-header{background:linear-gradient(135deg,#1a3a5c,#2980b9);color:#fff;border-radius:10px;padding:20px;margin-bottom:16px;text-align:center}
+.price-header h2{color:#fff;font-size:20px}
+.price-header p{color:#cce5ff;font-size:12px;margin-top:4px}
+.price-season{margin-bottom:20px}
+.price-season-title{background:#2980b9;color:#fff;padding:8px 14px;border-radius:6px 6px 0 0;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.price-table th{background:#34495e;font-size:11px;padding:8px 12px}
+.price-table td{padding:8px 12px;font-size:12px}
+.price-table .price-val{font-weight:bold;color:#1a3a5c;font-size:14px}
+.price-table .price-final{color:#e67e22;font-size:11px}
+.price-note{background:#fff9e6;border:1px solid #f0d080;border-radius:6px;padding:10px 14px;font-size:12px;margin-top:12px}
+.print-btn{background:#27ae60;color:#fff;border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-size:13px;font-weight:bold;margin-bottom:12px}
+
+/* РЕЗЮМЕ */
+.resume-header{background:linear-gradient(135deg,#1a5c1a,#27ae60);color:#fff;border-radius:10px;padding:20px;margin-bottom:16px}
+.resume-header h2{color:#fff;font-size:18px}
+.kpi-mini{display:inline-block;background:rgba(255,255,255,0.15);border-radius:6px;padding:6px 12px;margin:4px;font-size:12px}
+.priority-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:bold;margin-right:4px}
+.p-high{background:#f8d7da;color:#721c24}
+.p-med{background:#fff3cd;color:#856404}
+.p-low{background:#d4edda;color:#155724}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🏨 Финмодель — Отель Сочи, 467 номеров</h2>
+  <div class="small" style="margin-bottom:14px">Март–Декабрь 2026 · Только будущие периоды · Пересчёт мгновенный</div>
+  <div class="kpi-row">
+    <div class="kpi"><label>💰 Расчётный доход</label><div class="val" id="kpi-rev">—</div></div>
+    <div class="kpi"><label>🎯 Цель</label><div class="val" style="color:#555">1 200,0 млн</div></div>
+    <div class="kpi"><label>📈 Выполнение</label><div class="val" id="kpi-pct">—</div></div>
+    <div class="kpi"><label>⚡ Не хватает</label><div class="val" id="kpi-gap">—</div></div>
+    <div class="kpi"><label>🔢 ×цен для цели</label><div class="val" id="kpi-multi">—</div></div>
+    <div class="kpi"><label>🛏 Номеро-ночей</label><div class="val" id="kpi-rn">—</div></div>
+  </div>
+  <div class="progress"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  <div id="alert-box"></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('summary',this)">📊 Сводка</button>
+  <button class="tab" onclick="showTab('monthly',this)">📅 План/Факт</button>
+  <button class="tab" onclick="showTab('segments',this)">👥 Сегменты</button>
+  <button class="tab" onclick="showTab('pricelist',this)">💳 Прейскурант</button>
+  <button class="tab" onclick="showTab('resume',this)">📋 Резюме</button>
+  <button class="tab" onclick="showTab('rooms',this)">🏠 Номера</button>
+  <button class="tab" onclick="showTab('packages',this)">📦 Пакеты/Цены</button>
+  <button class="tab" onclick="showTab('periods',this)">🗓 Периоды</button>
+  <button class="tab" onclick="showTab('compete',this)">🏆 Конкуренты</button>
+</div>
+
+<div class="tab-content">
+
+<!-- СВОДКА -->
+<div id="panel-summary" class="panel active">
+  <h3>Доход по периодам (март–декабрь 2026)</h3>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Период</th><th>Дней</th><th>Загруз.</th><th>Ном.-ночей</th>
+        <th>Доход, руб.</th><th>% итога</th>
+        <th style="color:#a8e6a8">Ultra</th><th style="color:#d4a8e6">SPA</th><th style="color:#f0c070">Medical</th>
+      </tr></thead>
+      <tbody id="tbl-summary-body"></tbody>
+    </table>
+  </div>
+  <div class="flex" style="margin-top:16px">
+    <div style="flex:1;min-width:200px"><h3>По категориям</h3><div id="by-room"></div></div>
+    <div style="flex:1;min-width:200px"><h3>По пакетам</h3><div id="by-pkg"></div></div>
+  </div>
+</div>
+
+<!-- ПЛАН/ФАКТ -->
+<div id="panel-monthly" class="panel">
+  <h3>📅 Помесячный план vs факт</h3>
+  <p class="small" style="margin-bottom:8px">Введите % загрузки — плановый доход рассчитывается автоматически. Введите факт — модель покажет разрыв и рекомендации.</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Месяц</th><th>Дней</th>
+        <th>Загрузка<br>план %</th>
+        <th>Плановый<br>доход</th>
+        <th>Факт доход<br>руб.</th>
+        <th>Разрыв</th>
+        <th>Допродать<br>номеров</th>
+        <th>Рекомендуемые пакеты</th>
+        <th>Акцент по сегментам</th>
+      </tr></thead>
+      <tbody id="tbl-monthly"></tbody>
+      <tfoot><tr class="total">
+        <td>ИТОГО</td><td id="m-days-total">—</td><td>—</td>
+        <td id="m-plan-total">—</td><td id="m-fact-total">—</td>
+        <td id="m-gap-total">—</td><td>—</td><td>—</td><td>—</td>
+      </tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- СЕГМЕНТЫ -->
+<div id="panel-segments" class="panel">
+  <h3>👥 Плановый микс сегментов по месяцам (%)</h3>
+  <p class="small" style="margin-bottom:12px">Сумма по каждой строке должна быть 100%</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Месяц</th>
+        <th style="color:#a8f0c8">Прямые</th>
+        <th style="color:#f0d080">Туроператоры</th>
+        <th style="color:#f0a8a8">ФСС/Льготники</th>
+        <th style="color:#a8c8f0">Корпораты</th>
+        <th style="color:#d0a8f0">OTA</th>
+        <th>Сумма</th>
+        <th>Плановый доход</th>
+      </tr></thead>
+      <tbody id="tbl-segments"></tbody>
+    </table>
+  </div>
+  <div style="margin-top:12px;padding:10px 14px;background:#fff3cd;border-radius:6px;font-size:12px;border:1px solid #f0ad4e">
+    ⚠️ <b>Рекомендация:</b> сократить долю ФСС до 10–15%. Замещение 20% ФСС коммерческими даёт <b>+80–120 млн руб.</b> к году.
+  </div>
+</div>
+
+<!-- ПРЕЙСКУРАНТ -->
+<div id="panel-pricelist" class="panel">
+  <button class="print-btn" onclick="window.print()">🖨️ Распечатать прейскурант</button>
+  <div class="price-header">
+    <h2>ПРЕЙСКУРАНТ ЦЕН</h2>
+    <div style="font-size:16px;margin-top:4px;font-weight:bold" id="pl-hotel-name">Отель Сочи — 467 номеров</div>
+    <p id="pl-period-title">Март – Декабрь 2026</p>
+    <p style="color:#a0c8f0;font-size:11px;margin-top:4px">Цена указана за 1 гостя в сутки, включая НДС · Основные места: 2 чел.</p>
+  </div>
+  <div id="pricelist-content"></div>
+  <div class="price-note">
+    <b>📌 Условия бронирования:</b><br>
+    • Ранее бронирование (Early Bird за 60+ дней): скидка 10%<br>
+    • Тур выходного дня (пт–вс, 3 ночи): специальная цена по запросу<br>
+    • Группы 10+ номеров: скидка 5–8% (по договорённости)<br>
+    • Дети до 5 лет: бесплатно · Дети 6–12 лет: 50% от стоимости взрослого<br>
+    • Доп. место: +15% к цене номера<br>
+    • Корпоративный пакет (MICE): индивидуальные условия<br>
+    • Оплата: 100% при заезде или 30% предоплата при раннем бронировании
+  </div>
+</div>
+
+<!-- РЕЗЮМЕ -->
+<div id="panel-resume" class="panel">
+  <div id="resume-content"></div>
+</div>
+
+<!-- НОМЕРА -->
+<div id="panel-rooms" class="panel">
+  <h3>Номерной фонд</h3>
+  <div class="flex" id="room-inputs"></div>
+  <div id="room-check" style="margin-top:10px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:bold"></div>
+</div>
+
+<!-- ПАКЕТЫ -->
+<div id="panel-packages" class="panel">
+  <div class="flex">
+    <div style="flex:1;min-width:260px">
+      <h3>Микс пакетов (%)</h3>
+      <div id="pkg-inputs"></div>
+      <div id="pkg-check" style="padding:8px 14px;border-radius:6px;font-size:12px;font-weight:bold;margin-top:6px"></div>
+      <div style="margin-top:20px">
+        <h3>Глобальный множитель цен</h3>
+        <div class="box" style="text-align:center">
+          <div id="multi-display" style="font-size:32px;font-weight:bold;color:#2980b9;margin-bottom:8px">×1.000</div>
+          <input type="range" min="0.5" max="2.5" step="0.001" value="1" id="multi-range" oninput="setMulti(this.value)">
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap">
+            <button class="btn" style="background:#e67e22" onclick="autoTarget()">✨ Авто-цель 1,2 млрд</button>
+            <button class="btn" style="background:#95a5a6" onclick="setMulti(1)">Сброс ×1</button>
+          </div>
+          <div class="small" style="margin-top:8px" id="multi-hint"></div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:2;min-width:300px">
+      <h3>Цены (руб/гость/сутки)</h3>
+      <p class="small" style="margin-bottom:8px">Редактируйте базовые цены · оранжевым — итог с множителем</p>
+      <div id="price-tables"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ПЕРИОДЫ -->
+<div id="panel-periods" class="panel">
+  <h3>Периоды — дни, загрузка, коэффициент гостей</h3>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>Период</th><th>Дней</th><th>Загрузка %</th><th>Коэф. гостей</th><th>Ном.-ночей</th><th>Доход, млн</th></tr></thead>
+      <tbody id="tbl-periods-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- КОНКУРЕНТЫ -->
+<div id="panel-compete" class="panel">
+  <h3>🏆 Анализ конкурентов — Сочи 2026</h3>
+  <div class="flex" style="margin-bottom:16px">
+    <div class="box" style="flex:1;min-width:200px">
+      <h4>📍 Рынок Сочи 4–5★</h4>
+      <p style="font-size:12px;margin-top:4px">
+        Загрузка высокий сезон: <b>85–92%</b><br>
+        Загрузка межсезонье: <b>30–45%</b><br>
+        Средняя цена 4★ BB: <b>6 500–9 000 ₽/ном.</b><br>
+        Средняя цена 5★ BB: <b>12 000–18 000 ₽/ном.</b><br>
+        Медицина+питание 4★: <b>8 000–13 000 ₽/ном.</b>
+      </p>
+    </div>
+    <div class="box box-yellow" style="flex:1;min-width:200px">
+      <h4>⚡ Ваше позиционирование</h4>
+      <p style="font-size:12px;margin-top:4px">
+        Ultra (FB+аквапарк): <span class="badge badge-green">В рынке ✓</span><br><br>
+        Ultra+SPA: <span class="badge badge-yellow">+10% возможно</span><br><br>
+        Ultra+Medical: <span class="badge badge-red">Ниже рынка −15%</span><br><br>
+        Семейный: <span class="badge" style="background:#cce5ff;color:#004085">Недооценён</span>
+      </p>
+    </div>
+    <div class="box box-green" style="flex:1;min-width:200px">
+      <h4>💰 Потенциал роста</h4>
+      <p style="font-size:12px;margin-top:4px">
+        Поднять Medical на 15%: <b style="color:#27ae60">+40–60 млн</b><br>
+        Сократить ФСС →15%: <b style="color:#27ae60">+80–120 млн</b><br>
+        Семейный продукт: <b style="color:#27ae60">+30–50 млн</b><br>
+        Early Bird лето: <b style="color:#27ae60">+20–40 млн</b><br>
+        <hr style="margin:6px 0;border:none;border-top:1px solid #b8e0c0">
+        <b>Итого: +170–270 млн</b>
+      </p>
+    </div>
+  </div>
+  <div style="overflow-x:auto">
+  <table>
+    <thead><tr>
+      <th>Отель</th><th>★</th><th>Цена низкий ₽/ном.</th><th>Цена высокий ₽/ном.</th>
+      <th>Пакеты</th><th>Сильные стороны</th><th>Слабые стороны</th><th>Угроза</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><b>Сочи Парк Отель</b></td><td>4★</td><td>5 000–7 000</td><td>12 000–16 000</td><td>BB,HB,AI</td><td>Аквапарк, дети</td><td>Нет медицины</td><td style="color:#e67e22">Высокая — семьи</td></tr>
+      <tr><td><b>Radisson Blu</b></td><td>5★</td><td>8 000–12 000</td><td>18 000–25 000</td><td>BB,HB</td><td>Бренд, SPA</td><td>Нет аквапарка</td><td style="color:#27ae60">Низкая</td></tr>
+      <tr><td><b>Санаторий Русь</b></td><td>4★сан</td><td>4 500–6 000</td><td>8 000–11 000</td><td>Лечение+пит.</td><td>Медицина, ФСС</td><td>Старый фонд</td><td style="color:#e74c3c">Высокая — медицина</td></tr>
+      <tr><td><b>Имеретинский</b></td><td>4★</td><td>5 500–7 500</td><td>13 000–17 000</td><td>BB,HB,семья</td><td>Пляж, семьи</td><td>Нет медицины</td><td style="color:#e67e22">Средняя</td></tr>
+      <tr><td><b>Дагомыс</b></td><td>4★</td><td>4 000–5 500</td><td>9 000–13 000</td><td>AI,BB</td><td>Цена, объём</td><td>Устаревший</td><td style="color:#27ae60">Низкая</td></tr>
+      <tr style="background:#fff9e6;font-weight:bold">
+        <td>ВАШ ОТЕЛЬ</td><td>4★+</td><td>~6 500–8 000</td><td>~14 000–19 000</td>
+        <td>Ultra/SPA/Med</td><td>Уникальный Ultra+Med</td><td>Мало прямых продаж</td>
+        <td style="color:#2980b9">Сильная позиция</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+</div>
+
+<script>
+const TARGET = 1200000000;
+const ROOM_TYPES = [
+  {key:"junior", label:"Джуниор Сюит"},
+  {key:"comfort",label:"Комфорт"},
+  {key:"lux",    label:"Люкс"},
+];
+const PACKAGES = [
+  {key:"ultra",label:"Ultra (FB+аквапарк+анимация)",       short:"Ultra",     color:"#27ae60"},
+  {key:"spa",  label:"Ultra + SPA",                         short:"Ultra+SPA", color:"#8e44ad"},
+  {key:"med",  label:"Ultra + Medical",                     short:"Ultra+Med", color:"#e67e22"},
+];
+
+const SEASONS = [
+  {name:"Низкий сезон I",   dates:"06.03–09.03 / 28.03–30.04", code:"low1",   idx:0},
+  {name:"Низкий сезон II",  dates:"10.03–27.03",                code:"low2",   idx:1},
+  {name:"Предсезон I",      dates:"01.05–02.05 / 08–10.05",     code:"pre1",   idx:2},
+  {name:"Предсезон II",     dates:"03.05–07.05 / 11–31.05",     code:"pre2",   idx:3},
+  {name:"Начало сезона",    dates:"01.06–20.06",                code:"start",  idx:4},
+  {name:"Высокий сезон",    dates:"21.06–24.08",                code:"high",   idx:5},
+  {name:"Бархатный сезон",  dates:"25.08–30.09",                code:"velvet", idx:6},
+  {name:"Осенний сезон",    dates:"01.10–31.10",                code:"autumn", idx:7},
+  {name:"Низкий сезон III", dates:"01.11–28.12",                code:"low3",   idx:8},
+];
+
+const MONTHS = [
+  {name:"Март",     days:26, periodIdx:[0,1]},
+  {name:"Апрель",   days:30, periodIdx:[0]},
+  {name:"Май",      days:31, periodIdx:[2,3]},
+  {name:"Июнь",     days:30, periodIdx:[4]},
+  {name:"Июль",     days:31, periodIdx:[5]},
+  {name:"Август",   days:31, periodIdx:[5]},
+  {name:"Сентябрь", days:30, periodIdx:[6]},
+  {name:"Октябрь",  days:31, periodIdx:[7]},
+  {name:"Ноябрь",   days:30, periodIdx:[8]},
+  {name:"Декабрь",  days:28, periodIdx:[8]},
+];
+
+const MONTH_REC = {
+  "Март":    {pkgs:"Туры выходного дня, Детокс-март, Early Bird лета", segs:"Корпораты MICE, Прямые продажи", focus:"Ранние брони лета со скидкой 10%"},
+  "Апрель":  {pkgs:"Ultra+Medical 14 дн., Пасхальный пакет, Детокс", segs:"Корпораты, Прямые", focus:"Долгие заезды 14–21 день — выше средний чек"},
+  "Май":     {pkgs:"Семейный Ultra (майские), Ultra+Medical", segs:"Семьи, Туроператоры", focus:"Майские праздники — семьи с детьми"},
+  "Июнь":    {pkgs:"Семейный Ultra, Ultra+SPA, Детские программы", segs:"Семьи, Туроператоры, OTA", focus:"Старт сезона — акцент на семьи"},
+  "Июль":    {pkgs:"Ultra+SPA (VIP), Ultra+Medical, Семейный премиум", segs:"Прямые, OTA", focus:"Максимальная цена — пик спроса"},
+  "Август":  {pkgs:"Ultra+SPA, Детские программы, Семейный Ultra", segs:"Семьи, Прямые, OTA", focus:"Дети бесплатно при 7+ ночах"},
+  "Сентябрь":{pkgs:"Ultra+Medical (бархатный), Ретриты, Велнес 10 дн.", segs:"Туроператоры, Прямые", focus:"Велнес и оздоровление 10–14 дней"},
+  "Октябрь": {pkgs:"Ultra+Medical 14–21 дн., Корп. оздоровление", segs:"Корпораты, Прямые", focus:"Долгие медицинские программы"},
+  "Ноябрь":  {pkgs:"MICE пакет, Новогодний Early Bird, Ultra+Med", segs:"Корпораты, Прямые", focus:"Корп. конференции + открыть новогодние продажи"},
+  "Декабрь": {pkgs:"Новогодний Ultra SPA, Семейный праздник", segs:"Семьи, Прямые, OTA", focus:"Новый год — семейный формат с анимацией"},
+};
+
+const DEFAULT_SEGS = {
+  "Март":    {direct:20,to:15,fss:35,corp:20,ota:10},
+  "Апрель":  {direct:20,to:15,fss:35,corp:20,ota:10},
+  "Май":     {direct:30,to:20,fss:20,corp:15,ota:15},
+  "Июнь":    {direct:35,to:25,fss:15,corp:10,ota:15},
+  "Июль":    {direct:40,to:30,fss:10,corp:5, ota:15},
+  "Август":  {direct:40,to:30,fss:10,corp:5, ota:15},
+  "Сентябрь":{direct:30,to:20,fss:20,corp:15,ota:15},
+  "Октябрь": {direct:20,to:15,fss:30,corp:25,ota:10},
+  "Ноябрь":  {direct:15,to:10,fss:30,corp:35,ota:10},
+  "Декабрь": {direct:25,to:20,fss:20,corp:20,ota:15},
+};
+
+let state = {
+  rooms:  {junior:227, comfort:240, lux:0},
+  pkgMix: {ultra:50, spa:30, med:20},
+  multi:  1.0,
+  periods:[
+    {label:"06.03–09.03 / 28.03–30.04", days:39, occ:40, guests:2.2},
+    {label:"10.03–27.03",               days:18, occ:38, guests:2.2},
+    {label:"01.05–02.05 / 08–10.05",    days:5,  occ:55, guests:2.2},
+    {label:"03.05–07.05 / 11–31.05",    days:26, occ:50, guests:2.2},
+    {label:"01.06–20.06",               days:20, occ:65, guests:2.2},
+    {label:"21.06–24.08",               days:65, occ:82, guests:2.7},
+    {label:"25.08–30.09",               days:37, occ:68, guests:2.5},
+    {label:"01.10–31.10",               days:31, occ:48, guests:2.1},
+    {label:"01.11–28.12",               days:58, occ:35, guests:2.2},
+  ],
+  prices:{
+    junior: {
+      ultra:[4000,3700,4400,4200,5800,7900,6300,3500,3300],
+      spa:  [4600,4300,5000,4800,6600,9000,7100,4100,3900],
+      med:  [4800,4500,5200,5000,6800,9200,7300,4300,4100]
+    },
+    comfort:{
+      ultra:[4200,3900,4600,4400,6000,8100,6500,3700,3500],
+      spa:  [4800,4500,5200,5000,6800,9200,7300,4300,4100],
+      med:  [5000,4700,5400,5200,7000,9400,7500,4500,4300]
+    },
+    lux:{
+      ultra:[4900,4600,5300,5100,7000,9500,7600,4500,4200],
+      spa:  [5500,5200,5900,5700,7800,10600,8400,5100,4800],
+      med:  [5700,5400,6100,5900,8000,10800,8600,5300,5000]
+    }
+  },
+  monthlyOcc: {Март:40,Апрель:40,Май:52,Июнь:72,Июль:82,Август:82,Сентябрь:68,Октябрь:48,Ноябрь:35,Декабрь:35},
+  monthlyFact:{Март:0,Апрель:0,Май:0,Июнь:0,Июль:0,Август:0,Сентябрь:0,Октябрь:0,Ноябрь:0,Декабрь:0},
+  segs: JSON.parse(JSON.stringify(DEFAULT_SEGS)),
+};
+
+const fmt  = n => new Intl.NumberFormat("ru-RU",{maximumFractionDigits:0}).format(Math.round(n));
+const fmtM = n => (n/1e6).toFixed(1)+" млн";
+
+function calcMonthlyPlanRev(mi) {
+  const m=MONTHS[mi];
+  const occ=(state.monthlyOcc[m.name]||0)/100;
+  let rev=0;
+  m.periodIdx.forEach(pi=>{
+    const p=state.periods[pi]; if(!p) return;
+    const ds=m.days/(m.periodIdx.length||1);
+    ROOM_TYPES.forEach(rt=>{
+      const n=+state.rooms[rt.key]||0;
+      const rn=n*ds*occ;
+      PACKAGES.forEach(pk=>{
+        rev+=rn*(state.pkgMix[pk.key]/100)*p.guests*(state.prices[rt.key][pk.key][pi]||0)*state.multi;
+      });
+    });
+  });
+  return rev;
+}
+
+function calcMain() {
+  let totalRev=0,totalRN=0;
+  const byRoom={junior:0,comfort:0,lux:0};
+  const byPkgTotal={ultra:0,spa:0,med:0};
+  const rows=state.periods.map((p,i)=>{
+    let rev=0,rn=0;
+    const byPkg={ultra:0,spa:0,med:0};
+    ROOM_TYPES.forEach(rt=>{
+      const n=+state.rooms[rt.key]||0;
+      const roomN=n*p.days*(p.occ/100);
+      rn+=roomN;
+      PACKAGES.forEach(pk=>{
+        const price=(state.prices[rt.key][pk.key][i]||0)*state.multi;
+        const r=roomN*(state.pkgMix[pk.key]/100)*p.guests*price;
+        rev+=r;byPkg[pk.key]+=r;byRoom[rt.key]+=r;byPkgTotal[pk.key]+=r;
+      });
+    });
+    totalRev+=rev;totalRN+=rn;
+    return {...p,rev,rn,byPkg};
+  });
+  return {rows,totalRev,totalRN,byRoom,byPkgTotal};
+}
+
+function render() {
+  const {rows,totalRev,totalRN,byRoom,byPkgTotal}=calcMain();
+  const pct=totalRev/TARGET*100;
+  const gap=TARGET-totalRev;
+  const neededMulti=totalRev>0?TARGET/(totalRev/state.multi):1;
+  const totalDays=state.periods.reduce((a,p)=>a+p.days,0);
+
+  document.getElementById("kpi-rev").textContent=fmtM(totalRev);
+  document.getElementById("kpi-rev").style.color=totalRev>=TARGET?"#1a7a1a":"#c0392b";
+  document.getElementById("kpi-pct").textContent=pct.toFixed(1)+"%";
+  document.getElementById("kpi-pct").style.color=pct>=100?"#1a7a1a":"#e67e22";
+  document.getElementById("kpi-gap").textContent=gap>0?"−"+fmtM(gap):"+"+fmtM(Math.abs(gap));
+  document.getElementById("kpi-gap").style.color=gap<=0?"#1a7a1a":"#c0392b";
+  document.getElementById("kpi-multi").textContent="×"+neededMulti.toFixed(3);
+  document.getElementById("kpi-rn").textContent=fmt(totalRN);
+  document.getElementById("progress-bar").style.width=Math.min(pct,100)+"%";
+  document.getElementById("progress-bar").style.background=pct>=100?"#27ae60":"#2980b9";
+
+  const ab=document.getElementById("alert-box");
+  if(gap>0){
+    ab.innerHTML=`<div class="alert alert-warn">⚠️ До цели не хватает <b>${fmtM(gap)}</b> — цены нужно поднять на <b>${((neededMulti-1)*100).toFixed(1)}%</b>
+      <button class="btn" style="background:#e67e22;margin-left:10px" onclick="autoTarget()">✨ Авто-цель ×${neededMulti.toFixed(3)}</button>
+      ${state.multi!==1?'<button class="btn" style="background:#95a5a6;margin-left:6px" onclick="setMulti(1)">Сброс</button>':''}
+    </div>`;
+  } else {
+    ab.innerHTML=`<div class="alert alert-ok">✅ Цель достигнута! Превышение: <b>+${fmtM(Math.abs(gap))}</b></div>`;
+  }
+
+  // Summary
+  let tbody="";
+  rows.forEach((p,i)=>{
+    const bc=p.occ>=70?"badge-green":p.occ>=50?"badge-yellow":"badge-red";
+    tbody+=`<tr>
+      <td><b>${p.label}</b></td><td style="text-align:center">${p.days}</td>
+      <td style="text-align:center"><span class="badge ${bc}">${p.occ}%</span></td>
+      <td style="text-align:right">${fmt(p.rn)}</td>
+      <td style="text-align:right;font-weight:bold">${fmt(p.rev)}</td>
+      <td style="text-align:center">${totalRev>0?(p.rev/totalRev*100).toFixed(1):0}%</td>
+      <td style="text-align:right;color:#27ae60">${fmtM(p.byPkg.ultra)}</td>
+      <td style="text-align:right;color:#8e44ad">${fmtM(p.byPkg.spa)}</td>
+      <td style="text-align:right;color:#e67e22">${fmtM(p.byPkg.med)}</td>
+    </tr>`;
+  });
+  tbody+=`<tr class="total"><td colspan="2">ИТОГО</td><td style="text-align:center">${totalDays} дн.</td>
+    <td style="text-align:right">${fmt(totalRN)}</td><td style="text-align:right">${fmt(totalRev)}</td>
+    <td style="text-align:center">100%</td>
+    <td style="text-align:right">${fmtM(byPkgTotal.ultra)}</td>
+    <td style="text-align:right">${fmtM(byPkgTotal.spa)}</td>
+    <td style="text-align:right">${fmtM(byPkgTotal.med)}</td>
+  </tr>`;
+  document.getElementById("tbl-summary-body").innerHTML=tbody;
+
+  let br="";
+  ROOM_TYPES.filter(rt=>+state.rooms[rt.key]>0).forEach(rt=>{
+    br+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#eef4fb;border-radius:6px;margin-bottom:6px">
+      <div><b style="color:#1a3a5c">${rt.label}</b><br><span class="small">${state.rooms[rt.key]} номеров</span></div>
+      <div style="font-size:18px;font-weight:bold;color:#2980b9">${fmtM(byRoom[rt.key])}</div>
+    </div>`;
+  });
+  document.getElementById("by-room").innerHTML=br;
+
+  let bp="";
+  PACKAGES.forEach(pk=>{
+    bp+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f0fbf0;border-radius:6px;margin-bottom:6px">
+      <div><b style="color:${pk.color};font-size:12px">${pk.label}</b><br><span class="small">Доля: ${state.pkgMix[pk.key]}%</span></div>
+      <div style="font-size:18px;font-weight:bold;color:${pk.color}">${fmtM(byPkgTotal[pk.key])}</div>
+    </div>`;
+  });
+  document.getElementById("by-pkg").innerHTML=bp;
+
+  renderMonthly();
+  renderSegments();
+  renderRooms(byRoom);
+  renderPackages(neededMulti);
+  renderPeriods(rows,totalRN,totalRev);
+  renderPricelist();
+  renderResume(totalRev,gap,neededMulti,byPkgTotal);
+}
+
+// ── ПЛАН/ФАКТ ──
+function renderMonthly() {
+  const totalRooms=Object.values(state.rooms).reduce((a,b)=>a+ +b,0);
+  let html="",planSum=0,factSum=0,daysSum=0;
+  MONTHS.forEach((m,mi)=>{
+    const planOcc=+state.monthlyOcc[m.name]||0;
+    const planRev=calcMonthlyPlanRev(mi);
+    const factRev=+state.monthlyFact[m.name]||0;
+    planSum+=planRev; factSum+=factRev; daysSum+=m.days;
+    const gap=planRev-factRev;
+    const gapPct=planRev>0?(gap/planRev*100):0;
+    const roomsNeed=gap>0&&planRev>0?Math.round((gap/planRev)*totalRooms*(planOcc/100)):0;
+    let statusColor="#555";
+    if(factRev===0){statusColor="#888";}
+    else if(gap<=0){statusColor="#155724";}
+    else if(gapPct<=15){statusColor="#856404";}
+    else{statusColor="#721c24";}
+    const rec=MONTH_REC[m.name]||{};
+    html+=`<tr style="background:${mi%2===0?"#f8fafc":"#fff"}">
+      <td><b style="color:#1a3a5c">${m.name}</b></td>
+      <td style="text-align:center">${m.days}</td>
+      <td style="text-align:center">
+        <input type="number" value="${planOcc}" min="0" max="100" onchange="updOcc('${m.name}',this.value)"
+          style="width:52px;text-align:center;font-weight:bold;color:#2980b9"> %
+      </td>
+      <td style="text-align:right;font-weight:bold;color:#1a3a5c">${fmtM(planRev)}</td>
+      <td><input type="number" value="${state.monthlyFact[m.name]||''}" min="0" placeholder="0"
+        onchange="updFact('${m.name}',this.value)" style="width:100px;text-align:right"></td>
+      <td style="text-align:right;font-weight:bold;color:${gap>0?"#e74c3c":"#27ae60"}">
+        ${factRev>0?(gap>0?"−"+fmtM(gap):"+"+fmtM(Math.abs(gap))):"—"}
+      </td>
+      <td style="text-align:center">
+        ${gap>0&&factRev>0?`<b style="color:#e74c3c">~${roomsNeed} ном.</b>`:"—"}
+      </td>
+      <td style="font-size:11px;color:#8e44ad">${rec.pkgs||"—"}</td>
+      <td style="font-size:11px">
+        <span style="color:#2980b9">${rec.segs||"—"}</span><br>
+        <span style="color:#e67e22;font-size:10px">👉 ${rec.focus||""}</span>
+      </td>
+    </tr>`;
+  });
+  document.getElementById("tbl-monthly").innerHTML=html;
+  document.getElementById("m-days-total").textContent=daysSum+" дн.";
+  document.getElementById("m-plan-total").textContent=fmtM(planSum);
+  document.getElementById("m-fact-total").textContent=factSum>0?fmtM(factSum):"—";
+  const gt=planSum-factSum;
+  document.getElementById("m-gap-total").textContent=factSum>0?(gt>0?"−"+fmtM(gt):"+"+fmtM(Math.abs(gt))):"—";
+  document.getElementById("m-gap-total").style.color=gt<=0?"#27ae60":"#e74c3c";
+}
+
+// ── СЕГМЕНТЫ ──
+function renderSegments() {
+  const SEG_KEYS=["direct","to","fss","corp","ota"];
+  const SEG_COLORS=["#27ae60","#e67e22","#e74c3c","#2980b9","#8e44ad"];
+  let html="";
+  MONTHS.forEach((m,mi)=>{
+    const s=state.segs[m.name];
+    const total=SEG_KEYS.reduce((a,k)=>a+(+s[k]||0),0);
+    const planRev=calcMonthlyPlanRev(mi);
+    const ok=total===100;
+    html+=`<tr style="background:${mi%2===0?"#f8fafc":"#fff"}">
+      <td><b style="color:#1a3a5c">${m.name}</b></td>
+      ${SEG_KEYS.map((k,ki)=>`<td style="text-align:center">
+        <input type="number" value="${s[k]||0}" min="0" max="100"
+          onchange="updSeg('${m.name}','${k}',this.value)"
+          style="width:50px;text-align:center;color:${SEG_COLORS[ki]};font-weight:bold"> %
+      </td>`).join("")}
+      <td style="text-align:center"><span class="badge ${ok?"badge-green":"badge-red"}">${total}%</span></td>
+      <td style="text-align:right;font-weight:bold;color:#1a3a5c">${fmtM(planRev)}</td>
+    </tr>`;
+  });
+  document.getElementById("tbl-segments").innerHTML=html;
+}
+
+// ── ПРЕЙСКУРАНТ ──
+function renderPricelist() {
+  const today=new Date();
+  const dateStr=today.toLocaleDateString("ru-RU",{day:"2-digit",month:"long",year:"numeric"});
+  document.getElementById("pl-period-title").textContent="Март – Декабрь 2026 · Актуален на: "+dateStr;
+
+  let html="";
+  SEASONS.forEach(s=>{
+    const i=s.idx;
+    const activeRooms=ROOM_TYPES.filter(rt=>+state.rooms[rt.key]>0);
+    html+=`<div class="price-season">
+      <div class="price-season-title">
+        <span>📅 ${s.name}</span>
+        <span style="font-size:12px;font-weight:normal">${s.dates}</span>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="price-table">
+        <thead><tr>
+          <th>Тип номера</th><th>Кол-во</th>
+          ${PACKAGES.map(pk=>`<th style="color:${pk.color=="#27ae60"?"#a8f0c8":pk.color=="#8e44ad"?"#d0a8f0":"#f0c880"}">${pk.short}<br><span style="font-weight:normal;font-size:9px">руб/гость/сутки</span></th>`).join("")}
+          <th>Включено в пакет</th>
+        </tr></thead>
+        <tbody>
+          ${activeRooms.map(rt=>`<tr>
+            <td><b>${rt.label}</b></td>
+            <td style="text-align:center">${state.rooms[rt.key]}</td>
+            ${PACKAGES.map(pk=>{
+              const base=state.prices[rt.key][pk.key][i]||0;
+              const final=Math.round(base*state.multi);
+              return `<td>
+                <div class="price-val">от ${fmt(final)} ₽</div>
+                ${state.multi!==1?`<div class="price-final">база: ${fmt(base)} ₽</div>`:""}
+                <div style="font-size:10px;color:#888">за 2 гостей: ${fmt(final*2)} ₽/сут</div>
+              </td>`;
+            }).join("")}
+            <td style="font-size:11px;color:#555">
+              ${rt.key==="junior"?"Номер с видом на море/горы, балкон":""}
+              ${rt.key==="comfort"?"Улучшенный номер, панорамный вид":""}
+              ${rt.key==="lux"?"Люкс-апартаменты, VIP-сервис":""}
+            </td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      </div>
+      <div style="font-size:11px;color:#666;padding:6px 10px;background:#f8f9fa;border:1px solid #eee;border-top:none;border-radius:0 0 6px 6px">
+        <b>В стоимость включено:</b>
+        Ultra — завтрак+обед+ужин+аквапарк+анимация&nbsp;·&nbsp;
+        +SPA — дополнительно SPA-процедуры&nbsp;·&nbsp;
+        +Medical — дополнительно медицинские процедуры по программе
+      </div>
+    </div>`;
+  });
+  document.getElementById("pricelist-content").innerHTML=html;
+}
+
+// ── РЕЗЮМЕ ──
+function renderResume(totalRev, gap, neededMulti, byPkgTotal) {
+  const today=new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long",year:"numeric"});
+  const pct=(totalRev/TARGET*100).toFixed(1);
+  const onTrack=totalRev>=TARGET;
+
+  // Считаем плановый доход помесячно для анализа
+  let planTotal=0;
+  MONTHS.forEach((_,mi)=>{ planTotal+=calcMonthlyPlanRev(mi); });
+
+  // Топ месяц по доходу
+  let topMonth="", topRev=0;
+  MONTHS.forEach((m,mi)=>{ const r=calcMonthlyPlanRev(mi); if(r>topRev){topRev=r;topMonth=m.name;} });
+
+  // Слабый месяц
+  let weakMonth="", weakRev=Infinity;
+  MONTHS.forEach((m,mi)=>{ const r=calcMonthlyPlanRev(mi); if(r<weakRev){weakRev=r;weakMonth=m.name;} });
+
+  // Доля пакетов
+  const totalPkg=Object.values(byPkgTotal).reduce((a,b)=>a+b,0);
+  const medShare=totalPkg>0?(byPkgTotal.med/totalPkg*100).toFixed(0):0;
+  const spaShare=totalPkg>0?(byPkgTotal.spa/totalPkg*100).toFixed(0):0;
+
+  // Горящие месяцы (загрузка < 45%)
+  const hotMonths=MONTHS.filter(m=>(state.monthlyOcc[m.name]||0)<45).map(m=>m.name);
+
+  const html=`
+  <div class="resume-header">
+    <h2>📋 Резюме по расчётам · ${today}</h2>
+    <div style="margin-top:8px">
+      <span class="kpi-mini">💰 Доход: ${fmtM(totalRev)}</span>
+      <span class="kpi-mini">📈 Выполнение цели: ${pct}%</span>
+      <span class="kpi-mini">⚡ ${gap>0?"Не хватает: "+fmtM(gap):"Превышение: +"+fmtM(Math.abs(gap))}</span>
+      <span class="kpi-mini">🛏 ${Object.values(state.rooms).reduce((a,b)=>a+ +b,0)} номеров</span>
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:#cce5ff">
+      ${onTrack
+        ? "✅ При текущих параметрах цель 1,2 млрд ДОСТИГНУТА"
+        : `⚠️ Для достижения цели необходимо поднять цены на ${((neededMulti-1)*100).toFixed(1)}% ИЛИ увеличить загрузку / улучшить продуктовый микс`}
+    </div>
+  </div>
+
+  <div class="flex" style="margin-bottom:16px">
+    <div class="box" style="flex:1;min-width:220px">
+      <h4>📊 Ключевые показатели</h4>
+      <table style="font-size:12px;margin-top:4px">
+        <tr><td style="color:#888;border:none;padding:3px 0">Расчётный доход</td><td style="border:none;font-weight:bold;padding:3px 8px">${fmtM(totalRev)}</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Цель</td><td style="border:none;font-weight:bold;padding:3px 8px">1 200,0 млн</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Выполнение</td><td style="border:none;font-weight:bold;color:${onTrack?"#27ae60":"#e74c3c"};padding:3px 8px">${pct}%</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Нужный ×цен</td><td style="border:none;font-weight:bold;color:#2980b9;padding:3px 8px">×${neededMulti.toFixed(3)}</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Лучший месяц</td><td style="border:none;font-weight:bold;color:#27ae60;padding:3px 8px">${topMonth} (${fmtM(topRev)})</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Слабый месяц</td><td style="border:none;font-weight:bold;color:#e67e22;padding:3px 8px">${weakMonth} (${fmtM(weakRev)})</td></tr>
+        <tr><td style="color:#888;border:none;padding:3px 0">Доля Medical</td><td style="border:none;font-weight:bold;padding:3px 8px">${medShare}% <span style="color:#888;font-size:10px">(рек. 30–35%)</span></td></tr>
+      </table>
+    </div>
+    <div class="box box-green" style="flex:1;min-width:220px">
+      <h4>🚀 ТОП-5 действий для выполнения плана</h4>
+      <ol style="font-size:12px;padding-left:16px;margin-top:4px;line-height:1.8">
+        <li><b>Поднять Ultra+Medical на 15–20%</b> — самый маржинальный пакет, рынок принимает</li>
+        <li><b>Запустить Early Bird на лето прямо сейчас</b> — июль-август со скидкой 10% → +30–40 млн</li>
+        <li><b>Сократить ФСС до 15%</b> — каждый замещённый номер = +2 000–4 000 ₽/сутки</li>
+        <li><b>Создать семейный пакет "Лето с детьми"</b> — дети до 12 бесплатно при 7+ ночах</li>
+        <li><b>Корпоративный апрель и ноябрь</b> — 3–4 MICE-заезда по 50–80 чел.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>📦 Рекомендации по продуктовой линейке</h3>
+
+  <div class="rec-card green">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b>🌞 ВЫСОКИЙ СЕЗОН — Июнь–Август</b>
+      <span class="priority-badge p-high">Приоритет: ВЫСОКИЙ</span>
+    </div>
+    <div style="font-size:12px;margin-top:6px">
+      <b>Продукты:</b>
+      <ul style="padding-left:16px;margin-top:4px;line-height:1.8">
+        <li>«Семейное черноморское лето» — 7 ночей, Ultra+аквапарк, дети до 12 бесплатно. Цена: от ${fmt(Math.round(state.prices.junior.ultra[5]*state.multi*2))} ₽/сутки за номер</li>
+        <li>«VIP Черноморский» — Джуниор Сюит + Ultra+SPA, 5–10 ночей. Цена: от ${fmt(Math.round(state.prices.junior.spa[5]*state.multi*2))} ₽/сутки</li>
+        <li>«Детский иммунитет» — 10–14 ночей, Ultra+Medical+детская программа. Цена: от ${fmt(Math.round(state.prices.junior.med[5]*state.multi*2))} ₽/сутки</li>
+        <li>«Морской ретрит» — 7 ночей, Ultra+SPA, медитации, без аниации. Для взрослых без детей</li>
+      </ul>
+      <b>Целевой микс пакетов:</b> Ultra 30% / Ultra+SPA 40% / Ultra+Medical 30%<br>
+      <b>Целевые сегменты:</b> Семьи с детьми 3–15 лет (50%), Пары 30–50 лет (30%), VIP (20%)<br>
+      <b>Каналы:</b> Прямые брони 40% + OTA (Ostrovok, Яндекс) 30% + Туроператоры 20% + Корпораты 10%
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:#2980b9">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b>🌤 ПЛЕЧО — Май, Сентябрь</b>
+      <span class="priority-badge p-med">Приоритет: СРЕДНИЙ</span>
+    </div>
+    <div style="font-size:12px;margin-top:6px">
+      <b>Продукты:</b>
+      <ul style="padding-left:16px;margin-top:4px;line-height:1.8">
+        <li>«Бархатный оздоровительный» — 10–14 ночей, Ultra+Medical. Цена: от ${fmt(Math.round(state.prices.junior.med[6]*state.multi*2))} ₽/сутки (сентябрь)</li>
+        <li>«Антистресс-ретрит» — 7 ночей, Ultra+SPA, без детей. Для городских жителей 35–55 лет</li>
+        <li>«Майский семейный» — 5–7 ночей, майские праздники, Ultra. Акция: скидка 8% при брони до 20 апреля</li>
+        <li>«Детокс-программа» — 5–7 ночей, Ultra+Medical, правильное питание</li>
+      </ul>
+      <b>Целевой микс:</b> Ultra 30% / Ultra+SPA 25% / Ultra+Medical 45%<br>
+      <b>Акцент:</b> длина заезда 10–14 дней повышает средний чек на 25–30%
+    </div>
+  </div>
+
+  <div class="rec-card orange">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b>🍂 НИЗКИЙ СЕЗОН — Март–Апрель, Октябрь–Декабрь</b>
+      <span class="priority-badge p-med">Приоритет: СРЕДНИЙ</span>
+    </div>
+    <div style="font-size:12px;margin-top:6px">
+      <b>Продукты:</b>
+      <ul style="padding-left:16px;margin-top:4px;line-height:1.8">
+        <li>«MICE Сочи» — корпоративный заезд 3–5 ночей, конференц-зал+Ultra. Пакет от 50 чел., специальная цена</li>
+        <li>«Здоровье сотрудников» — 7–10 ночей, Ultra+Medical, для компаний 20–50 чел.</li>
+        <li>«Новогодний Ultra SPA» — 5–7 ночей декабрь, Ultra+SPA+праздничная программа. Бронировать уже сейчас!</li>
+        <li>«Детокс после праздников» — январь (следующий год) + март: востребованный нишевый продукт</li>
+        <li>«14 дней здоровья» — Ultra+Medical 14 ночей, октябрь–ноябрь. Самый маржинальный вариант в низкий сезон</li>
+      </ul>
+      <b>Целевой микс:</b> Ultra 20% / Ultra+SPA 20% / Ultra+Medical 60%<br>
+      <b>Каналы:</b> Прямые B2B переговоры с HR-директорами + email-маркетинг по базе
+    </div>
+  </div>
+
+  <h3 style="margin-top:16px">🔥 Горящие распродажи и спецакции</h3>
+
+  ${hotMonths.length>0?`
+  <div class="rec-card red">
+    <b>🔴 Месяцы с низкой загрузкой (менее 45%): ${hotMonths.join(", ")}</b>
+    <div style="font-size:12px;margin-top:6px">
+      <b>Рекомендуемые акции для дозагрузки:</b>
+      <ul style="padding-left:16px;margin-top:4px;line-height:1.8">
+        <li><b>«Горящий тур»</b> — скидка 20–25% при бронировании за 7–14 дней до заезда. Канал: Telegram-канал, email, OTA</li>
+        <li><b>«3+1 бесплатно»</b> — при бронировании 3 ночей 4-я бесплатно. Работает в межсезонье</li>
+        <li><b>«Длинный заезд»</b> — 14 ночей по цене 12. Стимулирует длинные медицинские программы</li>
+        <li><b>«Тур выходного дня»</b> — пт–вс, 2 ночи, спецпредложение для жителей Краснодарского края</li>
+        <li><b>«Корпоративный экспресс»</b> — быстрое размещение для небольших команд 15–30 чел.</li>
+      </ul>
+    </div>
+  </div>`:""}
+
+  <div class="rec-card gold">
+    <b>🌟 Early Bird — открыть продажи прямо сейчас</b>
+    <div style="font-size:12px;margin-top:6px">
+      <b>Рекомендуем немедленно открыть бронирование со скидкой 10%:</b>
+      <ul style="padding-left:16px;margin-top:4px;line-height:1.8">
+        <li>Июль–Август 2026 — пиковый спрос, клиенты ищут сейчас. Потенциал: +30–40 млн руб.</li>
+        <li>Новогодний пакет декабрь 2026 — конкуренты уже продают. Открыть немедленно</li>
+        <li>Майские праздники — семьи планируют за 2–3 месяца. Акция до 1 апреля</li>
+      </ul>
+      <b>Механика Early Bird:</b> скидка 10% при 100% предоплате за 60+ дней до заезда.<br>
+      Это не потеря дохода — это гарантированная загрузка и кэш поток сейчас.
+    </div>
+  </div>
+
+  <h3 style="margin-top:16px">👥 Рекомендации по перераспределению сегментов</h3>
+  <div style="overflow-x:auto">
+  <table>
+    <thead><tr>
+      <th>Сегмент</th><th>Сейчас (среднее)</th><th>Рекомендуется</th><th>Потенциал дохода</th><th>Действия</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><b style="color:#27ae60">Прямые продажи</b></td><td>~25%</td><td>35–40%</td><td style="color:#27ae60">+50–70 млн</td><td>Сайт, Telegram, программа лояльности</td></tr>
+      <tr><td><b style="color:#e67e22">Туроператоры</b></td><td>~20%</td><td>20–25%</td><td style="color:#27ae60">+20–30 млн</td><td>Расширить портфель туроператоров, подписать 5–7 новых</td></tr>
+      <tr><td><b style="color:#e74c3c">ФСС/Льготники</b></td><td>~25%</td><td>10–15%</td><td style="color:#27ae60">+80–120 млн</td><td>Постепенное замещение коммерческими пакетами</td></tr>
+      <tr><td><b style="color:#2980b9">Корпораты MICE</b></td><td>~18%</td><td>20–25%</td><td style="color:#27ae60">+30–50 млн</td><td>B2B отдел, прямые переговоры с HR-директорами</td></tr>
+      <tr><td><b style="color:#8e44ad">OTA (Ostrovok)</b></td><td>~12%</td><td>15–20%</td><td style="color:#27ae60">+20–30 млн</td><td>Обновить контент, добавить пакеты на платформу</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div style="margin-top:16px;padding:14px;background:#eef4fb;border-radius:8px;border:1px solid #c8d8f0;font-size:12px">
+    <b style="color:#1a3a5c;font-size:13px">💡 Итоговый вывод</b><br><br>
+    При текущих параметрах модели расчётный доход составляет <b>${fmtM(totalRev)}</b> — это <b>${pct}% от цели</b>.<br><br>
+    ${gap>0?`
+    Для достижения 1,2 млрд руб. необходима <b>комбинация трёх действий</b>:<br>
+    1. Поднять цены Ultra+Medical на 15–20% (+40–60 млн)<br>
+    2. Сократить долю ФСС с 25% до 15% (+80–120 млн)<br>
+    3. Вырастить прямые продажи и OTA (+50–80 млн)<br><br>
+    Суммарный потенциал этих мер: <b style="color:#27ae60">+170–260 млн руб.</b> — достаточно для выполнения и перевыполнения цели.
+    `:`<b style="color:#27ae60">✅ Цель достигнута!</b> Для перевыполнения рекомендуем сфокусироваться на росте доли Ultra+Medical и развитии прямых продаж.`}
+  </div>`;
+
+  document.getElementById("resume-content").innerHTML=html;
+}
+
+function renderRooms(byRoom) {
+  const tot=Object.values(state.rooms).reduce((a,b)=>a+ +b,0);
+  let ri="";
+  ROOM_TYPES.forEach(rt=>{
+    ri+=`<div class="box" style="flex:1;min-width:200px">
+      <b style="color:#1a3a5c;display:block;margin-bottom:8px">${rt.label}</b>
+      <label class="small">Количество номеров:</label>
+      <input type="number" value="${state.rooms[rt.key]}" min="0" max="467"
+        onchange="updRoom('${rt.key}',this.value)"
+        style="display:block;width:100%;font-size:16px;font-weight:bold;margin-top:4px;padding:5px 8px">
+      <div class="small" style="margin-top:4px">${tot>0?((+state.rooms[rt.key]/tot)*100).toFixed(1):0}% от фонда</div>
+      <div style="font-size:11px;color:#2980b9;margin-top:2px">Доход: ${fmtM(byRoom[rt.key])}</div>
+    </div>`;
+  });
+  document.getElementById("room-inputs").innerHTML=ri;
+  const rc=document.getElementById("room-check");
+  rc.style.background=tot===467?"#d4edda":"#fff3cd";
+  rc.style.border="1px solid "+(tot===467?"#28a745":"#f0ad4e");
+  rc.textContent=tot===467?`✅ Итого: ${tot} — совпадает с фондом`:`⚠️ Итого: ${tot} из 467 (разница: ${467-tot})`;
+}
+
+function renderPackages(neededMulti) {
+  let pi2="";
+  PACKAGES.forEach(pk=>{
+    pi2+=`<div style="background:#f9f9fb;border-radius:8px;padding:12px;margin-bottom:8px;border:1px solid #e8e0f0">
+      <b style="color:${pk.color};font-size:12px">${pk.label}</b>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+        <input type="range" min="0" max="100" value="${state.pkgMix[pk.key]}"
+          oninput="updPkg('${pk.key}',this.value)" style="flex:1;accent-color:${pk.color}">
+        <input type="number" min="0" max="100" value="${state.pkgMix[pk.key]}"
+          onchange="updPkg('${pk.key}',this.value)"
+          style="width:55px;text-align:center;font-weight:bold;color:${pk.color}"> %
+      </div>
+    </div>`;
+  });
+  document.getElementById("pkg-inputs").innerHTML=pi2;
+  const pkgTot=Object.values(state.pkgMix).reduce((a,b)=>a+ +b,0);
+  const pc=document.getElementById("pkg-check");
+  pc.style.background=pkgTot===100?"#d4edda":"#f2dede";
+  pc.style.border="1px solid "+(pkgTot===100?"#28a745":"#e74c3c");
+  pc.textContent=pkgTot===100?"✅ Сумма = 100%":`⚠️ Сумма = ${pkgTot}% (должно быть 100)`;
+  document.getElementById("multi-display").textContent="×"+state.multi.toFixed(3);
+  document.getElementById("multi-range").value=state.multi;
+  document.getElementById("multi-hint").textContent=`При ×${neededMulti.toFixed(3)} → доход = 1 200,0 млн`;
+
+  let ptbl="";
+  ROOM_TYPES.filter(rt=>+state.rooms[rt.key]>0).forEach(rt=>{
+    ptbl+=`<div style="margin-bottom:16px">
+      <div style="font-weight:bold;color:#1a3a5c;margin-bottom:4px">${rt.label} (${state.rooms[rt.key]} ном.)</div>
+      <div style="overflow-x:auto"><table style="font-size:11px">
+        <thead><tr style="background:#34495e">
+          <th style="padding:5px 8px">Пакет</th>
+          ${state.periods.map((_,i)=>`<th style="padding:5px 6px;min-width:62px;color:#fff;font-size:10px">П${i+1}</th>`).join("")}
+        </tr></thead>
+        <tbody>${PACKAGES.map((pk,pi)=>`<tr style="background:${pi%2===0?"#f8f9fa":"#fff"}">
+          <td style="font-weight:bold;color:${pk.color};white-space:nowrap;padding:3px 8px">${pk.short}</td>
+          ${state.prices[rt.key][pk.key].map((base,i)=>`<td style="padding:2px 3px">
+            <input type="number" value="${base}" onchange="updPrice('${rt.key}','${pk.key}',${i},this.value)"
+              style="width:62px;padding:2px 3px;font-size:11px;border:1px solid #c8d8e8;border-radius:3px">
+            ${state.multi!==1?`<div style="font-size:9px;color:#e67e22;text-align:center">→${fmt(base*state.multi)}</div>`:""}
+          </td>`).join("")}
+        </tr>`).join("")}</tbody>
+      </table></div>
+    </div>`;
+  });
+  document.getElementById("price-tables").innerHTML=ptbl;
+}
+
+function renderPeriods(rows,totalRN,totalRev) {
+  let pt="";
+  rows.forEach((p,i)=>{
+    pt+=`<tr>
+      <td style="text-align:center;color:#888">${i+1}</td>
+      <td style="font-size:11px;white-space:nowrap">${p.label}</td>
+      <td><input type="number" value="${p.days}" min="0" max="200" onchange="updPeriod(${i},'days',this.value)" style="width:55px"></td>
+      <td><input type="number" value="${p.occ}" min="0" max="100" onchange="updPeriod(${i},'occ',this.value)" style="width:55px"> %</td>
+      <td><input type="number" value="${p.guests}" min="1" max="5" step="0.1" onchange="updPeriod(${i},'guests',this.value)" style="width:55px"></td>
+      <td style="text-align:right">${fmt(p.rn)}</td>
+      <td style="text-align:right;font-weight:bold;color:#2980b9">${fmtM(p.rev)}</td>
+    </tr>`;
+  });
+  pt+=`<tr class="total"><td colspan="2">ИТОГО</td>
+    <td style="text-align:center">${state.periods.reduce((a,p)=>a+p.days,0)}</td>
+    <td></td><td></td>
+    <td style="text-align:right">${fmt(totalRN)}</td>
+    <td style="text-align:right">${fmtM(totalRev)}</td>
+  </tr>`;
+  document.getElementById("tbl-periods-body").innerHTML=pt;
+}
+
+function updOcc(m,v){state.monthlyOcc[m]=+v;render();}
+function updFact(m,v){state.monthlyFact[m]=+v;renderMonthly();}
+function updSeg(m,k,v){state.segs[m][k]=+v;renderSegments();}
+function updPeriod(i,f,v){state.periods[i][f]=+v;render();}
+function updRoom(k,v){state.rooms[k]=+v;render();}
+function updPkg(k,v){state.pkgMix[k]=+v;render();}
+function updPrice(rt,pk,i,v){state.prices[rt][pk][i]=+v;render();}
+function setMulti(v){state.multi=+v;render();}
+function autoTarget(){
+  const {totalRev}=calcMain();
+  state.multi=TARGET/(totalRev/state.multi);
+  render();
+}
+function showTab(name,el){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("panel-"+name).classList.add("active");
+  el.classList.add("active");
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тарифы — Aqva SPA Resort Илона</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a1628;
+  --bg2:       #0f1e38;
+  --card:      #132040;
+  --card-hi:   #162548;
+  --border:    rgba(255,255,255,0.08);
+  --border-hi: rgba(247,183,49,0.4);
+  --gold:      #f7b731;
+  --gold-lt:   #ffd96b;
+  --gold-dk:   #c8961a;
+  --text:      #e8f4f8;
+  --text-soft: #8aa8be;
+  --sea:       #00aacc;
+  --white:     #ffffff;
+  --ff-serif:  'Cormorant Garamond', Georgia, serif;
+  --ff-sans:   'Inter', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ff-sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND GLOW ── */
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(0,170,204,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.header {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: clamp(48px, 8vw, 96px) 24px clamp(40px, 6vw, 72px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.header h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--white);
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
+
+.header p {
+  font-size: clamp(14px, 2vw, 16px);
+  color: var(--text-soft);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── PRICING GRID ── */
+.pricing {
+  position: relative; z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 80px) 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+}
+
+/* Popular card */
+.card.popular {
+  background: var(--card-hi);
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 1px rgba(247,183,49,0.2), 0 20px 60px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.popular-badge {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt));
+  color: #0a1628;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Card header */
+.card-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sea);
+  margin-bottom: 10px;
+}
+
+.card.popular .card-tag { color: var(--gold); }
+
+.card-title {
+  font-family: var(--ff-serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* Price block */
+.price-block {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.price {
+  font-family: var(--ff-serif);
+  font-size: clamp(36px, 4vw, 44px);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1;
+}
+
+.card.popular .price { color: var(--gold-lt); }
+
+.price-note {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-top: 6px;
+}
+
+/* Features */
+.features {
+  list-style: none;
+  flex: 1;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.features li::before {
+  content: '✓';
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(0,170,204,0.12);
+  color: var(--sea);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.card.popular .features li::before {
+  background: rgba(247,183,49,0.12);
+  color: var(--gold);
+}
+
+.features li.extra {
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+.features li.extra::before {
+  content: '+';
+  background: rgba(255,255,255,0.05);
+  color: var(--text-soft);
+}
+
+/* Button */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: transform .18s, box-shadow .18s, opacity .18s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: var(--text);
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.4); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-lt));
+  color: #0a1628;
+  box-shadow: 0 6px 24px rgba(247,183,49,0.3);
+}
+.btn-gold:hover { box-shadow: 0 10px 32px rgba(247,183,49,0.45); }
+
+/* ── NOTE STRIP ── */
+.note-strip {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 0 24px 64px;
+}
+
+.note-strip p {
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.note-strip a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(247,183,49,0.3);
+  transition: border-color .2s;
+}
+.note-strip a:hover { border-color: var(--gold); }
+
+/* ── FOOTER ── */
+.footer {
+  position: relative; z-index: 10;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.footer-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.footer-title em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
+
+.footer p {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 28px;
+}
+
+.footer-contacts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-contacts a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform .18s;
+}
+.footer-contacts a:hover { transform: translateY(-2px); }
+
+.contact-phone {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.contact-wa {
+  background: #25d366;
+  color: #fff;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .pricing {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .card.popular {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 28px 20px 24px; }
+  .header { padding: 40px 20px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-label">Aqva SPA Resort Илона · Сочи</div>
+  <h1>Выберите <em>свой формат</em> отдыха</h1>
+  <p>Три программы — от чистого отдыха до полноценного оздоровления. Всё включено в стоимость.</p>
+</header>
+
+<!-- PRICING CARDS -->
+<section class="pricing">
+
+  <!-- CARD 1: Ультра -->
+  <div class="card">
+    <div class="card-tag">Базовая программа</div>
+    <div class="card-title">Ультра</div>
+    <div class="card-subtitle">Комфортный отдых без лишних хлопот — море, солнце, хорошая еда</div>
+
+    <div class="price-block">
+      <div class="price">от 9 900 ₽</div>
+      <div class="price-note">за ночь · 2 человека · завтрак + ужин</div>
+    </div>
+
+    <ul class="features">
+      <li>Номер категории Ультра с видом на море</li>
+      <li>Завтрак и ужин по системе полупансион</li>
+      <li>Бассейн с морской водой — открытый и крытый</li>
+      <li>Фитнес-зал и тренажёры</li>
+      <li>Пляж и шезлонги на территории</li>
+      <li>Анимация и вечерние мероприятия</li>
+    </ul>
+
+    <a href="#contacts" class="btn btn-outline">Узнать подробнее</a>
+  </div>
+
+  <!-- CARD 2: Ультра + СПА (popular) -->
+  <div class="card popular">
+    <div class="popular-badge">★ Популярный выбор</div>
+    <div class="card-tag">Оздоровительная программа</div>
+    <div class="card-title">Ультра + СПА</div>
+    <div class="card-subtitle">Отдых плюс забота о себе — процедуры, которые перезагружают</div>
+
+    <div class="price-block">
+      <div class="price">от 14 500 ₽</div>
+      <div class="price-note">за ночь · 2 человека · полный пансион</div>
+    </div>
+
+    <ul class="features">
+      <li>Всё из программы «Ультра»</li>
+      <li>Полный пансион — три приёма пищи</li>
+      <li class="extra">3 СПА-процедуры на человека в день</li>
+      <li class="extra">Хаммам, финская сауна, соляная комната</li>
+      <li class="extra">Массаж — классический или расслабляющий</li>
+      <li class="extra">Обёртывания и уходы для тела</li>
+      <li class="extra">Приоритетная запись на процедуры</li>
+    </ul>
+
+    <a href="#contacts" class="btn btn-gold">Забронировать</a>
+  </div>
+
+  <!-- CARD 3: Ультра + Медицина -->
+  <div class="card">
+    <div class="card-tag">Лечебная программа</div>
+    <div class="card-title">Ультра + Медицина</div>
+    <div class="card-subtitle">Полноценное оздоровление с врачебным сопровождением и индивидуальной программой</div>
+
+    <div class="price-block">
+      <div class="price">от 19 900 ₽</div>
+      <div class="price-note">за ночь · 2 человека · полный пансион + лечение</div>
+    </div>
+
+    <ul class="features">
+      <li>Всё из программы «Ультра + СПА»</li>
+      <li class="extra">Первичная консультация врача при заезде</li>
+      <li class="extra">Диагностика и план оздоровления</li>
+      <li class="extra">Лечебные процедуры по индивидуальной программе</li>
+      <li class="extra">Диетическое питание по назначению врача</li>
+      <li class="extra">Ежедневный врачебный контроль</li>
+      <li class="extra">Персональный куратор на весь период</li>
+    </ul>
+
+    <a href="#contacts" class="btn btn-outline">Узнать подробнее</a>
+  </div>
+
+</section>
+
+<!-- NOTE -->
+<div class="note-strip">
+  <p>
+    Минимальный заезд — 5 ночей. Цены актуальны для бронирования от 14 дней.<br>
+    Дети до 5 лет — бесплатно. Есть специальные условия для пар и групп.<br>
+    Точную стоимость рассчитаем под ваши даты — <a href="#contacts">напишите нам</a>.
+  </p>
+</div>
+
+<!-- FOOTER / CONTACTS -->
+<footer class="footer" id="contacts">
+  <div class="footer-title">Остались вопросы? <em>Напишите нам</em></div>
+  <p>Подберём программу под ваши цели и рассчитаем стоимость на нужные даты</p>
+  <div class="footer-contacts">
+    <a href="tel:+78001234567" class="contact-phone">
+      📞 8 800 123-45-67
+    </a>
+    <a href="https://wa.me/79001234567" class="contact-wa" target="_blank">
+      💬 WhatsApp
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>

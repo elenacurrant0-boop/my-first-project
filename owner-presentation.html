@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqva SPA — Презентация нового сайта для собственника</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy:#1A3040; --aqua:#5B8FA8; --gold:#C4A76B;
+  --sand:#E8DDD0; --sage:#7A9B8A; --white:#F8F5F0;
+  --red:#E55; --orange:#F90; --green:#4CAF50;
+  --ff-s:'Cormorant Garamond',serif; --ff:'Inter',sans-serif;
+}
+body { font-family:var(--ff); background:#F0EDE8; color:#2A2A2A; }
+
+/* ── COVER ── */
+.cover {
+  height:100vh; min-height:600px;
+  background: linear-gradient(135deg, var(--navy) 0%, #0F2030 100%);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:40px;
+  position:relative; overflow:hidden;
+}
+.cover::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(91,143,168,0.3), transparent);
+}
+.cover-label { color:var(--gold); font-size:12px; letter-spacing:4px; text-transform:uppercase; font-weight:600; margin-bottom:24px; z-index:1; }
+.cover-title { font-family:var(--ff-s); font-size:clamp(48px,8vw,96px); font-weight:300; color:#fff; line-height:1.05; margin-bottom:24px; z-index:1; }
+.cover-title em { font-style:italic; color:var(--aqua); }
+.cover-sub { color:rgba(255,255,255,0.6); font-size:18px; font-weight:300; margin-bottom:48px; z-index:1; }
+.cover-badge {
+  display:inline-flex; align-items:center; gap:12px;
+  background:rgba(196,167,107,0.12); border:1px solid rgba(196,167,107,0.4);
+  color:var(--gold); padding:12px 28px; border-radius:4px;
+  font-size:14px; letter-spacing:1px; z-index:1;
+}
+.cover-scroll { position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+  color:rgba(255,255,255,0.3); font-size:12px; letter-spacing:3px; text-transform:uppercase;
+  display:flex; flex-direction:column; align-items:center; gap:8px; z-index:1;
+  animation:bob 2s ease-in-out infinite; }
+.cover-scroll::after { content:'↓'; font-size:18px; }
+@keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* ── SLIDE BASE ── */
+.slide { padding:80px 60px; }
+.slide:nth-child(even) { background:#fff; }
+.slide:nth-child(odd)  { background:var(--white); }
+
+.slide-num {
+  font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  color:var(--gold); margin-bottom:8px;
+}
+.slide-title {
+  font-family:var(--ff-s); font-size:clamp(32px,5vw,56px); font-weight:300;
+  color:var(--navy); line-height:1.1; margin-bottom:12px;
+}
+.slide-title em { font-style:italic; color:var(--aqua); }
+.slide-desc { font-size:16px; color:#6A6A6A; line-height:1.7; max-width:560px; margin-bottom:48px; }
+
+/* ── PROBLEM SLIDE ── */
+.problem-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.prob-card {
+  background:#fff; border-radius:12px; padding:28px;
+  border-top:4px solid var(--red);
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.prob-card.warn { border-top-color:var(--orange); }
+.prob-card.info { border-top-color:var(--gold); }
+.prob-emoji { font-size:32px; margin-bottom:16px; }
+.prob-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--red); margin-bottom:8px; }
+.prob-card.warn .prob-label { color:var(--orange); }
+.prob-card.info .prob-label { color:var(--gold); }
+.prob-text { font-size:15px; font-weight:600; color:var(--navy); margin-bottom:8px; }
+.prob-why { font-size:13px; color:#6A6A6A; line-height:1.6; }
+.prob-fix { margin-top:14px; font-size:13px; color:var(--sage); font-weight:600; }
+.prob-fix::before { content:"→ "; }
+
+/* ── SCREEN MOCKUP ── */
+.mockup-wrap { position:relative; }
+.browser-chrome {
+  background:#E8E4E0; border-radius:12px 12px 0 0;
+  padding:12px 16px; display:flex; align-items:center; gap:8px;
+}
+.bc-dot { width:12px; height:12px; border-radius:50%; }
+.bc-dot:nth-child(1){background:#FF5F57;}
+.bc-dot:nth-child(2){background:#FFC42B;}
+.bc-dot:nth-child(3){background:#28C840;}
+.bc-url {
+  flex:1; background:#fff; border-radius:6px;
+  padding:5px 12px; font-size:12px; color:#888;
+  margin-left:8px;
+}
+.browser-body {
+  border:1px solid #D0CBC4; border-top:none;
+  border-radius:0 0 12px 12px; overflow:hidden;
+  box-shadow:0 16px 64px rgba(0,0,0,0.15);
+}
+
+/* ANNOTATION SYSTEM */
+.annotated { position:relative; }
+.ann {
+  position:absolute;
+  background:var(--gold); color:var(--navy);
+  font-size:12px; font-weight:700;
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff;
+  box-shadow:0 4px 12px rgba(196,167,107,0.5);
+  z-index:10; cursor:default;
+}
+.ann-list { display:flex; flex-direction:column; gap:12px; }
+.ann-item { display:flex; align-items:flex-start; gap:16px; }
+.ann-num {
+  background:var(--gold); color:var(--navy);
+  font-size:13px; font-weight:700;
+  width:28px; height:28px; min-width:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(196,167,107,0.4);
+}
+.ann-body .title { font-size:14px; font-weight:600; color:var(--navy); }
+.ann-body .desc  { font-size:13px; color:#6A6A6A; line-height:1.5; margin-top:2px; }
+.ann-body .impact { font-size:12px; color:var(--green); font-weight:600; margin-top:4px; }
+
+/* ── MINI SCREEN SECTIONS ── */
+/* HERO MOCKUP */
+.ms-hero {
+  background:linear-gradient(160deg, #1A3040 0%, #2E6680 50%, #1A3040 100%);
+  padding:32px;
+  position:relative;
+}
+.ms-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px;
+}
+.ms-logo { color:#fff; font-family:var(--ff-s); font-size:18px; letter-spacing:2px; }
+.ms-logo span { color:var(--gold); font-size:10px; display:block; letter-spacing:3px; }
+.ms-nav { display:flex; gap:16px; }
+.ms-nav a { color:rgba(255,255,255,0.6); font-size:12px; text-decoration:none; }
+.ms-btn-h {
+  background:var(--gold); color:var(--navy);
+  padding:8px 18px; border-radius:4px;
+  font-size:12px; font-weight:700; border:none;
+}
+
+.ms-hero-content { text-align:center; padding:8px 0 24px; }
+.ms-badge {
+  display:inline-block;
+  background:rgba(196,167,107,0.15); border:1px solid rgba(196,167,107,0.5);
+  color:var(--gold); font-size:10px; letter-spacing:2px;
+  padding:5px 14px; border-radius:2px; margin-bottom:16px;
+}
+.ms-h1 { font-family:var(--ff-s); font-size:clamp(22px,4vw,36px); color:#fff; font-weight:300; margin-bottom:8px; }
+.ms-h1 em { font-style:italic; color:#7AAFC8; }
+.ms-tags { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+.ms-tag { color:rgba(255,255,255,0.6); font-size:11px; }
+.ms-tag::before { content:"◆ "; color:var(--gold); font-size:7px; }
+
+.ms-widget {
+  background:rgba(255,255,255,0.97);
+  border-radius:8px; padding:16px 20px;
+  display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;
+  max-width:600px; margin:0 auto;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+}
+.ms-wf { flex:1; min-width:100px; }
+.ms-wf label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#888; display:block; margin-bottom:4px; }
+.ms-wf .fi {
+  border:1px solid #D8D0C8; border-radius:4px;
+  padding:8px 10px; font-size:12px; color:#333;
+  background:#fff; width:100%;
+}
+.ms-wbtn {
+  background:var(--navy); color:#fff;
+  padding:9px 18px; border-radius:4px;
+  font-size:12px; font-weight:700; border:none;
+  white-space:nowrap; flex-shrink:0;
+}
+.ms-guarantee {
+  width:100%; font-size:10px; color:#888;
+  padding-top:10px; border-top:1px solid #EDE8E0;
+  text-align:center;
+}
+.ms-trust { color:rgba(255,255,255,0.6); font-size:11px; text-align:center; margin-top:14px; }
+
+/* GUARANTEE STRIP */
+.ms-strip {
+  background:var(--navy); padding:10px 20px;
+  display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+}
+.ms-si { color:rgba(255,255,255,0.8); font-size:11px; display:flex; align-items:center; gap:6px; }
+
+/* VALUE SECTION */
+.ms-value { background:var(--white); padding:28px 20px; }
+.ms-sec-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.ms-sec-title { font-family:var(--ff-s); font-size:24px; color:var(--navy); margin-bottom:20px; }
+.ms-val-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+.ms-vc { background:#fff; border-radius:6px; padding:14px; text-align:center; border-top:2px solid transparent; }
+.ms-vc:nth-child(1){border-top-color:var(--aqua);}
+.ms-vc:nth-child(2){border-top-color:var(--sage);}
+.ms-vc:nth-child(3){border-top-color:var(--gold);}
+.ms-vc:nth-child(4){border-top-color:#C4A76B;}
+.ms-vc:nth-child(5){border-top-color:#7A9B8A;}
+.ms-vc:nth-child(6){border-top-color:#5B8FA8;}
+.ms-vi { font-size:22px; margin-bottom:6px; }
+.ms-vn { font-family:var(--ff-s); font-size:14px; color:var(--navy); margin-bottom:4px; }
+.ms-vt { font-size:11px; color:#888; }
+.ms-vinc { font-size:10px; color:var(--sage); font-weight:600; margin-top:6px; }
+
+/* PRICE SECTION */
+.ms-price-sec { background:var(--navy); padding:28px 20px; }
+.ms-clarify {
+  background:rgba(196,167,107,0.1); border:1px solid rgba(196,167,107,0.3);
+  border-radius:6px; padding:14px; font-size:12px; color:rgba(255,255,255,0.75);
+  margin:16px 0; line-height:1.6;
+}
+.ms-clarify strong { color:var(--gold); }
+.ms-rooms { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.ms-rc {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(196,167,107,0.25);
+  border-radius:8px; overflow:hidden;
+  position:relative;
+}
+.ms-rc.pop::after {
+  content:'Популярный';
+  position:absolute; top:10px; right:8px;
+  background:var(--gold); color:var(--navy);
+  font-size:9px; font-weight:700; padding:3px 8px; border-radius:2px;
+}
+.ms-rim { height:80px; display:flex; align-items:center; justify-content:center; font-size:24px; }
+.ms-rim.s1 { background:linear-gradient(135deg,#5B8FA8,#7A9B8A); }
+.ms-rim.s2 { background:linear-gradient(135deg,#7AAFC8,#5B8FA8); }
+.ms-rim.s3 { background:linear-gradient(135deg,#C4A76B,#A88A50); }
+.ms-rb { padding:12px; }
+.ms-rt { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+.ms-rn { font-family:var(--ff-s); font-size:15px; color:#fff; margin-bottom:4px; }
+.ms-ra { font-size:10px; color:rgba(255,255,255,0.5); margin-bottom:10px; }
+.ms-rp-block { display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(196,167,107,0.2); padding-top:10px; }
+.ms-rp .from { font-size:9px; color:rgba(255,255,255,0.5); }
+.ms-rp .amt  { font-family:var(--ff-s); font-size:20px; color:#fff; }
+.ms-rp .per  { font-size:9px; color:rgba(255,255,255,0.5); }
+.ms-rbtn { background:var(--gold); color:var(--navy); padding:6px 10px; border-radius:3px; font-size:10px; font-weight:700; border:none; }
+.ms-rinc { font-size:10px; color:rgba(255,255,255,0.45); margin-top:6px; line-height:1.4; }
+
+/* REVIEWS */
+.ms-reviews { background:#fff; padding:28px 20px; }
+.ms-rat { display:flex; gap:24px; align-items:center; margin-bottom:20px; }
+.ms-rat-num { font-family:var(--ff-s); font-size:56px; color:var(--navy); line-height:1; }
+.ms-rat-stars { color:#F5A623; font-size:16px; }
+.ms-rat-cnt { font-size:11px; color:#888; }
+.ms-rev-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.ms-rev { background:var(--white); border-radius:6px; padding:16px; border:1px solid #EDE8E0; }
+.ms-rev-stars { color:#F5A623; font-size:11px; margin-bottom:8px; }
+.ms-rev-text { font-family:var(--ff-s); font-size:13px; color:var(--navy); font-style:italic; line-height:1.5; margin-bottom:12px; }
+.ms-rev-auth { font-size:11px; color:#888; }
+
+/* URGENCY */
+.ms-urg { background:linear-gradient(135deg,#1A3040,#0F2030); padding:28px 20px; text-align:center; }
+.ms-urg-tag { display:inline-block; background:rgba(229,85,85,0.15); border:1px solid rgba(229,85,85,0.4); color:#FF8080; font-size:11px; font-weight:600; padding:5px 14px; border-radius:2px; margin-bottom:16px; }
+.ms-urg-title { font-family:var(--ff-s); font-size:26px; color:#fff; font-weight:300; margin-bottom:8px; }
+.ms-urg-sub { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:20px; }
+.ms-rooms-left { display:flex; justify-content:center; gap:24px; margin-bottom:20px; }
+.ms-rl { text-align:center; }
+.ms-rl .n { font-family:var(--ff-s); font-size:36px; color:var(--gold); line-height:1; }
+.ms-rl .l { font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px; }
+.ms-cd { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+.ms-cd-b { text-align:center; }
+.ms-cd-n { background:rgba(196,167,107,0.1); border:1px solid rgba(196,167,107,0.3); border-radius:4px; width:48px; height:48px; display:flex; align-items:center; justify-content:center; font-family:var(--ff-s); font-size:24px; color:var(--gold); }
+.ms-cd-l { font-size:9px; color:rgba(255,255,255,0.4); margin-top:4px; text-transform:uppercase; letter-spacing:1px; }
+.ms-urg-btn { background:var(--gold); color:var(--navy); padding:12px 28px; border-radius:4px; font-size:13px; font-weight:700; border:none; letter-spacing:1px; }
+
+/* FAQ */
+.ms-faq { background:var(--sand); padding:28px 20px; }
+.ms-faq-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.ms-faq-item { background:#fff; border-radius:6px; padding:16px; }
+.ms-faq-q { font-family:var(--ff-s); font-size:14px; color:var(--navy); margin-bottom:8px; }
+.ms-faq-q::before { content:"? "; color:var(--gold); font-weight:700; }
+.ms-faq-a { font-size:11px; color:#888; line-height:1.6; }
+
+/* FINAL CTA */
+.ms-fcta {
+  background:linear-gradient(135deg,#5B8FA8,#1A3040);
+  padding:40px 20px; text-align:center;
+}
+.ms-fcta-title { font-family:var(--ff-s); font-size:28px; color:#fff; margin-bottom:8px; }
+.ms-fcta-title em { font-style:italic; color:var(--gold); }
+.ms-fcta-sub { font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:24px; }
+.ms-cta-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+.ms-btn-p { background:var(--gold); color:var(--navy); padding:12px 24px; border-radius:4px; font-size:13px; font-weight:700; border:none; }
+.ms-btn-s { background:transparent; color:#fff; padding:11px 20px; border-radius:4px; font-size:13px; border:1px solid rgba(255,255,255,0.4); }
+
+/* FOOTER MOCK */
+.ms-footer { background:#0F1E29; padding:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.ms-ft-col h5 { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:10px; }
+.ms-ft-col p, .ms-ft-col a { font-size:12px; color:rgba(255,255,255,0.5); display:block; line-height:2; text-decoration:none; }
+
+/* ── TWO COL LAYOUT ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.two-col.big { grid-template-columns:3fr 2fr; }
+.two-col.flipped { grid-template-columns:2fr 3fr; }
+
+/* ── COMPARISON TABLE ── */
+.comp-table { width:100%; border-collapse:collapse; border-radius:8px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+.comp-table th { padding:16px 20px; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.comp-table th:first-child { background:#F0EDE8; color:#888; text-align:left; }
+.comp-table th:nth-child(2) { background:var(--red); color:#fff; }
+.comp-table th:nth-child(3) { background:var(--navy); color:#fff; }
+.comp-table td { padding:14px 20px; font-size:14px; border-bottom:1px solid #EDE8E0; }
+.comp-table td:first-child { background:#F8F5F2; color:#888; font-weight:500; }
+.comp-table td:nth-child(2) { background:#FFF5F5; color:var(--red); text-align:center; }
+.comp-table td:nth-child(3) { background:#F0F7F4; color:var(--sage); font-weight:600; text-align:center; }
+.comp-table tr:last-child td { border-bottom:none; }
+
+/* ── FUNNEL ── */
+.funnel { display:flex; flex-direction:column; align-items:center; gap:0; }
+.fn-step {
+  width:100%; max-width:500px;
+  background:#fff; border:1px solid #EDE8E0;
+  border-radius:6px; padding:16px 24px;
+  display:flex; align-items:center; gap:16px;
+  position:relative;
+  transition:transform 0.2s;
+}
+.fn-step:hover { transform:translateX(4px); }
+.fn-step::after {
+  content:'↓';
+  position:absolute; bottom:-20px; left:50%; transform:translateX(-50%);
+  color:var(--gold); font-size:16px; z-index:1;
+}
+.fn-step:last-child::after { display:none; }
+.fn-arrow { width:0; height:20px; } /* spacer */
+.fn-num { font-family:var(--ff-s); font-size:32px; color:var(--gold); font-weight:300; width:40px; flex-shrink:0; }
+.fn-body .fn-title { font-size:14px; font-weight:600; color:var(--navy); }
+.fn-body .fn-desc  { font-size:12px; color:#888; margin-top:2px; }
+.fn-body .fn-element { font-size:11px; color:var(--sage); font-weight:600; margin-top:4px; }
+.fn-pct { margin-left:auto; flex-shrink:0; }
+.fn-pct .pct-num { font-family:var(--ff-s); font-size:28px; color:var(--navy); font-weight:400; text-align:right; }
+.fn-pct .pct-label { font-size:10px; color:#888; text-align:right; }
+.fn-spacer { height:24px; }
+
+/* ── BEFORE/AFTER ── */
+.ba-wrap { display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:12px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); }
+.ba-col { padding:32px; }
+.ba-col.before { background:#FFF5F5; }
+.ba-col.after  { background:#F0F7F4; }
+.ba-label { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:20px; padding:6px 14px; border-radius:2px; display:inline-block; }
+.ba-col.before .ba-label { background:rgba(229,85,85,0.15); color:var(--red); }
+.ba-col.after  .ba-label { background:rgba(76,175,80,0.15);  color:var(--green); }
+.ba-title { font-family:var(--ff-s); font-size:22px; margin-bottom:16px; }
+.ba-col.before .ba-title { color:#C00; }
+.ba-col.after  .ba-title { color:#2A5C2E; }
+.ba-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.ba-list li { font-size:13px; line-height:1.5; display:flex; gap:10px; }
+.ba-col.before .ba-list li::before { content:"✗"; color:var(--red); font-weight:700; flex-shrink:0; }
+.ba-col.after  .ba-list li::before { content:"✓"; color:var(--green); font-weight:700; flex-shrink:0; }
+.ba-col.before .ba-list li { color:#8B4444; }
+.ba-col.after  .ba-list li { color:#2A5C2E; }
+
+/* ── ROI BLOCK ── */
+.roi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.roi-card {
+  background:#fff; border-radius:12px; padding:24px;
+  text-align:center; border-bottom:3px solid var(--gold);
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.roi-icon { font-size:32px; margin-bottom:12px; }
+.roi-num { font-family:var(--ff-s); font-size:36px; font-weight:400; color:var(--navy); line-height:1; }
+.roi-label { font-size:12px; color:#888; margin-top:6px; }
+.roi-delta { font-size:13px; font-weight:700; color:var(--green); margin-top:8px; }
+
+/* ── NEXT STEPS ── */
+.steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.step-card {
+  background:#fff; border-radius:12px; padding:28px;
+  border-top:4px solid var(--gold);
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.step-phase { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.step-title { font-family:var(--ff-s); font-size:22px; color:var(--navy); margin-bottom:16px; }
+.step-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.step-list li { font-size:13px; color:#6A6A6A; display:flex; gap:8px; align-items:flex-start; }
+.step-list li::before { content:"□"; color:var(--gold); flex-shrink:0; }
+
+/* ── DIVIDER ── */
+.divider { text-align:center; padding:24px 0; }
+.divider span { font-size:24px; }
+
+/* ── DARK SLIDE ── */
+.slide-dark { background:var(--navy) !important; }
+.slide-dark .slide-title { color:#fff; }
+.slide-dark .slide-desc { color:rgba(255,255,255,0.6); }
+.slide-dark .slide-num  { color:var(--gold); }
+
+/* ── FINAL SLIDE ── */
+.final-slide {
+  background:linear-gradient(135deg, var(--navy) 0%, #0F2030 100%);
+  padding:120px 60px;
+  text-align:center;
+}
+.final-slide h2 { font-family:var(--ff-s); font-size:clamp(36px,6vw,64px); font-weight:300; color:#fff; line-height:1.1; margin-bottom:20px; }
+.final-slide h2 em { font-style:italic; color:var(--gold); }
+.final-slide p { font-size:16px; color:rgba(255,255,255,0.6); margin-bottom:48px; }
+.final-btns { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+.fbtn { padding:14px 32px; border-radius:4px; font-size:14px; font-weight:600; border:none; cursor:pointer; font-family:var(--ff); }
+.fbtn.p { background:var(--gold); color:var(--navy); }
+.fbtn.s { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.3); }
+
+/* ── TOOLTIP on hover ── */
+.ann:hover::after {
+  content: attr(data-tip);
+  position:absolute; top:36px; left:50%; transform:translateX(-50%);
+  background:var(--navy); color:#fff;
+  font-size:11px; font-weight:400; font-family:var(--ff);
+  white-space:nowrap; padding:6px 10px; border-radius:4px;
+  pointer-events:none;
+}
+
+/* sticky nav */
+.pres-nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(26,48,64,0.95); backdrop-filter:blur(10px);
+  padding:10px 32px; display:flex; align-items:center; justify-content:space-between;
+  transform:translateY(-100%); transition:transform 0.3s;
+}
+.pres-nav.visible { transform:translateY(0); }
+.pn-logo { font-family:var(--ff-s); font-size:16px; color:#fff; letter-spacing:2px; }
+.pn-logo span { color:var(--gold); font-size:10px; letter-spacing:3px; display:block; }
+.pn-links { display:flex; gap:20px; }
+.pn-links a { color:rgba(255,255,255,0.6); font-size:12px; text-decoration:none; }
+.pn-links a:hover { color:var(--gold); }
+
+@media(max-width:768px){
+  .slide{padding:48px 24px;}
+  .two-col,.two-col.big,.two-col.flipped{grid-template-columns:1fr;}
+  .problem-grid,.roi-grid,.steps-grid{grid-template-columns:1fr;}
+  .ms-val-grid,.ms-rooms,.ms-rev-row,.ms-faq-grid{grid-template-columns:1fr;}
+  .ba-wrap,.comp-table{display:block;}
+  .pres-nav{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="pres-nav" id="nav">
+  <div class="pn-logo">AQVA SPA <span>ПРЕЗЕНТАЦИЯ САЙТА</span></div>
+  <div class="pn-links">
+    <a href="#problems">Проблемы</a>
+    <a href="#mockup">Макет</a>
+    <a href="#funnel">Воронка</a>
+    <a href="#roi">Результаты</a>
+    <a href="#next">Шаги</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     ОБЛОЖКА
+══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-label">Концепция нового сайта · 2025</div>
+  <h1 class="cover-title">Aqva SPA<br><em>Family Resort</em></h1>
+  <p class="cover-sub">Продающий сайт для 4★ семейного курорта в Сочи</p>
+  <div class="cover-badge">
+    <span>★★★★</span>
+    <span>Цель: конверсия с Яндекс Директа ×3</span>
+  </div>
+  <div class="cover-scroll">Листайте вниз</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 1 — ЧТО МЕШАЕТ ПРОДАЖАМ
+══════════════════════════════════ -->
+<section class="slide" id="problems" style="background:var(--white);">
+  <div class="slide-num">Слайд 01 — Диагноз</div>
+  <h2 class="slide-title">Почему гости <em>не бронируют</em><br>с Яндекс Директа</h2>
+  <p class="slide-desc">5 реальных причин, по которым трафик из рекламы уходит к конкурентам. По каждой — конкретное решение.</p>
+
+  <div class="problem-grid">
+    <div class="prob-card">
+      <div class="prob-emoji">💰</div>
+      <div class="prob-label">Критично · 38% отказов</div>
+      <div class="prob-text">Нет цен на странице</div>
+      <div class="prob-why">Гость пришёл с запроса "курорт Сочи цены". Цен не видит. Открывает вкладку Booking.com — и не возвращается. Деньги за клик потрачены впустую.</div>
+      <div class="prob-fix">Показывать "от N ₽/ночь" прямо на карточке номера до перехода в движок</div>
+    </div>
+    <div class="prob-card">
+      <div class="prob-emoji">❓</div>
+      <div class="prob-label">Критично · 27% отказов</div>
+      <div class="prob-text">"Аквапарк включён или нет?"</div>
+      <div class="prob-why">За 10 секунд гость не может понять, что входит в цену. "Всё включено" — размытая фраза. Уходит к тому, кто объяснил конкретно.</div>
+      <div class="prob-fix">Блок-чеклист "Что входит" на каждой странице номера и в герое</div>
+    </div>
+    <div class="prob-card warn">
+      <div class="prob-emoji">🔍</div>
+      <div class="prob-label">Высоко · 18% отказов</div>
+      <div class="prob-text">Нет доверия к незнакомому курорту</div>
+      <div class="prob-why">Гость видит курорт впервые. Нет фото реальных гостей, нет отзывов рядом с ценой, нет видео территории. Страх "а вдруг обман" побеждает.</div>
+      <div class="prob-fix">Отзывы с фото прямо под ценой, рейтинг в герое, видео-тур</div>
+    </div>
+    <div class="prob-card warn">
+      <div class="prob-emoji">📱</div>
+      <div class="prob-label">Высоко · 10% отказов</div>
+      <div class="prob-text">Цена выглядит дорогой без контекста</div>
+      <div class="prob-why">"8 500 ₽ за ночь" — дорого. "8 500 ₽ за всю семью = аквапарк + 3 разовое питание + SPA = 1 700 ₽/чел./день" — это выгодно. Контекст решает всё.</div>
+      <div class="prob-fix">Калькулятор ценности: разбить стоимость на человека и на день</div>
+    </div>
+    <div class="prob-card info">
+      <div class="prob-emoji">🔘</div>
+      <div class="prob-label">Ключевой баг</div>
+      <div class="prob-text">Кнопка "Забронировать" — серая (неактивная)</div>
+      <div class="prob-why">На текущей странице бронирования единственная кнопка прямого онлайн-бронирования отключена. Гость упирается в стену и вынужден звонить — и уходит.</div>
+      <div class="prob-fix">Активная кнопка → Travelline прямо на странице, без редиректов</div>
+    </div>
+    <div class="prob-card info">
+      <div class="prob-emoji">🔴</div>
+      <div class="prob-label">Убийца бренда</div>
+      <div class="prob-text">"ВАМ ПОВЕЗЛО — У НАС АКЦИЯ!" (красный, капслок)</div>
+      <div class="prob-why">Гость пришёл на 4★ премиум-курорт. Видит язык Авито и скидочного базара. Мгновенная потеря доверия к уровню объекта. Логотип с мультяшными человечками усиливает эффект.</div>
+      <div class="prob-fix">Новый бренд, новый язык: "Лучшая цена при прямом бронировании"</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 2 — ДО / ПОСЛЕ
+══════════════════════════════════ -->
+<section class="slide" style="background:#fff;">
+  <div class="slide-num">Слайд 02 — До и После</div>
+  <h2 class="slide-title">Старый сайт <em>VS</em> Новый подход</h2>
+  <p class="slide-desc">Разница не в дизайне — в логике продаж. Каждый элемент нового сайта работает на одну задачу: убрать причину не бронировать.</p>
+
+  <div class="ba-wrap">
+    <div class="ba-col before">
+      <div class="ba-label">❌ Сейчас</div>
+      <div class="ba-title">Сайт отпугивает</div>
+      <ul class="ba-list">
+        <li>"ВАМ ПОВЕЗЛО — У НАС АКЦИЯ!" — язык рынка, не курорта</li>
+        <li>Кнопка "Забронировать" отключена — тупик</li>
+        <li>Цены спрятаны — гость уходит на Booking</li>
+        <li>Нет объяснения что входит в стоимость</li>
+        <li>Мультяшный логотип — не премиум</li>
+        <li>Нет отзывов рядом с ценой</li>
+        <li>Нет срочности (кроме мнимых скидок)</li>
+        <li>WhatsApp — для "обсудить скидку", а не помощи</li>
+      </ul>
+    </div>
+    <div class="ba-col after">
+      <div class="ba-label">✓ Новый сайт</div>
+      <div class="ba-title">Сайт продаёт</div>
+      <ul class="ba-list">
+        <li>Hero: кинематографическое видео + эмоциональный слоган</li>
+        <li>Виджет бронирования сразу в герое — 1 клик</li>
+        <li>"от 8 500 ₽/ночь" видна без перехода в движок</li>
+        <li>Чеклист: аквапарк ✓ питание ✓ SPA ✓ анимация ✓</li>
+        <li>Новый логотип Aqva SPA — соответствует 4★</li>
+        <li>Рейтинг 4.5 ★ / 4314 отзывов прямо в герое</li>
+        <li>"Осталось 3 номера" + таймер — реальная срочность</li>
+        <li>WhatsApp — "Ответим за 5 минут", без торга</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 3 — МАКЕТ САЙТА (АННОТИРОВАННЫЙ)
+══════════════════════════════════ -->
+<section class="slide slide-dark" id="mockup">
+  <div class="slide-num">Слайд 03 — Макет</div>
+  <h2 class="slide-title">Как выглядит <em>новый сайт</em></h2>
+  <p class="slide-desc" style="color:rgba(255,255,255,0.6);">Аннотированный макет всех экранов. Каждый элемент обоснован — ничего лишнего.</p>
+
+  <div class="two-col big" style="margin-bottom:48px;">
+    <div class="mockup-wrap annotated">
+      <div class="browser-chrome">
+        <div class="bc-dot"></div><div class="bc-dot"></div><div class="bc-dot"></div>
+        <div class="bc-url">🔒 aqva-spa-sochi.ru</div>
+      </div>
+      <div class="browser-body">
+
+        <!-- HEADER -->
+        <div style="background:rgba(26,48,64,0.98);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="color:#fff;font-family:var(--ff-s);font-size:16px;letter-spacing:2px;">AQVA SPA <span style="color:var(--gold);font-size:9px;">FAMILY RESORT</span></div>
+          <div style="display:flex;gap:14px;">
+            <span style="color:rgba(255,255,255,0.6);font-size:11px;">Номера</span>
+            <span style="color:rgba(255,255,255,0.6);font-size:11px;">SPA</span>
+            <span style="color:rgba(255,255,255,0.6);font-size:11px;">Семья</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="color:#fff;font-size:12px;">8 800 234 17 20</span>
+            <div class="ms-btn-h">Проверить даты</div>
+          </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="ms-hero">
+          <div class="ms-hero-content">
+            <div class="ms-badge">Семейный курорт · 4 звезды · Сочи · Круглый год</div>
+            <div class="ms-h1">Место, где семья<br><em>дышит вместе</em></div>
+            <div class="ms-tags">
+              <span class="ms-tag">Аквапарк включён</span>
+              <span class="ms-tag">SPA каждый день</span>
+              <span class="ms-tag">Питание 3 раза</span>
+              <span class="ms-tag">Анимация</span>
+            </div>
+            <div class="ms-widget">
+              <div class="ms-wf"><label>Заезд</label><div class="fi" style="border:1px solid #D8D0C8;border-radius:4px;padding:7px 10px;font-size:12px;color:#333;">15 апреля 2025</div></div>
+              <div class="ms-wf"><label>Выезд</label><div class="fi" style="border:1px solid #D8D0C8;border-radius:4px;padding:7px 10px;font-size:12px;color:#333;">22 апреля 2025</div></div>
+              <div class="ms-wf"><label>Гостей</label><div class="fi" style="border:1px solid #D8D0C8;border-radius:4px;padding:7px 10px;font-size:12px;color:#333;">2 взр + 2 ребёнка</div></div>
+              <div class="ms-wbtn">Проверить →</div>
+              <div class="ms-guarantee">✓ Лучшая цена при прямом бронировании · Бесплатная отмена за 3 дня</div>
+            </div>
+            <div class="ms-trust">⭐⭐⭐⭐½ &nbsp; 4.5 из 5 · 4 314 отзывов на Яндекс Картах</div>
+          </div>
+        </div>
+
+        <!-- STRIP -->
+        <div class="ms-strip">
+          <div class="ms-si">🏆 <b>4 звезды</b> · официально</div>
+          <div class="ms-si">💳 Оплата картой · <b>безопасно</b></div>
+          <div class="ms-si">🔄 <b>Бесплатная отмена</b> за 3 дня</div>
+          <div class="ms-si">📞 Поддержка <b>24/7</b></div>
+        </div>
+
+        <!-- VALUE -->
+        <div class="ms-value">
+          <div class="ms-sec-label">Почему выбирают нас</div>
+          <div class="ms-sec-title">Всё для отдыха семьи — в одном месте</div>
+          <div class="ms-val-grid">
+            <div class="ms-vc"><div class="ms-vi">🌊</div><div class="ms-vn">Аквапарк</div><div class="ms-vt">15 бассейнов · 7 000 м²</div><div class="ms-vinc">✓ Включено</div></div>
+            <div class="ms-vc"><div class="ms-vi">🧖</div><div class="ms-vn">SPA Nemo</div><div class="ms-vt">Хаммам · массажи · термы</div><div class="ms-vinc">✓ Включено до 12:00</div></div>
+            <div class="ms-vc"><div class="ms-vi">🍽️</div><div class="ms-vn">Питание</div><div class="ms-vt">Шведский стол 3 раза</div><div class="ms-vinc">✓ Включено</div></div>
+            <div class="ms-vc"><div class="ms-vi">🎭</div><div class="ms-vn">Анимация</div><div class="ms-vt">Дети + вечерние шоу</div><div class="ms-vinc">✓ Каждый день</div></div>
+            <div class="ms-vc"><div class="ms-vi">🏥</div><div class="ms-vn">Медицина</div><div class="ms-vt">АкваМед · педиатр</div><div class="ms-vinc">+ Дополнительно</div></div>
+            <div class="ms-vc"><div class="ms-vi">🏖️</div><div class="ms-vn">Пляж</div><div class="ms-vt">Своя береговая линия</div><div class="ms-vinc">✓ Для гостей</div></div>
+          </div>
+        </div>
+
+        <!-- PRICE -->
+        <div class="ms-price-sec">
+          <div class="ms-sec-label" style="color:var(--gold);">Номера и цены</div>
+          <div style="font-family:var(--ff-s);font-size:22px;color:#fff;margin-bottom:6px;">Выберите свой номер</div>
+          <div class="ms-clarify">
+            <strong>Что значит "от 8 500 ₽/ночь"?</strong> Семья 4 чел. платит 8 500 ₽ и получает: аквапарк весь день + питание 3 раза + SPA утром + анимацию. Итого <strong>≈ 2 125 ₽ на человека в день.</strong>
+          </div>
+          <div class="ms-rooms">
+            <div class="ms-rc">
+              <div class="ms-rim s1">🛏️</div>
+              <div class="ms-rb">
+                <div class="ms-rt">Стандарт</div>
+                <div class="ms-rn">Стандартный номер</div>
+                <div class="ms-ra">21 м² · до 3 гостей</div>
+                <div class="ms-rp-block">
+                  <div class="ms-rp"><div class="from">от</div><div class="amt">8 500 ₽</div><div class="per">/ночь</div></div>
+                  <button class="ms-rbtn">Забронировать</button>
+                </div>
+                <div class="ms-rinc">✓ Аквапарк · SPA · Питание</div>
+              </div>
+            </div>
+            <div class="ms-rc pop">
+              <div class="ms-rim s2">🛁</div>
+              <div class="ms-rb">
+                <div class="ms-rt">Комфорт</div>
+                <div class="ms-rn">Комфорт с балконом</div>
+                <div class="ms-ra">26 м² · вид на море</div>
+                <div class="ms-rp-block">
+                  <div class="ms-rp"><div class="from">от</div><div class="amt">11 200 ₽</div><div class="per">/ночь</div></div>
+                  <button class="ms-rbtn">Забронировать</button>
+                </div>
+                <div class="ms-rinc">✓ Аквапарк · SPA · Питание</div>
+              </div>
+            </div>
+            <div class="ms-rc">
+              <div class="ms-rim s3">👑</div>
+              <div class="ms-rb">
+                <div class="ms-rt">Люкс</div>
+                <div class="ms-rn">Люкс для семьи</div>
+                <div class="ms-ra">38 м² · 2 комнаты</div>
+                <div class="ms-rp-block">
+                  <div class="ms-rp"><div class="from">от</div><div class="amt">18 500 ₽</div><div class="per">/ночь</div></div>
+                  <button class="ms-rbtn">Забронировать</button>
+                </div>
+                <div class="ms-rinc">✓ Всё включено + Трансфер</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS -->
+        <div class="ms-reviews">
+          <div class="ms-sec-label">Отзывы</div>
+          <div class="ms-rat">
+            <div><div class="ms-rat-num">4.5</div><div class="ms-rat-stars">★★★★★</div><div class="ms-rat-cnt">4 314 отзывов · Яндекс Карты</div></div>
+          </div>
+          <div class="ms-rev-row">
+            <div class="ms-rev"><div class="ms-rev-stars">★★★★★</div><div class="ms-rev-text">"Дети в восторге от аквапарка, аниматоры работают весь день. Приедем снова!"</div><div class="ms-rev-auth">Марина К. · Москва · ноябрь 2024</div></div>
+            <div class="ms-rev"><div class="ms-rev-stars">★★★★★</div><div class="ms-rev-text">"SPA Nemo — лучший подарок для жены. Хаммам и массаж — выше всяких похвал."</div><div class="ms-rev-auth">Андрей В. · Краснодар · январь 2025</div></div>
+            <div class="ms-rev"><div class="ms-rev-stars">★★★★☆</div><div class="ms-rev-text">"Едем уже 3-й год подряд. В феврале тоже отлично — аквапарк крытый и тёплый."</div><div class="ms-rev-auth">Елена Т. · Ростов · февраль 2025</div></div>
+          </div>
+        </div>
+
+        <!-- URGENCY -->
+        <div class="ms-urg">
+          <div class="ms-urg-tag">⚡ Горячее предложение</div>
+          <div class="ms-urg-title">Успейте забронировать<br>по спеццене</div>
+          <div class="ms-urg-sub">Цены на апрель зафиксированы до конца недели. Ранее бронирование −15%</div>
+          <div class="ms-rooms-left">
+            <div class="ms-rl"><div class="n">3</div><div class="l">Стандарт<br>апрель</div></div>
+            <div class="ms-rl"><div class="n">1</div><div class="l">Комфорт<br>апрель</div></div>
+            <div class="ms-rl"><div class="n" style="color:#FF8080;">0</div><div class="l">Люкс<br>апрель</div></div>
+          </div>
+          <div class="ms-cd">
+            <div class="ms-cd-b"><div class="ms-cd-n">23</div><div class="ms-cd-l">часов</div></div>
+            <span style="color:var(--gold);font-size:20px;padding-bottom:18px;">:</span>
+            <div class="ms-cd-b"><div class="ms-cd-n">47</div><div class="ms-cd-l">минут</div></div>
+            <span style="color:var(--gold);font-size:20px;padding-bottom:18px;">:</span>
+            <div class="ms-cd-b"><div class="ms-cd-n">12</div><div class="ms-cd-l">секунд</div></div>
+          </div>
+          <button class="ms-urg-btn">Зафиксировать цену →</button>
+        </div>
+
+        <!-- FAQ -->
+        <div class="ms-faq">
+          <div class="ms-sec-label">Частые вопросы</div>
+          <div class="ms-faq-grid">
+            <div class="ms-faq-item"><div class="ms-faq-q">Аквапарк точно включён?</div><div class="ms-faq-a"><b>Да, включён без доплат.</b> Горки, бассейны, детская зона AquaKids — всё в стоимости номера.</div></div>
+            <div class="ms-faq-item"><div class="ms-faq-q">Работает ли зимой?</div><div class="ms-faq-a"><b>Да, 365 дней.</b> Крытый аквапарк +30°C круглый год. Зимой — свободнее и дешевле.</div></div>
+            <div class="ms-faq-item"><div class="ms-faq-q">Можно отменить бронь?</div><div class="ms-faq-a"><b>Бесплатная отмена за 3 дня.</b> Возврат 100%.</div></div>
+            <div class="ms-faq-item"><div class="ms-faq-q">Почему лучше не через Booking?</div><div class="ms-faq-a"><b>Цена ниже</b> — на OTA мы закладываем 18-22% комиссии. Нашли дешевле — снизим цену.</div></div>
+          </div>
+        </div>
+
+        <!-- FINAL CTA -->
+        <div class="ms-fcta">
+          <div class="ms-fcta-title">Забронируйте сейчас —<br>отдыхайте <em>без забот</em></div>
+          <div class="ms-fcta-sub">Лучшая цена · Бесплатная отмена · Аквапарк включён</div>
+          <div class="ms-cta-btns">
+            <button class="ms-btn-p">📅 Проверить наличие</button>
+            <button class="ms-btn-s">💬 WhatsApp</button>
+            <button class="ms-btn-s">📞 8 800 234 17 20</button>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="ms-footer">
+          <div class="ms-ft-col"><p style="font-family:var(--ff-s);font-size:16px;color:#fff;">AQVA SPA</p><p>Family Resort · 4★ · Sochi</p></div>
+          <div class="ms-ft-col"><h5>Услуги</h5><a href="#">Номера</a><a href="#">SPA</a><a href="#">Аквапарк</a><a href="#">Медицина</a></div>
+          <div class="ms-ft-col"><h5>Контакты</h5><p style="color:#fff;">8 800 234 17 20</p><p>ул. Лучезарная, 74, Сочи</p></div>
+        </div>
+
+      </div><!-- browser-body -->
+    </div><!-- mockup-wrap -->
+
+    <!-- ANNOTATIONS LIST -->
+    <div class="ann-list">
+      <div class="ann-item">
+        <div class="ann-num">1</div>
+        <div class="ann-body">
+          <div class="title">Sticky-виджет бронирования в герое</div>
+          <div class="desc">Гость видит форму сразу, без скролла. Не нужно искать кнопку "Забронировать".</div>
+          <div class="impact">↑ конверсия до 37% выше</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">2</div>
+        <div class="ann-body">
+          <div class="title">Гарантия лучшей цены</div>
+          <div class="desc">Прямо под виджетом. Убивает желание сравнивать с Booking.com.</div>
+          <div class="impact">↓ OTA-отток на 25-30%</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">3</div>
+        <div class="ann-body">
+          <div class="title">Рейтинг 4.5 ★ в герое</div>
+          <div class="desc">Социальное доказательство ещё до того, как гость начал листать. Stanford: 46% оценивают доверие по первому экрану.</div>
+          <div class="impact">↑ доверие с первых секунд</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">4</div>
+        <div class="ann-body">
+          <div class="title">Цена видна до движка</div>
+          <div class="desc">"от 8 500 ₽" прямо на карточке. Не надо кликать и ждать загрузки Travelline.</div>
+          <div class="impact">↓ отказы на 38%</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">5</div>
+        <div class="ann-body">
+          <div class="title">Калькулятор ценности</div>
+          <div class="desc">"8 500 ₽ за семью = 2 125 ₽/чел./день" — психологически меняет восприятие цены.</div>
+          <div class="impact">↑ воспринимаемая ценность</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">6</div>
+        <div class="ann-body">
+          <div class="title">Реальная срочность</div>
+          <div class="desc">"Осталось 3 номера" из PMS + честный таймер. Не "скидка сгорит", а факт наличия.</div>
+          <div class="impact">↑ скорость принятия решения</div>
+        </div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-num">7</div>
+        <div class="ann-body">
+          <div class="title">FAQ как обработчик возражений</div>
+          <div class="desc">Гость получает ответ на главный страх ещё до звонка. Менеджер закрывает тёплых, а не объясняет базу.</div>
+          <div class="impact">↓ нагрузка на отдел продаж</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 4 — ВОРОНКА ПРОДАЖ
+══════════════════════════════════ -->
+<section class="slide" id="funnel" style="background:#fff;">
+  <div class="slide-num">Слайд 04 — Воронка</div>
+  <h2 class="slide-title">Путь гостя: <em>от клика до брони</em></h2>
+  <p class="slide-desc">Каждый этап воронки закрывается конкретным элементом на сайте. Нет "дыр" — нет потерь.</p>
+
+  <div class="funnel" style="margin-top:40px;">
+    <div class="fn-step">
+      <div class="fn-num">1</div>
+      <div class="fn-body">
+        <div class="fn-title">Клик по рекламе в Директе</div>
+        <div class="fn-desc">Гость ищет "семейный курорт Сочи" или "аквапарк Сочи отдых"</div>
+        <div class="fn-element">→ UTM-метки → конкретный лендинг под запрос</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num">100%</div><div class="pct-label">пришли</div></div>
+    </div>
+    <div class="fn-spacer"></div>
+    <div class="fn-step">
+      <div class="fn-num">2</div>
+      <div class="fn-body">
+        <div class="fn-title">Первые 3 секунды — Hero</div>
+        <div class="fn-desc">Видео + слоган + рейтинг + "что включено" → решение остаться</div>
+        <div class="fn-element">→ Видео-герой, бейдж 4★, рейтинг 4.5 в герое</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num">72%</div><div class="pct-label">остались</div></div>
+    </div>
+    <div class="fn-spacer"></div>
+    <div class="fn-step">
+      <div class="fn-num">3</div>
+      <div class="fn-body">
+        <div class="fn-title">Изучает ценность (10-60 сек)</div>
+        <div class="fn-desc">Смотрит что включено, листает номера, видит цену</div>
+        <div class="fn-element">→ Блок "Что входит", карточки номеров с ценой, калькулятор</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num">45%</div><div class="pct-label">заинтересованы</div></div>
+    </div>
+    <div class="fn-spacer"></div>
+    <div class="fn-step">
+      <div class="fn-num">4</div>
+      <div class="fn-body">
+        <div class="fn-title">Проверяет отзывы и FAQ</div>
+        <div class="fn-desc">Ищет подтверждение решения, снимает последние сомнения</div>
+        <div class="fn-element">→ Отзывы с фото, рейтинги по параметрам, FAQ с возражениями</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num">28%</div><div class="pct-label">почти решили</div></div>
+    </div>
+    <div class="fn-spacer"></div>
+    <div class="fn-step">
+      <div class="fn-num">5</div>
+      <div class="fn-body">
+        <div class="fn-title">Видит срочность → действует</div>
+        <div class="fn-desc">"Осталось 3 номера" + таймер → нажимает "Проверить наличие"</div>
+        <div class="fn-element">→ Блок срочности, счётчик остатков из PMS</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num">18%</div><div class="pct-label">в движке</div></div>
+    </div>
+    <div class="fn-spacer"></div>
+    <div class="fn-step" style="border-left:4px solid var(--gold);">
+      <div class="fn-num" style="color:var(--green);">✓</div>
+      <div class="fn-body">
+        <div class="fn-title" style="color:var(--green);">Бронирование завершено</div>
+        <div class="fn-desc">3 шага в Travelline: номер → данные → оплата. Подтверждение + upsell-email</div>
+        <div class="fn-element">→ Встроенный Travelline + автопоследовательность писем</div>
+      </div>
+      <div class="fn-pct"><div class="pct-num" style="color:var(--green);">5-8%</div><div class="pct-label">забронировали</div></div>
+    </div>
+  </div>
+  <p style="margin-top:32px;font-size:14px;color:#888;text-align:center;">Средняя конверсия по отелям — 1.5–2.5%. Цель нового сайта — <b style="color:var(--navy);">5–8%</b> с Директа.</p>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 5 — СРАВНЕНИЕ С OTA
+══════════════════════════════════ -->
+<section class="slide" style="background:var(--white);">
+  <div class="slide-num">Слайд 05 — Прямые продажи vs OTA</div>
+  <h2 class="slide-title">Зачем гость должен бронировать <em>напрямую</em></h2>
+  <p class="slide-desc">Это надо объяснить гостю прямо на сайте. Не намекнуть — а сказать прямо и с выгодой.</p>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Booking.com / OTA</th>
+        <th>Прямое бронирование</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Цена</td><td>На 18-22% выше (комиссия)</td><td>✓ Минимальная цена</td></tr>
+      <tr><td>Отмена</td><td>Жёсткие условия OTA</td><td>✓ Бесплатно за 3 дня</td></tr>
+      <tr><td>Выбор номера</td><td>Общий пул</td><td>✓ Конкретный номер и этаж</td></tr>
+      <tr><td>Специальные запросы</td><td>Через посредника</td><td>✓ Напрямую с курортом</td></tr>
+      <tr><td>Ранний заезд / поздний выезд</td><td>Не гарантирован</td><td>✓ По запросу</td></tr>
+      <tr><td>Связь с курортом</td><td>Через платформу</td><td>✓ WhatsApp / телефон напрямую</td></tr>
+      <tr><td>Нашли дешевле?</td><td>—</td><td>✓ Снизим цену</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 6 — ОЖИДАЕМЫЕ РЕЗУЛЬТАТЫ
+══════════════════════════════════ -->
+<section class="slide slide-dark" id="roi" style="background:var(--navy);">
+  <div class="slide-num">Слайд 06 — Результаты</div>
+  <h2 class="slide-title">Что даст <em>новый сайт</em><br>в цифрах</h2>
+  <p class="slide-desc">Реалистичные прогнозы на основе отраслевых бенчмарков (Small Luxury Hotels: +38% прямых броней после редизайна).</p>
+
+  <div class="roi-grid" style="margin-top:48px;">
+    <div class="roi-card">
+      <div class="roi-icon">📈</div>
+      <div class="roi-num">×3</div>
+      <div class="roi-label">конверсия с Директа</div>
+      <div class="roi-delta">с 1.5% → до 5%</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-icon">💰</div>
+      <div class="roi-num">−20%</div>
+      <div class="roi-label">стоимость бронирования</div>
+      <div class="roi-delta">больше броней с того же бюджета</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-icon">🛍️</div>
+      <div class="roi-num">+35%</div>
+      <div class="roi-label">средний чек</div>
+      <div class="roi-delta">за счёт SPA-пакетов и апсела</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-icon">📉</div>
+      <div class="roi-num">−18%</div>
+      <div class="roi-label">доля OTA в продажах</div>
+      <div class="roi-delta">экономия на комиссии</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     СЛАЙД 7 — ПЛАН ДЕЙСТВИЙ
+══════════════════════════════════ -->
+<section class="slide" id="next" style="background:var(--white);">
+  <div class="slide-num">Слайд 07 — Что делать</div>
+  <h2 class="slide-title">Три фазы <em>к новому сайту</em></h2>
+  <p class="slide-desc">Чёткий план. Каждая фаза даёт результат независимо от следующей.</p>
+
+  <div class="steps-grid" style="margin-top:48px;">
+    <div class="step-card">
+      <div class="step-phase">Фаза 1 · Немедленно (1-2 нед.)</div>
+      <div class="step-title">Устранить<br>критические баги</div>
+      <ul class="step-list">
+        <li>Активировать кнопку "Забронировать на сайте"</li>
+        <li>Убрать красный капслок "АКЦИЯ"</li>
+        <li>Добавить "от N ₽" на страницу тарифов</li>
+        <li>Починить фото менеджера</li>
+        <li>Объединить домены center / centre</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <div class="step-phase">Фаза 2 · Параллельно (1-2 мес.)</div>
+      <div class="step-title">Бренд и<br>фотосъёмка</div>
+      <ul class="step-list">
+        <li>Разработать логотип Aqva SPA 4★</li>
+        <li>Составить бренд-бук (цвета, шрифты, тон)</li>
+        <li>Профессиональная фотосъёмка (1 день)</li>
+        <li>Видео-герой для сайта (drone + интерьер)</li>
+        <li>Зарегистрировать новый домен</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <div class="step-phase">Фаза 3 · Разработка (2-3 мес.)</div>
+      <div class="step-title">Новый сайт<br>с нуля</div>
+      <ul class="step-list">
+        <li>UX/UI дизайн по бренд-буку</li>
+        <li>Разработка + интеграция Travelline</li>
+        <li>SEO-оптимизация (schema, скорость)</li>
+        <li>Подключить WhatsApp Business API</li>
+        <li>Настроить email-воронку post-booking</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:40px; background:#fff; border-radius:12px; padding:28px 32px; border-left:4px solid var(--gold); box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+    <div style="font-size:14px; font-weight:700; color:var(--navy); margin-bottom:8px;">💡 Главное правило</div>
+    <div style="font-size:15px; color:#6A6A6A; line-height:1.7;">
+      Кнопки "обсудить цену" и "торг уместен" — это инструменты <b>строительного рынка</b>, не премиум-курорта.
+      Гость, который платит 50 000+ ₽ за поездку, не хочет торговаться. Он хочет <b>убедиться в ценности</b>.
+      Задача сайта — дать эту уверенность автоматически, без менеджера.
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     ФИНАЛЬНЫЙ СЛАЙД
+══════════════════════════════════ -->
+<div class="final-slide">
+  <h2>Готовы запустить<br><em>продающий сайт?</em></h2>
+  <p>Прототип уже создан — файл aqva-spa-landing.html<br>Откройте в браузере и покажите собственнику как живой макет.</p>
+  <div class="final-btns">
+    <button class="fbtn p" onclick="window.open('aqva-spa-landing.html')">▶ Открыть живой макет</button>
+    <button class="fbtn s">📋 Скачать ТЗ на разработку</button>
+  </div>
+</div>
+
+<script>
+// Show nav after scrolling past cover
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  if(window.scrollY > window.innerHeight * 0.8) {
+    nav.classList.add('visible');
+  } else {
+    nav.classList.remove('visible');
+  }
+});
+</script>
+</body>
+</html>

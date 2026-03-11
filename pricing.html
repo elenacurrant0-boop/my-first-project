@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -297,6 +299,167 @@ body::before {
 }
 .note-strip a:hover { border-color: var(--gold); }
 
+/* ── SEASONAL SECTION ── */
+.seasonal {
+  position: relative; z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(48px, 6vw, 80px) 24px;
+}
+
+.seasonal-header {
+  margin-bottom: 40px;
+}
+
+.seasonal-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+.seasonal-header h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.seasonal-header h2 em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
+
+.seasonal-header p {
+  font-size: 14px;
+  color: var(--text-soft);
+  max-width: 500px;
+  line-height: 1.7;
+}
+
+.seasonal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.s-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: transform .28s, box-shadow .28s;
+}
+
+.s-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 28px 56px rgba(0,0,0,0.45);
+}
+
+.s-card-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform .5s ease;
+}
+
+.s-card:hover .s-card-img {
+  transform: scale(1.04);
+}
+
+.s-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 22, 40, 0.92) 0%,
+    rgba(10, 22, 40, 0.45) 50%,
+    rgba(10, 22, 40, 0.1) 100%
+  );
+}
+
+.s-card-days {
+  position: absolute;
+  top: 18px; right: 18px;
+  background: rgba(10,22,40,0.75);
+  border: 1px solid rgba(247,183,49,0.4);
+  color: var(--gold-lt);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.s-card-body {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px 24px 20px;
+}
+
+.s-card-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.s-card-desc {
+  font-size: 13px;
+  color: rgba(232,244,248,0.75);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.s-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.s-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(232,244,248,0.8);
+}
+
+.s-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: gap .18s;
+}
+
+.s-card-link:hover { gap: 10px; }
+
+.s-card-link::after {
+  content: '→';
+}
+
 /* ── FOOTER ── */
 .footer {
   position: relative; z-index: 10;
@@ -367,11 +530,21 @@ body::before {
   .card.popular {
     order: -1;
   }
+
+  .seasonal-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .s-card { aspect-ratio: 3 / 2; }
 }
 
 @media (max-width: 480px) {
   .card { padding: 28px 20px 24px; }
   .header { padding: 40px 20px 32px; }
+  .s-card { aspect-ratio: 4 / 3; }
+  .s-card-body { padding: 20px 18px 16px; }
 }
 </style>
 </head>
@@ -459,6 +632,87 @@ body::before {
     <a href="#contacts" class="btn btn-outline">Узнать подробнее</a>
   </div>
 
+</section>
+
+<!-- SEASONAL PROGRAMS -->
+<section class="seasonal">
+  <div class="seasonal-header">
+    <div class="seasonal-label">Коллекция программ · Весна 2026</div>
+    <h2>Под каждую цель — <em>своя программа</em></h2>
+    <p>Сезонные курсы составлены врачами с учётом времени года. Приезжайте с конкретным запросом — уезжайте с результатом.</p>
+  </div>
+
+  <div class="seasonal-grid">
+
+    <!-- Весеннее восстановление -->
+    <div class="s-card">
+      <div class="s-card-img" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80')"></div>
+      <div class="s-card-overlay"></div>
+      <div class="s-card-days">7 дней</div>
+      <div class="s-card-body">
+        <div class="s-card-title">Весеннее восстановление</div>
+        <div class="s-card-desc">Глубокая регенерация после зимы. Детокс, витаминная поддержка и восстановление энергетического баланса.</div>
+        <div class="s-card-tags">
+          <span class="s-tag">грязелечение</span>
+          <span class="s-tag">витаминные капельницы</span>
+          <span class="s-tag">физиотерапия</span>
+        </div>
+        <a href="#contacts" class="s-card-link">Узнать стоимость</a>
+      </div>
+    </div>
+
+    <!-- Семейный иммунитет -->
+    <div class="s-card">
+      <div class="s-card-img" style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80')"></div>
+      <div class="s-card-overlay"></div>
+      <div class="s-card-days">10 дней</div>
+      <div class="s-card-body">
+        <div class="s-card-title">Семейный иммунитет</div>
+        <div class="s-card-desc">Комплексная защита для всей семьи. Укрепление естественных барьеров и профилактика сезонных заболеваний.</div>
+        <div class="s-card-tags">
+          <span class="s-tag">галотерапия</span>
+          <span class="s-tag">ингаляции</span>
+          <span class="s-tag">лечебное плавание</span>
+        </div>
+        <a href="#contacts" class="s-card-link">Узнать стоимость</a>
+      </div>
+    </div>
+
+    <!-- Антистресс и сон -->
+    <div class="s-card">
+      <div class="s-card-img" style="background-image: url('https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&q=80')"></div>
+      <div class="s-card-overlay"></div>
+      <div class="s-card-days">5 дней</div>
+      <div class="s-card-body">
+        <div class="s-card-title">Антистресс и сон</div>
+        <div class="s-card-desc">Нормализация нервной системы и качества сна. Снятие хронической усталости и эмоционального выгорания.</div>
+        <div class="s-card-tags">
+          <span class="s-tag">флоатинг</span>
+          <span class="s-tag">нарзанные ванны</span>
+          <span class="s-tag">ароматерапия</span>
+        </div>
+        <a href="#contacts" class="s-card-link">Узнать стоимость</a>
+      </div>
+    </div>
+
+    <!-- Морской бриз -->
+    <div class="s-card">
+      <div class="s-card-img" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80')"></div>
+      <div class="s-card-overlay"></div>
+      <div class="s-card-days">6 дней</div>
+      <div class="s-card-body">
+        <div class="s-card-title">Морской бриз</div>
+        <div class="s-card-desc">Климатолечение и релаксация на берегу моря. Идеально для восстановления дыхательной системы и общего тонуса.</div>
+        <div class="s-card-tags">
+          <span class="s-tag">прогулки у моря</span>
+          <span class="s-tag">нарзанные ванны</span>
+          <span class="s-tag">врачебный контроль</span>
+        </div>
+        <a href="#contacts" class="s-card-link">Узнать стоимость</a>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- NOTE -->

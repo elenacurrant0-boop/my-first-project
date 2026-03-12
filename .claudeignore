@@ -1,0 +1,14 @@
+# Изображения — Claude не читает бинарники
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.svg
+
+# Черновики и эксперименты (уже не в работе)
+logo-concepts.html
+logo-ilona-critique.html
+logo-original.html
+card_generator.html
+model.html
